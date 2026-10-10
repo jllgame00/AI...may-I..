@@ -68,13 +68,13 @@ AI...may I..?
 - npm
 - 최초 의존성 설치가 가능한 네트워크 환경
 
-현재 저장소에는 lockfile이 없으므로 `npm install`을 사용합니다. 설치가 성공하면 생성되는 `package-lock.json`을 보존하고, 이후 동일한 의존성을 재설치할 때는 `npm ci`를 사용하세요. 의존성 버전 변경이나 `audit fix --force`는 필요하지 않습니다.
+현재 저장소에는 `package-lock.json`이 있으므로 `npm ci`를 사용합니다. lockfile을 함께 커밋해 동일한 의존성을 설치하세요. lockfile이 없는 새 사본에서는 정상 네트워크 환경에서 `npm install`로 생성한 뒤 포함해야 합니다. 가짜 lockfile을 작성하거나 의존성 버전 변경, `audit fix --force`를 실행할 필요는 없습니다.
 
 현재 Codex 셸은 네트워크가 의도적으로 제한되어 있습니다. Windows 시작 메뉴 등에서 **별도로 연 일반 PowerShell**에서 다음 명령을 실행하세요. Codex 셸에서 다시 PowerShell을 실행하면 제한 환경변수를 상속할 수 있습니다. 각 명령이 성공한 경우에만 다음 명령으로 진행하세요.
 
 ```powershell
 Set-Location -LiteralPath 'D:\univ\3-1\contest\2026_KHU_AI_Challenge'
-npm.cmd install --offline=false --cache .npm-cache
+npm.cmd ci --cache .npm-cache
 npm.cmd run typecheck
 npm.cmd test
 npm.cmd run build
@@ -83,7 +83,7 @@ npm.cmd run dev
 
 이 명령은 사용자·전역 npm 설정이나 조직의 프록시 설정을 변경하지 않습니다. 일반 PowerShell에서의 설치 성공 여부는 아직 확인하지 못했습니다. 그 환경에서도 실패하면 프록시를 임의로 해제하지 말고 실제 오류와 승인된 네트워크 설정을 확인하세요.
 
-개발 서버가 출력하는 `Local` 주소를 브라우저에서 엽니다. 기본 주소는 http://127.0.0.1:5173 이며 포트 사용 중이면 출력 주소가 달라집니다. 현재 Codex 환경에서는 서버가 시작되지 않아 실제 접속 주소가 없습니다.
+개발 서버가 출력하는 `Local` 주소를 브라우저에서 엽니다. 기본 주소는 http://127.0.0.1:5173/AI...may-I../ 이며 포트 사용 중이면 출력 주소가 달라집니다.
 
 프로덕션 빌드가 성공한 후에는 `npm.cmd run preview`로 결과물을 확인할 수 있습니다.
 
@@ -110,7 +110,9 @@ MVP 범위와 제한
 - 파일을 AI에 전달하거나 작업을 자동 실행하지 않습니다.
 - 단계별 AI 변경은 활용 계획을 바꾸는 기능이며 실제 모델 전환 실행이 아닙니다.
 - 실제 서비스의 무료 사용 범위, 이용 제한, 요금은 이 MVP 데이터로 판단할 수 없습니다.
-## 검증 상태
+## 이전 검증 상태 (기록 보존)
+
+아래는 의존성 설치 전의 진단 기록입니다. 이후 기존 lockfile과 설치된 의존성을 확인했으며, 최신 배포 준비 검증은 아래 「GitHub Pages 배포」 절에 기록합니다.
 
 2026-10-10 개발 환경 재진단 결과입니다. Node.js 24.13.0 / npm 11.20.0은 프로젝트의 Node.js 22.18+ 요구 조건을 충족합니다. 저장소와 상위 디렉터리에서 별도의 `AGENTS.md`는 발견되지 않았고, 작업 시작 시 Git 작업 트리는 깨끗했습니다. 기존 `package.json`과 소스·브랜드·예시 데이터는 변경하지 않았습니다. lockfile과 `node_modules`는 여전히 없습니다.
 
@@ -152,3 +154,53 @@ MVP 범위와 제한
 4. 추천 기준·출처·확인일을 보여주는 UI 구현
 5. 요구사항 분석과 프롬프트 생성의 실제 AI 연동 검토
    AI 연동 이후에도 사용자에게 추천 근거와 선택권을 제공하는 서비스 방향을 유지합니다.
+
+## GitHub Pages 배포
+
+배포 대상은 `origin`의 `https://github.com/jllgame00/AI...may-I...git`에서 확인한 `jllgame00/AI...may-I..`입니다. URL의 `.git` 접미사를 제외하면 저장소 이름 끝의 점은 두 개입니다. 현재 브랜치와 로컬에 기록된 원격 기본 브랜치(`origin/HEAD`)는 모두 `main`입니다. 원격 최신 기본 브랜치 조회(`git ls-remote --symref origin HEAD`)는 Codex의 기존 프록시 연결 제한으로 실패했으므로 최신 원격 상태까지 확인한 것은 아닙니다.
+
+- 예상 주소: https://jllgame00.github.io/AI...may-I../
+- Vite `base`: `/AI...may-I../`. 일반 프로젝트 Pages의 저장소 하위 경로이며, `소유자.github.io` 저장소라면 `/`를 사용합니다. 저장소 이름이나 배포 대상이 바뀌면 이 설정과 아래 주소도 함께 수정하세요.
+- favicon은 `%BASE_URL%favicon.svg`로 참조하고, 앱 진입점의 `/src/main.tsx`는 Vite가 빌드 시 `base` 아래의 번들 경로로 변환합니다. 현재 소스에는 다른 루트 절대 경로의 정적 자산 참조가 없습니다. 향후 자산은 import하거나 `import.meta.env.BASE_URL`을 사용하세요.
+- 화면 전환은 React 상태로 처리하며 클라이언트 URL 라우터는 없습니다. 저장소 기본 주소에서 새로고침하며, 새 라우터나 `404.html` 리디렉션은 추가하지 않았습니다.
+- `.gitignore`에 기존의 `dist/`, `node_modules/`, `.npm-cache/` 제외 설정이 있고 현재 Git 추적 파일에도 포함되지 않습니다. `package-lock.json`은 기존 파일을 보존했습니다.
+
+### GitHub 설정 및 배포 확인
+
+1. [저장소 Pages 설정](https://github.com/jllgame00/AI...may-I../settings/pages)에서 **Settings → Pages → Build and deployment → Source: GitHub Actions**를 선택합니다. GitHub가 제안하는 별도 워크플로를 생성할 필요는 없습니다.
+2. 사용자가 준비된 변경 사항과 `package-lock.json`을 커밋하고 `main`에 푸시하면 `.github/workflows/deploy.yml`이 실행됩니다. 이 설정 작업에서는 커밋·푸시·실제 배포를 수행하지 않았습니다.
+3. [Actions 탭](https://github.com/jllgame00/AI...may-I../actions)에서 **Deploy to GitHub Pages**의 `build`와 `deploy`가 모두 성공했는지 확인합니다. 수동 실행은 **Run workflow → Branch: main**을 선택합니다. 다른 브랜치에서 수동 실행하면 배포 작업을 건너뜁니다.
+4. 실행 결과의 `github-pages` 환경 링크 또는 **Settings → Pages → Visit site**를 열고 예상 주소와 일치하는지 확인합니다. favicon·JS·CSS에 404가 없는지, 새로고침 후에도 앱이 열리는지 확인하세요.
+
+워크플로는 프로젝트의 Node.js `>=22.18.0` 요구 조건을 충족하는 Node.js 24를 사용하며, `npm ci → npm run typecheck → npm test → npm run build → dist 업로드 → Pages 배포` 순서로 실행합니다. 빌드 작업에는 `contents: read`, 배포 작업에만 `pages: write`와 `id-token: write`를 부여합니다. `deploy`는 `needs: build`로 연결되어 설치·검증·빌드·업로드 중 하나라도 실패하면 실행되지 않습니다. 공식 Pages Actions와 `github-pages` 환경을 사용하며 별도 토큰이나 AI API 키는 필요하지 않습니다. 구성 근거는 [GitHub 공식 워크플로 안내](https://docs.github.com/en/pages/getting-started-with-github-pages/using-custom-workflows-with-github-pages)와 [Vite 공식 Pages 안내](https://vite.dev/guide/static-deploy.html#github-pages)입니다.
+
+### 로컬 배포용 빌드 확인
+
+정상 실행 환경의 PowerShell에서 각 명령이 성공한 뒤 다음 명령을 실행하세요. Codex의 네트워크·프록시 제한 설정은 변경하지 마세요.
+
+```powershell
+npm.cmd ci --cache .npm-cache
+npm.cmd run typecheck
+npm.cmd test
+npm.cmd run build
+npm.cmd run preview -- --port 4173 --strictPort
+```
+
+http://127.0.0.1:4173/AI...may-I../ 를 열고 새로고침합니다. 개발자 도구의 Network에서 JS·CSS·favicon이 `/AI...may-I../` 아래에서 정상 로드되는지 확인하고, 기존 입력 → 추천 → 작업 설계 → 프롬프트 흐름과 예시 데이터 표시를 확인하세요. 포트를 변경하면 URL도 같은 포트로 수정하세요.
+
+### 이번 배포 준비 검증 (2026-10-10)
+
+| 항목 | 결과 |
+| --- | --- |
+| 실행 환경 | Node.js 24.13.0 / npm 11.20.0, 기존 lockfile 및 설치된 의존성 확인 |
+| 타입 체크 | 변경 후 `npm run typecheck` 통과 |
+| 기존 테스트 | 변경 후 `npm test` 11개 모두 통과 |
+| 프로덕션 빌드 | `npm run build` 실패: Vite 설정 로딩 중 `spawn EPERM`. 기본 제공 `--configLoader native`로도 빌드 중 프로세스 생성 제한으로 실패 |
+| 기본 preview | `npm run preview -- --port 4173 --strictPort` 실패: 설정 로딩 중 `spawn EPERM` |
+| 제한된 preview 확인 | `npm run preview -- --configLoader native --port 4173 --strictPort`로 서버 시작, `/AI...may-I../`와 `/AI...may-I../favicon.svg`의 HTTP 200 확인 후 서버 종료. 기존 `dist`를 제공한 결과이며 새 배포용 빌드 검증은 아님 |
+| 새 빌드의 자산·브라우저·새로고침 검증 | 미완료: 새 빌드를 생성하지 못함. 기존 `dist/index.html`에는 이전 루트 경로(`/assets/`, `/favicon.svg`)가 남아 있어 성공한 배포 결과로 간주하지 않음 |
+| 깨끗한 의존성 재설치 (`npm ci`) | 미수행: 기존 설치를 보존하고 네트워크 제한을 우회하지 않음. GitHub Actions 및 정상 네트워크 환경에서 확인 필요 |
+| Git 추적·변경 검사 | 제외 디렉터리의 미추적 상태 및 `git diff --check` 확인. 소스 로직·의존성·예시 데이터 변경 없음 |
+| GitHub Actions 실행·실제 Pages 배포 | 미수행 |
+
+현재도 추천·점수·플랜은 MVP 예시 데이터이고 외부 AI API를 호출하지 않습니다. GitHub Pages 배포는 정적 프론트엔드를 공개하는 것이며 실제 AI 연동을 추가하지 않습니다.
