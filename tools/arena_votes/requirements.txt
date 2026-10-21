@@ -1,0 +1,4 @@
+# Offline data tooling only; not React/runtime dependencies.
+numpy==2.2.5
+scipy==1.15.3
+pyarrow==19.0.1

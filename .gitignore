@@ -7,3 +7,8 @@ dist/
 .env
 .env.*
 !.env.example
+.arena-cache/
+.venv-arena/
+__pycache__/
+*.pyc
+*.parquet

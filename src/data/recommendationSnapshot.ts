@@ -8,6 +8,11 @@ const googleLimits = source('https://support.google.com/gemini/answer/16275805?h
 const claude = source('https://claude.com/pricing')
 const claudePro = source('https://support.claude.com/en/articles/8325606-what-is-the-pro-plan')
 const claudeFiles = source('https://support.claude.com/en/articles/8241126-upload-files-to-claude')
+const mappingEvidence = {
+  chatgpt: { source: source('https://help.openai.com/en/articles/6825453-chatgpt-release-notes'), note: 'GPT-5.2의 2026-06-12 ChatGPT 제공 종료 확인. 과거 API 평가를 현재 Free/Plus 모델에 연결하지 않음. 현재 평가 ID·추론 설정 연결은 미확인.' },
+  gemini: { source: source('https://support.google.com/gemini/answer/18648722?hl=en'), note: '무료 Auto/Flash-Lite 및 유료 모델·사고 수준 선택 안내 확인. 자동 선택·한도 도달 시 모델 변경이 가능하며, 안내의 모델군과 평가 버전 ID·실행 설정 일치는 미확인.' },
+  claude: { source: source('https://support.claude.com/en/articles/12138966-release-notes'), note: '현재 모델군 출시 안내와 Pro의 추가 모델 제공은 확인. 과거 API 평가 버전·추론 설정을 현재 Free/Pro 채팅 환경과 동일하다고 확인할 근거는 미확보.' },
+}
 const support = (status: FeatureSupport['status'], note: string, sources: Source[]): FeatureSupport => ({ status, note, sources })
 const plans: ServicePlan[] = [
   ...(['free', 'paid'] as const).map(tier => ({
@@ -47,20 +52,23 @@ const plans: ServicePlan[] = [
 
 // Public, manually reviewed snapshot. No leaderboard rows or API prices are bundled.
 export const recommendationSnapshot: RecommendationSnapshot = {
-  version: 'official-2026-10-21', checkedAt, plans, models: [], observations: [], cohorts: [],
+  version: 'official-2026-10-21-audit-1', checkedAt, plans, models: [], observations: [], cohorts: [],
   mappings: plans.map(plan => ({
     id: `${plan.id}-unconfirmed`, planId: plan.id, modelId: null, status: 'unknown', selectable: false, mode: null,
-    note: '플랜의 모델군 안내만으로 정확한 평가 모델 ID·버전·추론 설정을 연결할 수 없습니다. 이용 화면에서 모델·모드를 확인하세요.', sources: plan.sources.slice(0, 1),
+    note: mappingEvidence[plan.serviceId].note, sources: [plan.sources[0], mappingEvidence[plan.serviceId].source],
   })),
   sources: [
     { ...source('https://artificialanalysis.ai/methodology/intelligence-benchmarking'), name: 'Artificial Analysis 방법론', status: '방법론 확인 · 수치 미포함', note: '문서·장문·사실 정확성·코딩 평가 선정. 한국어 품질 검증 아님.' },
-    { ...source('https://artificialanalysis.ai/data-api/docs'), name: 'Artificial Analysis API', status: '인증·공개 이용 권한 미확보', note: 'API 키는 갱신 환경에서만 사용. 문서 예제는 관측값이 아님.' },
+    { ...source('https://artificialanalysis.ai/data-api/docs'), name: 'Artificial Analysis API', status: '문서 접근 성공 · 인증 데이터 미요청', note: '공식 REST 경로와 x-api-key 인증 확인. 키가 없어 실응답은 받지 않았으며 문서 예제는 관측값이 아님.' },
     { ...source('https://artificialanalysis.ai/data-api'), name: 'Artificial Analysis 이용 범위', status: '재배포 권한 확인 필요', note: '무료 API의 내부 사용과 공개 재배포 권한을 구분.' },
     { ...source('https://artificialanalysiscdn.com/legal/ProDataPlatformTerms.pdf'), name: 'Artificial Analysis Data Platform 약관', status: '제품 이용 동의 미확보', note: '원자료 공개와 모델 선택 가이드 이용에 관한 허가를 확인해야 함. 구독만으로 허가를 추정하지 않음.' },
     { ...source('https://arena.ai/blog/arena-rank'), name: 'Arena-Rank 방법론', status: '방법론 확인', note: '방법론 코드 라이선스가 리더보드 데이터 허가는 아님.' },
     { ...source('https://arena.ai/leaderboard/chat/text/creative-writing'), name: 'Arena Creative Writing', status: '수치 미포함', note: '추출·재사용 허가 미확보. 사용자 선호를 한국어 정확성으로 해석하지 않음.' },
-    { ...source('https://help.arena.ai/articles/5629909088-terms-of-use'), name: 'Arena 이용 조건', status: '추출 제한 확인', note: '리더보드 수치·모델 목록을 제품으로 추출하지 않음.' },
+    { ...source('https://help.arena.ai/articles/5629909088-terms-of-use'), name: 'Arena 웹 이용 조건', status: '웹 추출 제한 확인', note: '웹 리더보드 추출과 별도 라이선스로 공개된 Hugging Face 데이터셋을 구분.' },
+    { ...source('https://huggingface.co/datasets/lmarena-ai/arena-human-preference-140k/blob/main/README.md'), name: 'Arena 공식 공개 선호도 데이터', status: 'CC-BY-4.0 표기 확인 · 평가 수치 미산출', note: '투표·카테고리 데이터 공개. 모델 출력은 제공사 약관 적용. 실행 설정과 현재 Creative Writing 평가의 동일성이 미확인이라 추천 점수로 대체하지 않음.' },
+    { ...source('https://huggingface.co/datasets/livebench/model_judgment/blob/main/README.md'), name: 'LiveBench 공식 모델 판정 데이터', status: '공개 파일·행 확인 · 데이터 라이선스 미기재', note: 'leaderboard Parquet 공개 경로 확인. 코드 라이선스를 별도 호스팅된 판정 데이터에 자동 적용하지 않음. 금지로 판정한 것은 아님.' },
+    { ...source('https://huggingface.co/datasets/livebench/model_judgment/discussions/2'), name: 'LiveBench 데이터 라이선스 문의 기록', status: '공개 문의에 답변 미확인', note: '2024-09-17 License File 문의에 확인 가능한 답변 없음. 외부 문의를 새로 전송하지 않음.' },
     { ...source('https://www.swebench.com/verified.html'), name: 'SWE-bench Verified', status: '방법론 확인 · 수치 미포함', note: '500개 문제. 에이전트 버전이 다른 실행은 섞지 않음.' },
-    { ...source('https://github.com/SWE-bench/experiments'), name: 'SWE-bench 공식 실험', status: '결과 재배포 권한 미확인', note: '공개 저장소만으로 결과 라이선스나 서비스 플랜 연결을 추정하지 않음.' },
+    { ...source('https://github.com/SWE-bench/experiments'), name: 'SWE-bench 공식 실험', status: '개별 결과 접근 성공 · 재배포 범위 미확인', note: 'mini-SWE-agent 2.0.0의 두 metadata.yaml과 인스턴스 결과 확인. 결과 라이선스, 실행 설정의 완전한 동일성, 현재 플랜 연결은 미확인.' },
   ],
 }

@@ -121,6 +121,45 @@ describe('evidence recommendation engine', () => {
     assert.ok(result.recommendations.length > 0)
     assert.ok(result.recommendations.every(r => r.score === null))
   })
+  it('retains valid evaluation parts when another required evaluation is absent', () => {
+    const data = fixture()
+    data.observations = data.observations.filter(o => o.evaluationId !== 'aa-lcr')
+    const item = run(data).recommendations.find(r => r.plan.id === 'plan-0')!
+    assert.deepEqual(item.benchmarks.map(b => b.normalized), [100, null, 100])
+    assert.equal(item.scores.benchmark, null)
+    assert.equal(item.score, null)
+    assert.deepEqual(item.scores, { benchmark: null, features: 100, cost: 100 })
+  })
+  it('does not hold coding scores because unrelated analysis and writing data are absent', () => {
+    const data = fixture()
+    data.observations = data.observations.filter(o => ['swe-verified', 'scicode'].includes(o.evaluationId))
+    data.cohorts = data.cohorts.filter(c => ['swe-verified', 'scicode'].includes(c.evaluationId))
+    assert.equal(run(data, { tasks: ['coding'] }).recommendations[0].score, 100)
+  })
+  it('does not suppress mapped candidates because another plan has no model mapping', () => {
+    const data = fixture()
+    data.mappings[0].status = 'unknown'
+    const result = run(data)
+    assert.equal(result.recommendations.find(r => r.plan.id === 'plan-0')?.score, null)
+    assert.equal(result.recommendations.find(r => r.plan.id === 'plan-2')?.score, 70)
+    assert.equal(result.recommendations.find(r => r.plan.id === 'plan-0')?.scores.features, 100)
+  })
+  it('audits all six real plans across all tasks with feature and cost holds kept separate', () => {
+    for (const task of ['analysis', 'writing', 'coding'] as const) {
+      const result = engine.analyzeRequest({ ...input, tasks: [task], requiredFeatures: ['pdf', 'web'] })
+      assert.equal(result.recommendations.length, 6)
+      for (const item of result.recommendations) {
+        assert.equal(item.model, null)
+        assert.equal(item.mapping.status, 'unknown')
+        assert.equal(item.scores.benchmark, null)
+        assert.equal(item.score, null)
+        assert.equal(item.scores.features, item.service.id === 'chatgpt' ? 100 : null)
+        assert.equal(item.scores.cost, item.plan.id === 'chatgpt-plus' ? null : 100)
+      }
+      const webOnly = engine.analyzeRequest({ ...input, tasks: [task], requiredFeatures: ['web'] })
+      assert.ok(webOnly.recommendations.every(item => item.scores.features === 100))
+    }
+  })
   it('keeps manual selection, plan, stage and prompt consistent; reanalysis resets', () => {
     const result = run(); const original = JSON.stringify(result)
     assert.equal(typeof engine.selectCandidate, 'function')

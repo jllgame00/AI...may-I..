@@ -4,6 +4,7 @@ import { candidateLabel } from '../lib/recommend'
 import type { Analysis, WorkflowStep } from '../types'
 import { DemoBadge, SectionHeading, ServiceMark } from './ui'
 import RecommendationEvidence, { priceLabel } from './RecommendationEvidence'
+import ModelEvaluationReference from './ModelEvaluationReference'
 export default function RecommendationDashboard({ analysis, steps, activeStepId, onStep, onEdit, onPrompt, onWorkflow }: {
   analysis: Analysis; steps: WorkflowStep[]; activeStepId: string; onStep: (id: string) => void
   onEdit: () => void; onPrompt: (stepId: string, candidateId: string) => void; onWorkflow: () => void
@@ -28,7 +29,8 @@ export default function RecommendationDashboard({ analysis, steps, activeStepId,
       <RecommendationEvidence item={item} /><button className="secondary-button card-button" onClick={() => onPrompt(step.id, item.id)}>이 플랜으로 프롬프트 보기 <ArrowRight size={15} /></button>
     </article>)}</div>
     {step && <details className="excluded-panel"><summary>추천되지 않은 후보의 제외 이유 ({step.excluded.length})</summary>{step.excluded.length ? step.excluded.map(e => <div key={e.plan.id}><strong>{e.plan.serviceId} · {e.plan.name}</strong><ul>{e.reasons.map(r => <li key={r}>{r}</li>)}</ul>{e.plan.sources.map(s => <a key={s.url} href={s.url} target="_blank" rel="noreferrer">공식 근거 · {s.checkedAt} </a>)}</div>) : <p>제외된 후보가 없습니다. 미확인 후보는 조건부로 구분했습니다.</p>}</details>}
-    <details className="source-overview"><summary>평가 자료의 확보 상태와 출처</summary>{analysis.sources.map(s => <div key={s.url}><a href={s.url} target="_blank" rel="noreferrer">{s.name}</a><p>{s.status} · 확인 {s.checkedAt}</p><p>{s.note}</p></div>)}</details>
+    <ModelEvaluationReference candidates={step?.recommendations ?? []} />
+    <details className="source-overview"><summary>통합 추천 점수용 평가 자료의 확보 상태와 출처</summary>{analysis.sources.map(s => <div key={s.url}><a href={s.url} target="_blank" rel="noreferrer">{s.name}</a><p>{s.status} · 확인 {s.checkedAt}</p><p>{s.note}</p></div>)}</details>
     <div className="next-step-panel"><div><span className="eyebrow">SMALL STEPS, BETTER RESULTS</span><h2>일을 나누면, 시작이 더 쉬워져요.</h2><p>{steps.length}단계의 서비스·플랜을 직접 선택하세요.</p></div><button className="primary-button" onClick={onWorkflow}>내 작업 설계하기 <ArrowRight size={17} /></button></div>
     <p className="global-demo-note"><Info size={14} /> {analysis.checkedAt} 확인 스냅샷 · 실시간 정보가 아닙니다. 가격·기능·한도는 이용 전 공식 화면에서 확인하세요.</p>
   </div>
