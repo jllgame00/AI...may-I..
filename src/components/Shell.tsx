@@ -44,8 +44,8 @@ export default function Shell({ children, view, hasResults, onNavigate }: {
     <dialog ref={dialogRef} className="help-dialog" onCancel={() => setHelpOpen(false)} onClose={() => setHelpOpen(false)}>
       <button className="dialog-close icon-button" aria-label="가이드 닫기" onClick={() => setHelpOpen(false)}><X size={20} /></button>
       <BrandMark /><p className="eyebrow">A LITTLE HELP TO GET STARTED</p><h2>처음이어도 괜찮아요.</h2><p>AI...may I..?는 AI를 대신 실행하는 서비스가 아니라, 직접 이해하고 선택하도록 돕는 가이드입니다. ChatKHU 계정이나 로그인 없이 체험할 수 있어요.</p>
-      <ol className="help-steps"><li><Sparkles size={20} /><div><strong>하고 싶은 일을 적어요</strong><p>자연어로 요청하고 예산과 우선순위를 선택하세요.</p></div></li><li><ListChecks size={20} /><div><strong>추천을 비교하고 직접 골라요</strong><p>예시 점수의 기준을 살피고 단계별 AI를 바꿔 보세요.</p></div></li><li><WandSparkles size={20} /><div><strong>프롬프트를 복사해 사용해요</strong><p>직접 선택한 서비스에서 자료와 함께 입력하세요.</p></div></li></ol>
-      <div className="data-notice">모든 점수·가격·기능은 MVP 예시 데이터입니다. 실제 플랜과 지원 기능은 각 서비스에서 확인하세요. 요청은 서버에 전송하거나 저장하지 않습니다.</div>
+      <ol className="help-steps"><li><Sparkles size={20} /><div><strong>하고 싶은 일을 적어요</strong><p>자연어로 요청하고 작업·필수 기능·예산을 확인하세요.</p></div></li><li><ListChecks size={20} /><div><strong>추천을 비교하고 직접 골라요</strong><p>공식 근거와 미확인 항목을 살피고 단계별 서비스·플랜을 바꿔 보세요.</p></div></li><li><WandSparkles size={20} /><div><strong>프롬프트를 복사해 사용해요</strong><p>직접 선택한 서비스에서 자료와 함께 입력하세요.</p></div></li></ol>
+      <div className="data-notice">2026-10-21 확인한 공식 정보 스냅샷을 사용합니다. 미확인 정보는 구분하고 점수를 보류합니다. 실제 플랜과 지원 기능은 각 서비스에서 확인하세요. 요청은 서버에 전송하거나 저장하지 않습니다.</div>
       <button className="primary-button full-width" onClick={() => setHelpOpen(false)}>좋아요, 시작할게요 <ChevronRight size={17} /></button>
     </dialog>
   </div>

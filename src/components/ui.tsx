@@ -11,7 +11,7 @@ export function ServiceMark({ id, small = false }: { id: ServiceId; small?: bool
 }
 
 export function DemoBadge() {
-  return <span className="demo-badge">MVP 예시 데이터</span>
+  return <span className="demo-badge">공식 정보 스냅샷</span>
 }
 
 export function SectionHeading({ number, title, description }: { number: string; title: string; description?: string }) {

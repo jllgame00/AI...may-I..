@@ -1,24 +1,35 @@
-import { ArrowRight, Check, ChevronDown, Coins, Info, PenLine, Sparkles, Trophy } from 'lucide-react'
-import { useState } from 'react'
+﻿import { ArrowRight, Info, PenLine, Sparkles } from 'lucide-react'
 import { budgetLabels, priorityLabels } from '../data/services'
-import { scoreWeights } from '../lib/recommend'
-import type { Analysis, ServiceId } from '../types'
+import { candidateLabel } from '../lib/recommend'
+import type { Analysis, WorkflowStep } from '../types'
 import { DemoBadge, SectionHeading, ServiceMark } from './ui'
-
-export default function RecommendationDashboard({ analysis, onEdit, onPrompt, onWorkflow }: {
-  analysis: Analysis; onEdit: () => void; onPrompt: (id: ServiceId) => void; onWorkflow: () => void
+import RecommendationEvidence, { priceLabel } from './RecommendationEvidence'
+export default function RecommendationDashboard({ analysis, steps, activeStepId, onStep, onEdit, onPrompt, onWorkflow }: {
+  analysis: Analysis; steps: WorkflowStep[]; activeStepId: string; onStep: (id: string) => void
+  onEdit: () => void; onPrompt: (stepId: string, candidateId: string) => void; onWorkflow: () => void
 }) {
-  const [showScoring, setShowScoring] = useState(false)
-  const criteria = [{ key: 'fit' as const, label: '작업 적합도' }, { key: 'cost' as const, label: '비용 효율' }, { key: 'features' as const, label: '기능 범위' }, { key: 'ease' as const, label: '사용 난이도' }]
-  const budgetWeight = analysis.request.budget === 'free' ? .35 : analysis.request.budget === 'prefer-free' ? .12 : 0
+  const step = steps.find(s => s.id === activeStepId) ?? steps[0]
   return <div className="page-enter">
-    <div className="page-intro compact"><p className="eyebrow">YOUR PERSONAL AI GUIDE</p><div className="title-with-action"><h1 tabIndex={-1}>좋은 시작을 위한, <span className="gradient-text">당신의 AI 메이트.</span></h1><button className="secondary-button" onClick={onEdit}><PenLine size={15} /> 요청 수정·재분석</button></div><p>정답을 대신 고르기보다, 스스로 선택할 수 있는 이유를 알려드려요.</p></div>
-    <div className="result-request"><span className="request-quote">“{analysis.request.text}”</span><div><span className="small-tag">{analysis.label}</span><span className="small-tag">{budgetLabels[analysis.request.budget]}</span><span className="small-tag">{priorityLabels[analysis.request.priority]}</span></div><p className="detected-features">필요한 기능 <span>{analysis.features.join(' · ')}</span></p></div>
+    <div className="page-intro compact"><p className="eyebrow">YOUR PERSONAL AI GUIDE</p><div className="title-with-action"><h1 tabIndex={-1}>좋은 시작을 위한, <span className="gradient-text">당신의 AI 메이트.</span></h1><button className="secondary-button" onClick={onEdit}><PenLine size={15} /> 요청 수정·재분석</button></div><p>확인한 근거와 남은 불확실성을 함께 비교하세요.</p></div>
+    <div className="result-request"><span className="request-quote">“{analysis.request.text}”</span><div><span className="small-tag">{analysis.label}</span><span className="small-tag">{budgetLabels[analysis.request.budget]}</span><span className="small-tag">{priorityLabels[analysis.request.priority]}</span></div><p className="detected-features">필수 기능 <span>{analysis.features.join(' · ') || '지정 없음'}</span></p>{analysis.interpretationNotes.map(note => <p key={note}>{note}</p>)}</div>
     <div className="conclusion-banner"><div className="conclusion-icon"><Sparkles size={24} /></div><div><div className="conclusion-label">AI...may I..?의 추천 <DemoBadge /></div><h2>{analysis.conclusion}</h2><p>{analysis.detail}</p></div></div>
-    <div className="results-section-top"><SectionHeading number="01" title="나에게 맞는 AI 비교하기" description="같은 요청에도 강점은 달라요. 이유를 비교하고 직접 선택하세요." /><DemoBadge /></div>
-    <div className="scoring-panel"><button className="scoring-toggle" onClick={() => setShowScoring(!showScoring)} aria-expanded={showScoring} aria-controls="score-explanation"><Info size={16} /><strong>추천 점수는 어떻게 정해지나요?</strong><span className="criteria-inline">작업 적합도 · 비용 효율 · 기능 범위 · 사용 난이도</span><ChevronDown className={showScoring ? 'rotated' : ''} size={17} /></button>{showScoring && <div className="score-explanation" id="score-explanation"><p>예시 점수에 선택한 우선순위와 예산을 반영한 가중 평균입니다. 100점 만점이며, 사용 난이도는 높을수록 쉽다는 뜻입니다. ‘빠른 완성’은 적합도와 사용 편의성을 대리 지표로 쓰며 실제 속도를 측정하지 않습니다.</p><div className="weight-grid">{criteria.map(({ key, label }) => <div key={key}><span>{label}</span><strong>{Math.round(((scoreWeights[analysis.request.priority][key] + (key === 'cost' ? budgetWeight : 0)) / (1 + budgetWeight)) * 100)}%</strong></div>)}</div><p>가격 비교는 실제 금액 대신 무료 활용 범위에 대한 예시 비용 효율을 사용합니다. 무료만 사용 선택 시 유료 이용을 필수로 제안하지 않습니다. 모든 기초 점수와 플랜 설명은 MVP 예시 데이터입니다.</p></div>}</div>
-    <div className="recommendation-grid">{analysis.recommendations.map(({ service, score, scores, reason }, index) => <article className={`recommendation-card ${index === 0 ? 'top-pick' : ''}`} key={service.id}><div className="card-rank">{index === 0 ? <><Trophy size={13} /> 가장 먼저 추천해요</> : `${index + 1}번째 추천`}<DemoBadge /></div><div className="service-heading"><ServiceMark id={service.id} /><div><h3>{service.name}</h3><span>{service.subtitle}</span></div><div className="score-value"><strong>{score}</strong><span>적합도 / 100</span></div></div><p className="recommendation-reason">{reason}</p><div className="score-bars">{criteria.map(({ key, label }) => <div key={key}><span>{label}</span><div className="score-track"><span style={{ width: `${scores[key]}%` }} /></div><strong>{scores[key]}</strong></div>)}</div><div className="plan-description"><div><Check size={15} /><div><h4>무료로 시작할 수 있는 범위</h4><p>{service.free}</p></div></div><div><Coins size={15} /><div><h4>유료 플랜을 고려할 때</h4><p>{service.paid}</p></div></div></div><button className={index === 0 ? 'primary-button card-button' : 'secondary-button card-button'} onClick={() => onPrompt(service.id)}>이 AI용 프롬프트 보기 <ArrowRight size={15} /></button></article>)}</div>
-    {analysis.kind === 'image' && <div className="data-notice image-note"><Info size={17} /><p>이 비교는 이미지 콘셉트와 생성 프롬프트 설계를 위한 추천입니다. Claude는 텍스트 기획용으로 배정하며, 실제 이미지 생성 여부와 무료 지원 범위는 사용할 서비스에서 확인하세요.</p></div>}
-    <div className="next-step-panel"><div><span className="eyebrow">SMALL STEPS, BETTER RESULTS</span><h2>일을 나누면, 시작이 더 쉬워져요.</h2><p>{analysis.workflow.length}단계 작업 설계안에서 각 단계를 맡길 AI를 직접 선택해 보세요.</p></div><button className="primary-button" onClick={onWorkflow}>내 작업 설계하기 <ArrowRight size={17} /></button></div><p className="global-demo-note">모든 점수·가격·기능은 MVP 예시 데이터입니다. 실제 성능이나 최신 플랜을 보장하지 않으며, 결제 전 공식 정보를 확인하세요.</p>
+    <div className="results-section-top"><SectionHeading number="01" title="단계별 서비스·플랜 비교" description="총점이 없는 후보의 표시 순서는 성능 순위가 아닙니다." /></div>
+    {step && <label className="stage-control">비교할 작업 단계<select value={step.id} onChange={e => onStep(e.target.value)}>{steps.map((s, i) => <option key={s.id} value={s.id}>{i + 1}. {s.title}</option>)}</select></label>}
+    <details className="scoring-panel policy-details"><summary>추천 적합도는 어떻게 정해지나요?</summary><p>작업 평가 60% · 필요한 기능 25% · 비용 적합성 15%. 필수 조건을 먼저 적용합니다. 누락된 값은 null로 유지하고 총점을 보류합니다. 동일 평가·버전·실행 조건의 고정 집합에서만 min–max 정규화합니다.</p><p>우선순위는 프롬프트에 반영하며 이 정책 비중을 변경하지 않습니다. 정책 {analysis.policyVersion} · 데이터 {analysis.dataVersion}.</p></details>
+    {(!step || !step.recommendations.length) && <div className="empty-state" role="status"><h3>{!step ? '작업 확인이 필요합니다' : '이 단계에 조건을 만족하는 후보가 없습니다'}</h3><p>요청과 필수 기능을 확인하세요. PDF 대신 텍스트를 붙여 넣거나, 검색 대신 직접 제공한 출처로 진행할 수 있다면 조건을 수정하세요.</p><button className="secondary-button" onClick={onEdit}>조건 수정하기</button></div>}
+    <div className="recommendation-grid">{step?.recommendations.map(item => <article className={`recommendation-card ${step.candidateId === item.id ? 'top-pick' : ''}`} key={item.id}>
+      <div className="card-rank"><span>{step.candidateId === item.id ? '현재 선택 · 변경 가능' : '비교 후보'}</span><span className="demo-badge">{item.status === 'scored' ? '점수 근거 있음' : '조건부 · 점수 보류'}</span></div>
+      <div className="service-heading"><ServiceMark id={item.service.id} /><div><h3>{item.service.name}</h3><span>{item.plan.name} · {priceLabel(item)}</span></div><div className="score-value"><strong>{item.score ?? '—'}</strong><span>{item.score === null ? '점수 보류' : '적합도 / 100'}</span></div></div>
+      <p className="model-mode">{candidateLabel(item)}</p><p className="recommendation-reason">{item.reason}</p>
+      <p className="evidence-status">{item.eligibility === 'confirmed' ? analysis.requiredFeatures.length ? '요청한 필수 기능 지원 확인' : '필수 기능 지정 없음' : '필수 기능 확인 필요'}</p>
+      {item.nearTie && <p>다른 후보와 3점 이내의 근소한 차이입니다.</p>}
+      {!!item.holds.length && <ul className="hold-reasons">{item.holds.map(reason => <li key={reason}>{reason}</li>)}</ul>}
+      <div className="plan-description"><div><div><h4>무료로 가능한 범위</h4><p>{item.plan.freeScope}</p></div></div><div><div><h4>한도와 유료 전환 검토 조건</h4><p>{item.plan.limits.join(' ')}</p><p>{item.plan.upgrade}</p></div></div></div>
+      <RecommendationEvidence item={item} /><button className="secondary-button card-button" onClick={() => onPrompt(step.id, item.id)}>이 플랜으로 프롬프트 보기 <ArrowRight size={15} /></button>
+    </article>)}</div>
+    {step && <details className="excluded-panel"><summary>추천되지 않은 후보의 제외 이유 ({step.excluded.length})</summary>{step.excluded.length ? step.excluded.map(e => <div key={e.plan.id}><strong>{e.plan.serviceId} · {e.plan.name}</strong><ul>{e.reasons.map(r => <li key={r}>{r}</li>)}</ul>{e.plan.sources.map(s => <a key={s.url} href={s.url} target="_blank" rel="noreferrer">공식 근거 · {s.checkedAt} </a>)}</div>) : <p>제외된 후보가 없습니다. 미확인 후보는 조건부로 구분했습니다.</p>}</details>}
+    <details className="source-overview"><summary>평가 자료의 확보 상태와 출처</summary>{analysis.sources.map(s => <div key={s.url}><a href={s.url} target="_blank" rel="noreferrer">{s.name}</a><p>{s.status} · 확인 {s.checkedAt}</p><p>{s.note}</p></div>)}</details>
+    <div className="next-step-panel"><div><span className="eyebrow">SMALL STEPS, BETTER RESULTS</span><h2>일을 나누면, 시작이 더 쉬워져요.</h2><p>{steps.length}단계의 서비스·플랜을 직접 선택하세요.</p></div><button className="primary-button" onClick={onWorkflow}>내 작업 설계하기 <ArrowRight size={17} /></button></div>
+    <p className="global-demo-note"><Info size={14} /> {analysis.checkedAt} 확인 스냅샷 · 실시간 정보가 아닙니다. 가격·기능·한도는 이용 전 공식 화면에서 확인하세요.</p>
   </div>
 }
