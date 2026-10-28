@@ -6,7 +6,7 @@ import { syncDrafts, editDraft } from './promptSession.ts'
 import { fixture } from './fixtures/recommendation.ts'
 import type { PromptRequest } from '../types'
 
-const demo: PromptRequest = { text: '설문 통계값으로 결과를 분석하고 A4 4장 보고서를 써야 해. 과제라 비용은 쓰고 싶지 않아.', overrides: {}, budget: 'free', priority: 'quality' }
+const demo: PromptRequest = { text: '설문 통계값으로 결과를 분석하고 A4 4장 보고서를 써야 해. 과제라 비용은 쓰고 싶지 않아.', overrides: {}, priority: 'quality' }
 it('detects analysis and writing, asks data form without assuming file upload', () => {
   const a = interpretTask(demo)
   assert.deepEqual(a.tasks,['analysis','writing']); assert.equal(a.needsInputMode,true)
@@ -14,12 +14,12 @@ it('detects analysis and writing, asks data form without assuming file upload', 
   assert.deepEqual(interpretTask({ ...demo,inputMode:'summary' }).requiredFeatures,[])
   assert.ok(interpretTask({ ...demo,inputMode:'file' }).requiredFeatures.includes('upload'))
 })
-it('compares real free conditions without assigning a fabricated quality rank', () => {
-  const result = compareCandidates({ ...demo,inputMode:'summary' })
-  assert.equal(result.recommendations.length,3)
-  assert.ok(result.recommendations.every(c => c.plan.tier === 'free' && c.suitability === '조건 비교 가능' && c.score === null))
-  assert.ok(result.recommendations.every(c => c.plan.sources.length))
-  assert.equal(compareCandidates(demo).recommendations.some(c => c.suitability === '조건 비교 가능'),false)
+it('compares task features without price-only holds or aggregate quality scores', () => {
+  const result=compareCandidates({...demo,inputMode:'summary'})
+  assert.equal(result.recommendations.filter(c=>!c.accessAlternative).length,30)
+  assert.ok(result.recommendations.every(c=>c.suitability==='조건 비교 가능' && c.score===null))
+  assert.equal(result.recommendations.filter(c=>c.model&&!c.accessAlternative).length,25)
+  assert.equal(compareCandidates(demo).recommendations.some(c=>c.suitability==='조건 비교 가능'),false)
 })
 it('keeps unsupported and unknown essential features separate with no forced choice', () => {
   const data = structuredClone(recommendationSnapshot)
@@ -85,7 +85,7 @@ it('branches file-mode survey inputs and honors explicit report overrides includ
 it('gates cached comparison and review after request edits while preserving drafts and selections', () => {
   const request={ ...demo,inputMode:'summary' as const },comparison=compareCandidates(request)
   const s={request,bundle:null,drafts:{statistics:{text:'직접 편집',context:'old',previous:null}},checks:{},comparison,selection:{default:comparison.recommendations[0].id,byStage:{}},reviewed:{statistics:true}}
-  const changed=updateGuideRequest(s,{...request,budget:'paid'})
+  const changed=updateGuideRequest(s,{...request,usageRoute:'api'})
   assert.equal(comparisonMatches(changed.request,comparison),false)
   assert.equal(changed.reviewed?.statistics,false)
   assert.equal(changed.drafts.statistics.text,'직접 편집')

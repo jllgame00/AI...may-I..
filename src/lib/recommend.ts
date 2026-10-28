@@ -1,15 +1,15 @@
 import { serviceById, taskLabels } from '../data/services.ts'
 import { recommendationSnapshot } from '../data/recommendationSnapshot.ts'
-import { featureLabels, POLICY_VERSION, scoreWeights, scoringTaskLabels, taskEvaluations } from '../data/recommendationPolicy.ts'
+import { featureLabels, POLICY_VERSION, scoringTaskLabels } from '../data/recommendationPolicy.ts'
 import { mappingLabel, relevantEvidence } from './currentEvidence.ts'
-import type { Analysis, BenchmarkDetail, EvaluationConditions, FeatureId, FeatureSupport, PlanModelMapping, Recommendation, RecommendationSnapshot, RequestInput, ScoringTask, ServicePlan, TaskKind, WorkflowStep } from '../recommendationTypes'
-export { scoreWeights } from '../data/recommendationPolicy.ts'
+import { catalogCandidates, configurationCandidates } from './catalogCandidates.ts'
+import type { Analysis, FeatureId, FeatureSupport, PlanModelMapping, Recommendation, RecommendationSnapshot, RequestInput, ScoringTask, ServicePlan, TaskKind, WorkflowStep } from '../recommendationTypes'
 
 export function classifyTask(text: string): TaskKind {
   if (/또는|아니면|할까|\bor\b/i.test(text)) return 'unknown'
   if (/코딩|코드|개발|디버|버그|파이썬|python|react|typescript|javascript|프로그래밍/i.test(text)) return 'coding'
   if (/이미지|포스터|그림|일러스트|로고|사진|썸네일/.test(text)) return 'image'
-  if (/연구|논문|자료|분석|리서치/.test(text)) return 'research'
+  if (/연구|논문|자료|분석|리서치|수학|수리|추론 문제|논리 문제/.test(text)) return 'research'
   if (/요약|회의록|정리/.test(text)) return 'summary'
   if (/발표|대본|글|이메일|메일|편지|작성|써줘|써 줘|문장|초안/.test(text)) return 'writing'
   return 'unknown'
@@ -18,7 +18,7 @@ export function interpretRequest(text: string) {
   const kind = classifyTask(text)
   const tasks: ScoringTask[] = []
   if (kind !== 'unknown' && kind !== 'image') {
-    if (/연구|논문|자료|분석|리서치|요약|회의록|정리/.test(text)) tasks.push('analysis')
+    if (/연구|논문|자료|분석|리서치|수학|수리|추론 문제|논리 문제|요약|회의록|정리/.test(text)) tasks.push('analysis')
     if (/코딩|코드|개발|디버|버그|파이썬|python|react|typescript|javascript|프로그래밍/i.test(text)) tasks.push('coding')
     if (/발표|대본|글쓰기|이메일|편지|문장|초안|글을|글의/.test(text) || kind === 'writing') tasks.push('writing')
   }
@@ -33,96 +33,56 @@ export function interpretRequest(text: string) {
   return { kind, tasks, requiredFeatures }
 }
 
-const conditionKeys: (keyof EvaluationConditions)[] = ['evaluationId', 'version', 'environment', 'agentVersion', 'evaluationMode', 'unit', 'higherIsBetter']
-function benchmarkDetails(task: ScoringTask | 'image', modelId: string | null, data: RecommendationSnapshot): BenchmarkDetail[] {
-  if (task === 'image') return []
-  return taskEvaluations[task].map(slot => {
-    // One canonical cohort per slot, shared by EVERY candidate. Per-model cohort
-    // selection could rank independently normalized, incomparable scores together.
-    const cohorts = data.cohorts.filter(c => c.evaluationId === slot.id)
-    const cohort = cohorts.length === 1 ? cohorts[0] : null
-    const base: BenchmarkDetail = { evaluationId: slot.id, label: slot.label, weight: slot.weight, normalized: null, observation: null, cohort, reason: `${slot.reason}: 비교 가능한 관측값 없음` }
-    if (!cohort || modelId === null || !cohort.modelIds.includes(modelId) || !cohort.environment || !cohort.version || !cohort.evaluationMode || (slot.id === 'swe-verified' && !cohort.agentVersion) || new Set(cohort.modelIds).size < 2 || new Set(cohort.modelIds).size !== cohort.modelIds.length) return base
-    const observations = cohort.modelIds.map(id => data.observations.filter(o => o.modelId === id && conditionKeys.every(k => o[k] === cohort[k])))
-    // All members must be present exactly once. Never shrink the reference set around missing data.
-    if (observations.some(rows => rows.length !== 1)) return { ...base, reason: `${slot.reason}: 비교 집합 누락·중복 또는 평가 조건 불일치` }
-    const rows = observations.map(group => group[0])
-    if (rows.some(o => o.rawScore === null || !Number.isFinite(o.rawScore) || o.composite || o.redistribution.status !== 'allowed' || !o.redistribution.licenseUrl || !o.source.url || !o.source.checkedAt || !data.models.some(m => m.id === o.modelId && m.version && m.reasoning && m.evaluationMode === o.evaluationMode))) {
-      return { ...base, reason: `${slot.reason}: 원점수·모델·재배포 근거 부족 또는 종합 지수 혼입` }
-    }
-    const observation = rows.find(o => o.modelId === modelId)!
-    const values = rows.map(o => o.rawScore as number)
-    const min = Math.min(...values), max = Math.max(...values), value = observation.rawScore as number
-    const normalized = min === max ? 50 : 100 * (cohort.higherIsBetter ? value - min : max - value) / (max - min)
-    return { ...base, observation, normalized, reason: slot.reason }
-  })
-}
-function costScore(plan: ServicePlan, budget: RequestInput['budget']): number | null {
-  if (budget === 'unknown') return null
-  if (plan.tier === 'free') return 100
-  if (plan.price.amount === null || !Number.isFinite(plan.price.amount) || plan.price.amount <= 0 || !plan.price.currency || plan.price.period !== 'month') return null
-  return budget === 'prefer-free' ? 50 : 100
-}
 export function featureSupport(plan: ServicePlan, feature: FeatureId): FeatureSupport {
-  return plan.features[feature] ?? { status: 'unknown', note: '이 플랜·경로의 근거 미확보', sources: [] }
+  return plan.features[feature] ?? { status:'unknown',note:'이 플랜·경로의 근거 미확보',sources:[] }
 }
 function unknownMapping(plan: ServicePlan): PlanModelMapping {
-  return { id: `${plan.id}-unconfirmed`, planId: plan.id, modelId: null, status: 'unknown', selectable: false, mode: null, note: '정확한 모델·모드 연결 미확인', sources: [] }
+  return {id:`${plan.id}-unconfirmed`,planId:plan.id,modelId:null,status:'unknown',selectable:false,mode:null,note:'정확한 모델·모드 연결 미확인',sources:[]}
 }
 export function recommendForTask(task: ScoringTask | 'image', request: RequestInput, required: FeatureId[], data: RecommendationSnapshot) {
-  const excluded: WorkflowStep['excluded'] = []
-  const recommendations: Recommendation[] = []
-  for (const plan of data.plans) {
-    const route = request.usageRoute ?? 'consumer'
-    if ((route === 'api') !== (plan.billingKind === 'usage')) continue
-    const reasons: string[] = []
-    if (request.budget === 'free' && plan.tier === 'paid') reasons.push('무료만 사용 조건: 유료 플랜 제외')
-    if (request.maxKrw !== undefined && request.maxKrw !== null && plan.tier === 'paid' && plan.price.currency === 'KRW' && plan.price.period === 'month' && plan.price.amount !== null && plan.price.amount > request.maxKrw) reasons.push('확인된 한국 월 표시 가격이 원화 예산 상한을 초과합니다')
-    for (const feature of required) if (featureSupport(plan, feature).status === 'unsupported') reasons.push(`${featureLabels[feature]} 공식 미지원`)
-    if (reasons.length) { excluded.push({ plan, reasons }); continue }
-    const mappings = data.mappings.filter(m => m.planId === plan.id)
-    for (const mapping of mappings.length ? mappings : [unknownMapping(plan)]) {
-      if (route !== 'consumer' && (mapping.routeKind ?? 'chat') !== route) continue
-      const model = data.models.find(m => m.id === mapping.modelId) ?? null
-      const current = data.evaluations !== undefined
-      const linked = mapping.status === 'confirmed' && mapping.selectable && mapping.selection!=='automatic' && !!mapping.mode && !!model?.version && (current?(model.modes ?? [model.reasoning]).includes(mapping.mode):model.reasoning===mapping.mode) && (!current || mapping.modelVersion===model.version) && mapping.sources.some(s => s.url && s.checkedAt)
-      const benchmarks = current ? [] : benchmarkDetails(task, linked ? mapping.modelId : null, data)
-      // Chat-plan tool permissions cannot be transplanted to Work or API.
-      const supportForPath = (f: FeatureId) => mapping.routeKind === 'api' && model?.nativeFeatures?.[f] ? model.nativeFeatures[f]! : mapping.routeKind === 'work' || mapping.routeKind === 'api' ? {status:'unknown',sources:[]} : featureSupport(plan,f)
-      const missingFeatures = required.filter(f => supportForPath(f).status !== 'supported' || !supportForPath(f).sources.some(s => s.url && s.checkedAt))
-      const holds = missingFeatures.map(f => `${featureLabels[f]}: ${supportForPath(f).status === 'limited' ? '제한적 지원 · 이 작업이 제한 안에 드는지 미확인' : '이 플랜·이용 경로 지원 미확인'}`)
-      if (!linked) holds.push('정확한 평가 모델·버전·선택 모드와 플랜 연결 미확인')
-      const evidence = current ? relevantEvidence(task,request.text,required,model,mapping,data) : undefined
-      const benchmark = benchmarks.length > 0 && benchmarks.every(b => b.normalized !== null) ? benchmarks.reduce((sum, b) => sum + b.normalized! * b.weight, 0) : null
-      if (benchmark === null && !evidence?.length) holds.push(task === 'image' ? '이미지 기획은 이번 벤치마크 정책 대상 밖' : '작업별 비교 가능한 평가 또는 공개 이용 근거 부족')
-      const features = missingFeatures.length ? null : 100
-      const cost = costScore(plan, request.budget)
-      if (cost === null) holds.push(plan.billingKind==='usage'?'사용량 과금 · 토큰·도구·세금·환율에 따라 총액이 달라짐':'월 구독료·통화·결제 주기 미확인')
-      const priceHold = request.budget === 'unknown' || (plan.billingKind==='usage' ? request.maxKrw!=null : plan.tier === 'paid' && (cost === null || !/한국/.test(plan.price.region) || plan.price.currency !== 'KRW' || /미확인/.test(plan.price.region)))
-      if (priceHold) holds.push(request.budget === 'unknown' ? '예산 미정 · 무료만/무료 선호/유료 허용을 확정하지 않음' : '한국 결제 총액·세금·지역 조건을 확인한 뒤 선택하세요. 원화 예산 이내로 확정하지 않습니다.')
-      const mappingHold = current && mapping.modelId!==null && !linked
-      const suitability: Recommendation['suitability'] = missingFeatures.length || priceHold || mappingHold ? '확인 후 선택' : '조건 비교 가능'
-      const score = !current && linked && benchmark !== null && features !== null && cost !== null ? Math.round((benchmark * scoreWeights.benchmark + features * scoreWeights.features + cost * scoreWeights.cost) * 10) / 10 : null
-      const confirmed = required.filter(f => !missingFeatures.includes(f)).map(f => featureLabels[f])
-      const label = task === 'image' ? '이미지 콘셉트·프롬프트 설계' : scoringTaskLabels[task]
-      const candidatePlan:ServicePlan = mapping.routeKind==='api' ? {...plan,features:{...plan.features,...model?.nativeFeatures}} : mapping.routeKind==='work' ? {...plan,route:'ChatGPT Work (웹)',features:{pdf:{status:'unknown',note:'Work 경로의 파일·PDF 권한 별도 확인',sources:[]},web:{status:'unknown',note:'Work 도구 권한 별도 확인',sources:[]}},freeScope:'이 정확한 모델의 Work 무료 이용 범위는 확인하지 않았습니다. Plus 제공 근거로 제시하는 후보입니다.',limits:['계정별 모델·추론 옵션, 사용량·크레딧·도구 권한을 확인하세요. 일반 Chat 한도를 Work에 그대로 적용하지 않음.'],upgrade:'이미 Plus 경로입니다. 사용량·크레딧 조건을 계정에서 확인하세요. API 과금은 별도입니다.'} : plan
+  const excluded:WorkflowStep['excluded']=[], recommendations:Recommendation[]=[]
+  const route=request.usageRoute ?? 'consumer'
+  for(const plan of data.plans) {
+    if((route==='api')!==(plan.billingKind==='usage'))continue
+    const mappings=data.mappings.filter(m=>m.planId===plan.id)
+    for(const mapping of mappings.length?mappings:[unknownMapping(plan)]) {
+      if(route!=='consumer' && (mapping.routeKind ?? 'chat')!==route)continue
+      const model=data.models.find(m=>m.id===mapping.modelId) ?? null
+      const linked=mapping.status==='confirmed' && mapping.selectable && mapping.selection!=='automatic' && !!model && !!mapping.mode && (model.modes ?? [model.reasoning]).includes(mapping.mode) && mapping.modelVersion===model.version && mapping.sources.some(s=>s.url && s.checkedAt)
+      const supportForPath=(f:FeatureId):FeatureSupport=>mapping.routeKind==='api' && model?.nativeFeatures?.[f] ? model.nativeFeatures[f]! : mapping.routeKind==='work' ? {status:'unknown',note:'Work 경로 권한 별도 확인',sources:[]} : featureSupport(plan,f)
+      const unsupported=required.filter(f=>supportForPath(f).status==='unsupported')
+      if(unsupported.length){
+        const reasons=unsupported.map(f=>`${mappingLabel(mapping)} · ${featureLabels[f]} 공식 미지원`)
+        const existing=excluded.find(e=>e.plan.id===plan.id)
+        if(existing)existing.reasons=[...new Set([...existing.reasons,...reasons])]
+        else excluded.push({plan,reasons})
+        continue
+      }
+      const missingFeatures=required.filter(f=>supportForPath(f).status!=='supported' || !supportForPath(f).sources.some(s=>s.url && s.checkedAt))
+      const holds=missingFeatures.map(f=>`${featureLabels[f]}: ${supportForPath(f).status==='limited'?'제한적 지원 · 작업이 한도 안에 드는지 확인 필요':'이 경로의 지원 미확인'}`)
+      if(!linked)holds.push('정확한 평가 모델·버전·선택 모드와 플랜 연결 미확인')
+      const evidence=relevantEvidence(task,request.text,required,model,mapping,data)
+      if(!evidence.length)holds.push('현재 작업에 직접 연결할 성능 근거 부족')
+      const suitability=missingFeatures.length?'확인 후 선택':'조건 비교 가능'
+      const candidatePlan:ServicePlan=mapping.routeKind==='api'?{...plan,features:{...plan.features,...model?.nativeFeatures}}:mapping.routeKind==='work'?{...plan,route:'ChatGPT Work (웹)',features:{pdf:{status:'unknown',note:'Work 파일 권한 별도 확인',sources:[]},web:{status:'unknown',note:'Work 도구 권한 별도 확인',sources:[]}},freeScope:'Plus의 Work 제공 근거로 연결한 경로입니다. 무료 이용을 보장하지 않습니다.',limits:['계정별 모델·추론 옵션, 사용량·크레딧·도구 권한 확인 필요. 일반 Chat 한도를 Work에 그대로 적용하지 않음.'],upgrade:'선택한 Plus 경로의 이용권한·크레딧을 직접 확인하세요. API 과금은 별도입니다.'}:plan
+      const label=task==='image'?'이미지 콘셉트·프롬프트 설계':scoringTaskLabels[task]
       recommendations.push({
-        id: mapping.id, service: mapping.routeKind==='api'?{...serviceById[plan.serviceId],name:plan.name,subtitle:'개발자 API · 별도 사용량 과금'}:serviceById[plan.serviceId], plan:candidatePlan, mapping, model,
-        score, scores: { benchmark, features, cost }, holds, benchmarks, nearTie: false,
-        eligibility: missingFeatures.length || priceHold || mappingHold ? 'conditional' : 'confirmed', status: score === null ? 'conditional' : 'scored', suitability,
-        evidence, evidenceNote: evidence?.length ? `작업 관련 원점수 참고. 선택한 ${mapping.mode ?? '설정 미확인'}과 평가 설정·도구·환경이 다를 수 있어 동일 성능을 보장하지 않습니다. 비교 가능한 실행 조건이 부족해 확정 우열을 정하지 않습니다.` : '현재 작업에 직접 연결할 성능 근거 부족 · 공식 기능·비용에 따른 조건 기반 후보',
-        reason: `${label} 단계입니다. ${confirmed.length ? `${confirmed.join('·')} 지원을 확인했습니다.` : required.length ? '필수 기능 지원을 먼저 확인하세요.' : '추가 필수 기능이 지정되지 않았습니다.'} ${evidence?.length ? '이 작업과 관련된 평가 원점수가 있어 참고할 수 있습니다. 환경·설정 차이를 함께 확인하세요.' : score === null ? '성능 순위는 보류하고 기능·예산 조건으로 비교합니다.' : '이 작업의 개별 평가와 기능·예산 정책을 반영했습니다.'}`,
+        id:mapping.id,service:mapping.routeKind==='api'?{...serviceById[plan.serviceId],name:plan.name,subtitle:'개발자 API · 별도 사용량 과금'}:serviceById[plan.serviceId],plan:candidatePlan,mapping,model,
+        score:null,scores:{benchmark:null,features:missingFeatures.length?null:100},benchmarks:[],nearTie:false,status:'conditional',eligibility:missingFeatures.length?'conditional':'confirmed',suitability,
+        accessStatus:linked?'연결 근거 확인':'연결 미확인',holds,evidence,
+        evidenceNote:evidence.length?`정확한 모델의 작업 관련 원점수 참고입니다. 선택한 ${mapping.mode ?? '설정 미확인'}과 평가 설정·도구·환경이 다를 수 있어 동일 성능을 보장하지 않습니다. 모델 평가 근거와 현재 플랜·경로의 실제 이용권한은 별개입니다.`:'현재 작업의 직접 성능 근거 부족 · 확인된 기능으로 검토할 후보이며 확정 순위를 정하지 않습니다.',
+        reason:`${label} 작업입니다. ${missingFeatures.length?'필수 기능의 이 경로 지원을 확인해야 합니다.':required.length?`${required.map(f=>featureLabels[f]).join('·')} 지원 근거가 있습니다.`:'추가 필수 기능이 지정되지 않았습니다.'} ${evidence.length?'관련 평가의 원점수와 실행 조건을 참고하세요.':'작업별 성능 근거가 부족해 기능을 기준으로 검토합니다.'}`,
       })
     }
   }
-  recommendations.sort((a, b) => {
-    const status = Number(b.status === 'scored') - Number(a.status === 'scored') || Number(b.eligibility === 'confirmed') - Number(a.eligibility === 'confirmed')
-    if (status) return status
-    if (a.score !== null && b.score !== null && a.score !== b.score) return b.score - a.score
-    return (request.budget === 'prefer-free' ? Number(a.plan.tier === 'paid') - Number(b.plan.tier === 'paid') : 0) || a.service.name.localeCompare(b.service.name, 'en') || a.plan.name.localeCompare(b.plan.name, 'en') || a.id.localeCompare(b.id, 'en')
-  })
-  for (const item of recommendations) item.nearTie = item.score !== null && recommendations.some(other => other.id !== item.id && other.score !== null && Math.abs(item.score! - other.score) <= 3)
-  return { recommendations, excluded }
+  if(route==='consumer'){
+    const api= recommendForTask(task,{...request,usageRoute:'api'},required,data).recommendations.filter(c=>c.model&&!c.plan.unassigned&&!c.configuration)
+    recommendations.push(...api.map(c=>({...c,accessAlternative:true})))
+  }
+  recommendations.push(...catalogCandidates(task,request,required,data))
+  recommendations.sort((a,b)=>Number(a.suitability!=='조건 비교 가능')-Number(b.suitability!=='조건 비교 가능') || Number(!a.model)-Number(!b.model) || a.service.name.localeCompare(b.service.name,'en') || (a.model?.id ?? '').localeCompare(b.model?.id ?? '', 'en') || a.plan.name.localeCompare(b.plan.name,'en') || a.id.localeCompare(b.id,'en'))
+  recommendations.push(...configurationCandidates(recommendations))
+  return {recommendations,excluded}
 }
 
 export function analyzeRequest(input: RequestInput, data: RecommendationSnapshot = recommendationSnapshot): Analysis {
@@ -174,6 +134,7 @@ export function selectedCandidate(step: WorkflowStep | undefined): Recommendatio
   return step?.recommendations.find(r => r.id === step.candidateId) ?? null
 }
 export function candidateLabel(candidate: Recommendation): string {
+  if(candidate.configuration) return `${candidate.model?.name} · ${candidate.model?.id} v${candidate.model?.version} · 실행 구성: ${candidate.configuration.agentName??'에이전트 이름 미공개'} (${candidate.configuration.effort??'추론 설정 미공개'}) · ${candidate.configuration.benchmark} ${candidate.configuration.benchmarkVersion} · ${candidate.configuration.fallbacks??'fallback 미공개'} · ${mappingLabel(candidate.mapping)}`
   if(candidate.mapping.routeKind) return `${candidate.service.name} · ${candidate.plan.name} · ${candidate.model ? `${candidate.model.name ?? candidate.model.id} ID: ${candidate.model.id} v${candidate.model.version} (${candidate.mapping.mode ?? '모드 미확인'})${candidate.mapping.status!=='confirmed'?' · 플랜 연결 미확인':''}` : candidate.mapping.selection==='automatic'?'자동 라우팅 · 모델·버전 선택 가능 여부 미확인':'모델·버전·모드 미확인'} · ${mappingLabel(candidate.mapping)}`
   return `${candidate.service.name} · ${candidate.plan.name}${candidate.mapping.status === 'confirmed' && candidate.mapping.mode ? ` · ${candidate.model?.id ?? '모델 미확인'} (${candidate.mapping.mode})` : ' · 모델·모드 미확인'}`
 }

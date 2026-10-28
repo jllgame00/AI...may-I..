@@ -1,48 +1,54 @@
-import { useState } from 'react'
-import { budgetLabels, priorityLabels } from '../data/services'
+﻿import { priorityLabels } from '../data/services'
 import { executionRoutes } from '../lib/aiGuide'
 import { mappingLabel } from '../lib/currentEvidence'
 import ModelEvaluationReference from './ModelEvaluationReference'
 import CurrentModelCatalog, { CandidateEvidence } from './CurrentModelEvidence'
+import EvaluationComparisons from './EvaluationComparisons'
+import AAConnectionStatus from './AAConnectionStatus'
+import { accessCategory, accessLabels, accessOptions, primaryAccessCandidates } from '../lib/modelAccess'
 import type { Comparison, PromptRequest } from '../types'
 import type { Recommendation } from '../recommendationTypes'
 
-export function planPrice(c:Recommendation): string {
-  if(c.plan.billingKind==='usage') {
-    const p=c.model?.apiPrice
-    return p?`API 사용량 과금 · 입력 USD ${p.input} / 캐시 입력 USD ${p.cachedInput} / 출력 USD ${p.output} (각 100만 토큰당) · 월 구독료 아님`:'API 사용량 과금 · 가격 미확인'
-  }
-  if(c.plan.tier==='free') return '무료 · AI 구독료 없음 (이용 한도 별도)'
-  const p=c.plan.price
-  return `${c.plan.billing?.currencySymbol ?? p.currency ?? '통화 미확인'} ${p.amount ?? '금액 미확인'} / ${p.period==='month'?'월':p.period==='year'?'년':'주기 미확인'} · ${p.region}`
-}
 export default function CandidateComparison({ comparison,request,selected,onSelect,onEdit }: { comparison:Comparison;request:PromptRequest;selected:string|null;onSelect:(id:string)=>void;onEdit:()=>void }) {
-  const [showAll,setShowAll]=useState(false)
-  const comparable=comparison.recommendations.filter(c=>c.suitability==='조건 비교 가능')
-  const pending=comparison.recommendations.filter(c=>c.suitability!=='조건 비교 가능')
+  const models=primaryAccessCandidates(comparison.recommendations)
+  const ready=models.filter(c=>['web','api'].includes(accessCategory(c)))
+  const comparable=ready.filter(c=>c.suitability==='조건 비교 가능')
+  const pending=ready.filter(c=>c.suitability!=='조건 비교 가능')
+  const installation=comparison.recommendations.filter(c=>!c.configuration&&c.model&&c.mapping.routeKind==='self-hosted')
+  const unknown=models.filter(c=>accessCategory(c)==='unknown')
+  const shown=new Set([...ready,...installation,...unknown].map(c=>c.id))
+  const other=comparison.recommendations.filter(c=>c.model&&!c.configuration&&!shown.has(c.id))
+  const unlinked=comparison.recommendations.filter(c=>!c.model)
   const card=(c:Recommendation)=><article className={`candidate-card ${selected===c.id?'selected-candidate':''}`} key={c.id}>
-    <p className="candidate-status">{c.suitability}{selected===c.id?' · 선택됨':''}</p>
-    <h2>{c.service.name}</h2>
-    <p className="model-name"><strong>{c.model?`${c.model.name ?? c.model.id} · v${c.model.version} · ${c.mapping.mode ?? '모드 미확인'}`:c.mapping.selection==='automatic'?'자동 라우팅 · 정확한 모델·버전 선택 가능 여부 미확인':'정확한 모델·버전·모드 연결 미확인'}</strong></p>
+    <p className="candidate-status">작업 조건: {c.suitability}{selected===c.id?' · 선택됨':''}</p>
+    <h2>{c.model?.name ?? c.service.name}</h2>
+    <p className="model-name"><strong>{c.model?`${c.model.provider} · v${c.model.version} · ${c.mapping.mode ?? '모드 미확인'}`:c.mapping.selection==='automatic'?'자동 라우팅 · 정확한 모델·버전 선택 가능 여부 미확인':'정확한 모델·버전·모드 연결 미확인'}</strong></p>
     {c.model&&<p className="minor-note">모델 ID: {c.model.id}</p>}
-    <p className="plan-name">{c.plan.name} · {mappingLabel(c.mapping)}</p>
+    <p><strong>이용 준비: {accessLabels[accessCategory(c)]}</strong></p>
+    {c.model?.route?.kind==='self-hosted'&&<p className="evidence-limit">과거 고정 체크포인트의 평가예요. 현재 채팅 서비스의 최신 모델 점수로 적용하지 않아요. 호스팅 제공 여부와 평가 당시 실행 조건은 별개예요.</p>}
     <h3>현재 작업에 맞는 이유</h3><p>{c.reason}</p>
     <CandidateEvidence candidate={c} peers={comparison.recommendations}/>
-    <h3>비용·무료 범위·중요 제한</h3><p>{planPrice(c)}</p><p>{c.plan.freeScope}</p>
-    <p>{c.plan.limits.join(' ')}</p><p>{c.model?.limits?.join(' ')}</p><p>{c.mapping.note}</p>
-    {(c.mapping.routeKind==='work'||c.mapping.routeKind==='api')&&<p className="evidence-limit">{c.mapping.toolsNote} {comparison.analysis.requiredFeatures.length?'필수 도구의 이 경로 지원은 별도 확인이 필요해요.':''}</p>}
-    <p>{c.plan.upgrade}</p>
-    <details><summary>속도·설정 부담·기술 조건 펼치기</summary><p>속도: {c.model?.speed ?? '동일 조건의 실제 속도 미확인'}</p><p>설정 부담: {c.model?.setup ?? '실제 서비스에서 제공 모델·모드를 확인하세요.'}</p><ul>{c.holds.map(h=><li key={h}>{h}</li>)}</ul>{c.plan.billing&&<p>{c.plan.billing.note} · 세금: {c.plan.billing.tax}</p>}<p>이름순으로 표시하며 순위를 매기지 않아요. 성능 자료가 없는 조건 기반 후보와 필수 기능·비용이 미확인인 후보를 구분해요.</p></details>
-    <div className="candidate-sources"><h3>출처·확인일</h3>{[...new Map([...c.mapping.sources,...c.plan.sources].map(s=>[s.url,s])).values()].slice(0,2).map((s,i)=><p key={s.url}><a href={s.url} target="_blank" rel="noreferrer">공식 근거 {i+1} (새 창)</a> · {s.checkedAt}</p>)}<details><summary>전체 근거와 확인 범위</summary>{[...c.mapping.sources,...c.plan.sources].map((s,i)=><div className="source-item" key={`${s.url}-${i}`}><a href={s.url} target="_blank" rel="noreferrer">공식 출처 {i+1} (새 창)</a><p>{s.checkedAt} · {s.scope ?? '기존 공식 조사 기록'} · {s.access ?? '기존 열람 기록'}</p></div>)}</details></div>
-    <button id={c.model?`choose-${c.id}`:`choose-${c.plan.id}`} className="button primary" onClick={()=>onSelect(c.id)}>{c.suitability==='조건 비교 가능'?'이 AI로 단계별 준비':'미확인 내용을 확인하고 선택'}</button>
-    <a href={executionRoutes(c)[0].url} target="_blank" rel="noreferrer" className="text-button">공식 이용 경로 보기 (새 창)</a>
+    <h3>실제 이용 경로 확인</h3><p>{mappingLabel(c.mapping)} · {c.accessStatus}</p>
+    <p>{c.accessStatus==='연결 미확인'?'이 화면의 모델 평가가 이 서비스·플랜에서 해당 모델을 선택할 수 있다는 뜻은 아니에요. 선택 후 이용권한을 확인하세요.':'모델·경로 연결 근거가 있어요. 실제 계정의 이용권한·설정은 선택 후 직접 확인하세요.'}</p>
+    <p className="evidence-limit">{c.holds.filter(h=>h!=='현재 작업에 직접 연결할 성능 근거 부족').join(' · ')}</p><p>{c.model?.limits?.join(' ')}</p>
+    <details><summary>속도·설정·다른 공식 서비스의 확인 상태</summary><p>속도: {c.model?.speed ?? '동일 조건의 속도 미확인'}</p><p>설정 부담: {c.mapping.note}</p><p>이용 준비 그룹과 성능 평가 순위는 별도예요.</p>{c.model&&accessOptions(c.model).filter(r=>r.exactVersion!=='confirmed').map(r=><p key={r.id}><a href={r.url} target="_blank" rel="noreferrer">{r.label} (새 창)</a> · {r.exactVersion==='retired'?'해당 API 은퇴 확인':'정확 버전 연결 미확인'} · {r.note}</p>)}</details>
+    <div className="candidate-sources"><h3>출처·확인일</h3>{[...new Map([...(c.model?.sources ?? []),...c.mapping.sources].map(s=>[s.url,s])).values()].slice(0,2).map((s,i)=><p key={s.url}><a href={s.url} target="_blank" rel="noreferrer">모델·경로 근거 {i+1} (새 창)</a> · {s.checkedAt}</p>)}</div>
+    <button id={c.model?`choose-${encodeURIComponent(c.id)}`:`choose-${c.plan.id}`} className="button primary" onClick={()=>onSelect(c.id)}>{c.model?'이 모델로 단계별 준비':'이 경로로 단계별 준비'}</button>
+    <a href={executionRoutes(c)[0].url} target="_blank" rel="noreferrer" className="text-button">공식 경로 확인 (새 창)</a>
   </article>
-  return <div className="comparison-page"><div className="result-top"><div><p className="eyebrow">COMPARE & CHOOSE</p><h1 tabIndex={-1}>서비스·모델·플랜을 비교하고 선택하세요.</h1><p>예산·필수 기능·경로로 후보를 정리하고, 관련 평가의 원점수와 조건을 함께 보여드려요.</p></div><button id="edit-analysis" className="text-button" onClick={onEdit}>조건 수정</button></div>
-    <div className="comparison-summary"><p>{request.text}</p><strong>{budgetLabels[request.budget ?? 'free']} · {priorityLabels[request.priority ?? 'quality']}</strong><p>경로: {request.usageRoute==='api'?'개발자 API · 직접 실행':request.usageRoute==='work'?'ChatGPT Work (웹)':request.usageRoute==='chat'?'일반 웹 채팅':'소비자 웹서비스 · Chat / Work'}</p><p>{comparison.analysis.notes[1]}</p><p>종합 100점 없이 원점수·근거·한계를 안내해요. 조건이 동등하거나 비교 근거가 부족하면 확정적인 우열을 정하지 않아요.</p></div>
-    <h2>조건 비교 가능 · {comparable.length}개</h2>{!comparable.length&&<div className="draft-notice" role="status"><p>현재 필수 조건을 충족한다고 확인된 후보가 없어요. 미확인은 미지원과 다르며, 예산·필수 조건을 자동 완화하지 않아요.</p><button className="button secondary" onClick={onEdit}>입력·필수 조건 수정</button><button className="text-button" onClick={()=>{const d=document.getElementById('pending-options') as HTMLDetailsElement;d.open=true;d.querySelector('summary')?.focus()}}>확인 필요 후보 보기</button></div>}
-    <div className="candidate-grid">{(showAll?comparable:comparable.slice(0,3)).map(card)}</div>{comparable.length>3&&<button className="text-button" onClick={()=>setShowAll(!showAll)}>{showAll?'기본 후보만':'동등한 후보 더 보기'}</button>}
-    <details id="pending-options" className="extras"><summary>확인 후 선택 · {pending.length}개</summary><p>필수 기능·비용 또는 정확한 모델과 플랜 연결을 확인해야 해요. 성능 자료 부족만으로 이 그룹에 넣지 않아요.</p><div className="candidate-grid">{pending.map(card)}</div></details>
-    <details className="extras"><summary>확인된 조건 불일치 · {comparison.excluded.length}개</summary>{comparison.excluded.map(c=><div key={c.plan.id}><h3>{c.plan.serviceId} · {c.plan.name}</h3><p>{c.reasons.join(' · ')}</p>{c.plan.sources.map((s,i)=><p key={i}><a href={s.url} target="_blank" rel="noreferrer">공식 근거 (새 창)</a> · {s.checkedAt}</p>)}</div>)}</details>
+  return <div className="comparison-page"><div className="result-top"><div><p className="eyebrow">COMPARE & CHOOSE</p><h1 tabIndex={-1}>작업에 맞는 모델을 검토하고 선택하세요.</h1><p>작업 목적·필수 기능·관련 평가를 살펴보세요. 이용 경로의 확인 상태는 별도로 안내해요. 요청한 소비자·API 경로가 미확인이어도 정확한 모델 평가와 자체 호스팅 경로는 표시합니다.</p></div><button id="edit-analysis" className="text-button" onClick={onEdit}>조건 수정</button></div>
+    <div className="comparison-summary"><p>{request.text}</p><strong>{priorityLabels[request.priority ?? 'quality']}</strong><p>경로: {request.usageRoute==='api'?'개발자 API · 직접 실행':request.usageRoute==='work'?'ChatGPT Work (웹)':request.usageRoute==='chat'?'일반 웹 채팅':'소비자 웹서비스 · Chat / Work'}</p><p>{comparison.analysis.notes[1]}</p><p>비교 조건이 맞는 원점수만 참고하고, 근거가 부족하면 확정 순위나 종합 점수를 만들지 않아요. 가격·플랜·사용 한도는 선택 후 이용 조건에서 확인하세요.</p></div>
+    <EvaluationComparisons candidates={comparison.recommendations} onSelect={onSelect}/>
+    <h2>작업 조건 검토 가능 · {comparable.length}개</h2><p>웹 → API → 고급 설치 순서는 이용 준비의 차이예요. 성능 우열·가격 순위가 아니며 설치형 모델도 아래에서 선택할 수 있어요. 107건은 서로 다른 평가·버전·시점의 관측이며 공통 시험 집합이 아니에요.</p>{!comparable.length&&<div className="draft-notice" role="status"><p>현재 경로에서 필수 기능을 확인한 정확한 모델 후보가 없어요. 기능 확인이 필요한 후보와 고급 선택지를 살펴보세요.</p><button className="button secondary" onClick={onEdit}>작업·필수 기능 수정</button></div>}
+    <h3>웹에서 바로 사용 · 로그인·권한 확인 필요</h3><div className="candidate-grid model-candidates web-candidates">{comparable.filter(c=>accessCategory(c)==='web').map(card)}</div>
+    <h3>API 설정 필요 · 계정·키·호출 환경 별도</h3><div className="candidate-grid model-candidates api-candidates">{comparable.filter(c=>accessCategory(c)==='api').map(card)}</div>
+    <details id="pending-options" className="extras"><summary>필수 기능 확인 필요 · {pending.length}개</summary><p>이 경로의 기능·입력 권한을 확인해야 해요. 가격이나 성능 자료 부족만으로 이 그룹에 넣지 않아요.</p><div className="candidate-grid">{pending.map(card)}</div></details>
+    <details id="installation-options" className="extras"><summary>고급 선택지 · 직접 설치 필요 · {installation.length}개 경로</summary><p>공식 체크포인트의 장비·라이선스·추론 서버 설정이 필요해요. 호스팅 API가 있는 모델도 설치 경로를 선택할 수 있어요.</p><div className="candidate-grid">{installation.map(card)}</div></details>
+    <details id="unknown-access-options" className="extras"><summary>정확 버전 이용 경로 미확인 · {unknown.length}개</summary><div className="candidate-grid">{unknown.map(card)}</div></details>
+    <details id="other-access-options" className="extras"><summary>같은 모델의 다른 이용 경로 · {other.length}개</summary><p>경로·플랜별 기능·버전 연결을 개별 확인하세요. 이전 선택 경로도 유지했어요.</p><div className="candidate-grid">{other.map(card)}</div></details>
+    <details id="unlinked-options" className="extras"><summary>정확한 모델 연결 미확인 서비스 경로 · {unlinked.length}개</summary><p>특정 모델의 평가 결과를 이 경로의 성능으로 적용하지 않아요.</p><div className="candidate-grid">{unlinked.map(card)}</div></details>
+    <details className="extras"><summary>필수 기능 불일치 · {comparison.excluded.length}개</summary>{comparison.excluded.map(c=><div key={c.plan.id}><h3>{c.plan.serviceId} · 확인된 경로 제약</h3><p>{c.reasons.join(' · ')}</p></div>)}</details>
+    <AAConnectionStatus/>
     <CurrentModelCatalog/>
     <details className="extras"><summary>과거 모델 평가 참고 · 현재 추천에는 반영하지 않음</summary><ModelEvaluationReference candidates={comparison.recommendations}/></details>
   </div>

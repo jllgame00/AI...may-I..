@@ -1,10 +1,10 @@
 export type ConditionField = 'purpose' | 'audience' | 'format' | 'length' | 'tone' | 'constraints'
 export type TaskKind = 'writing' | 'summary' | 'research' | 'coding' | 'image' | 'general'
-import type { Budget, FeatureId, Priority, Recommendation, ExcludedCandidate, ScoringTask, UsageRoute } from './recommendationTypes'
+import type { FeatureId, Priority, Recommendation, ExcludedCandidate, ScoringTask, UsageRoute } from './recommendationTypes'
 export type InputMode = 'summary' | 'file' | 'unknown'
 export interface PromptRequest {
   text: string; overrides: Partial<Record<ConditionField,string>>
-  budget?: Budget; priority?: Priority; inputMode?: InputMode; requiredFeatures?: FeatureId[]; tasks?: ScoringTask[]
+  priority?: Priority; inputMode?: InputMode; requiredFeatures?: FeatureId[]; tasks?: ScoringTask[]
   usageRoute?: UsageRoute
 }
 export type Conditions = Record<ConditionField,string>

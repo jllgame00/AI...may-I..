@@ -24,9 +24,9 @@ const expected = [
   ['astra-automation-max','gpt-6-astra','6','AutomationBench','1.0.6',41.4,'max',true,'independent','Zapier','Zapier',sources.zapier],
 ]
 it('matches all 13 primary-source facts and preserves unknown settings and evaluation scope', () => {
-  const rows=snapshot.evaluations!
+  const rows=snapshot.evaluations!.filter(e=>expected.some(r=>r[0]===e.id))
   assert.deepEqual(rows.map(e=>[e.id,e.modelId,e.modelVersion,e.benchmark,e.benchmarkVersion,e.rawScore,e.effort,e.higherIsBetter,e.kind,e.publisher,e.evaluator,e.source.url]),expected)
-  assert.deepEqual([...new Set(rows.map(e=>e.modelId))].sort(),snapshot.models.map(m=>m.id).sort())
+  assert.deepEqual([...new Set(rows.map(e=>e.modelId))].sort(),snapshot.models.filter(m=>['OpenAI','Anthropic'].includes(m.provider)).map(m=>m.id).sort())
   for(const e of rows) {
     assert.equal(e.unit,'%');assert.equal(e.source.checkedAt,'2026-10-28')
     assert.equal(e.trials,null);assert.equal(e.harness,null)
@@ -40,31 +40,27 @@ it('matches all 13 primary-source facts and preserves unknown settings and evalu
   }
 })
 it('never turns the currently incomplete evaluation conditions into definite pairwise rankings', () => {
-  const rows=snapshot.evaluations!
+  const rows=snapshot.evaluations!.filter(e=>expected.some(r=>r[0]===e.id))
   for(let i=0;i<rows.length;i++)for(let j=i+1;j<rows.length;j++) {
     const result=compareEvaluationResults(rows[i],rows[j])
     assert.equal(result.comparable,false);assert.equal(result.delta,null)
   }
 })
-it('keeps free-only paths free and keeps missing subscription entitlement or price pending across tasks', () => {
+it('keeps task and access states independent of subscription prices across routes and tasks', () => {
   for(const usageRoute of ['consumer','chat','work','api'] as const)for(const task of ['analysis','writing','coding'] as const) {
-    const request:PromptRequest={text:task==='analysis'?'설문 통계 보고서':task==='coding'?'Python 코드 수정':'환영 이메일',overrides:{},tasks:[task],inputMode:'summary',budget:'free',usageRoute}
-    const free=compareCandidates(request)
-    for(const c of free.recommendations) {
-      assert.equal(c.plan.tier,'free');assert.equal(c.plan.price.amount,0)
-      assert.notEqual(c.plan.billingKind,'usage');assert.notEqual(c.mapping.routeKind,'api')
+    const request:PromptRequest={text:task==='analysis'?'설문 통계 보고서':task==='coding'?'Python 코드 수정':'환영 이메일',overrides:{},tasks:[task],inputMode:'summary',usageRoute}
+    const result=compareCandidates(request)
+    assert.ok(result.recommendations.length)
+    for(const c of result.recommendations) {
       assert.equal(c.score,null)
-    }
-    if(usageRoute==='api'||usageRoute==='work')assert.equal(free.recommendations.length,0)
-    const paid=compareCandidates({...request,budget:'paid'})
-    for(const c of paid.recommendations) {
-      if(c.plan.billingKind!=='usage' && c.plan.tier==='paid')assert.equal(c.suitability,'확인 후 선택')
-      if(c.plan.id==='claude-pro') {
-        assert.equal(c.mapping.status,'unknown');assert.equal(c.mapping.selectable,false)
-        assert.deepEqual(c.evidence,[])
+      assert.equal(c.suitability,'조건 비교 가능')
+      if(c.plan.id==='claude-pro'){
+        assert.equal(c.mapping.status,'unknown');assert.equal(c.accessStatus,'연결 미확인')
+        assert.equal(c.mapping.selectable,false)
       }
-      if(task!=='coding')assert.deepEqual(c.evidence,[])
+      if(task!=='coding')assert.ok(c.evidence?.every(e=>e.domain==='writing'&&task==='writing'))
     }
-    if(usageRoute==='consumer')assert.equal(free.recommendations.filter(c=>c.suitability==='조건 비교 가능').length,3)
+    if(usageRoute==='consumer')assert.equal(result.recommendations.filter(c=>c.model&&!c.configuration&&!c.accessAlternative).length,25)
+    if(usageRoute==='api')assert.equal(result.recommendations.filter(c=>!c.plan.unassigned&&!c.configuration).length,5)
   }
 })

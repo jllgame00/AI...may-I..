@@ -1,0 +1,410 @@
+{
+  "checkedAt": "2026-10-28",
+  "entries": [
+    {
+      "modelId": "meta-llama/Llama-4-Scout-17B-16E-Instruct",
+      "modelVersion": "Llama-4-Scout-17B-16E-Instruct",
+      "routes": [
+        {
+          "id": "google-cloud-llama4-scout-maas",
+          "kind": "api",
+          "label": "Google Cloud 호스팅 API · Llama 4 Scout",
+          "url": "https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/partner-models/llama/llama4-scout",
+          "exactVersion": "confirmed",
+          "hostedModelId": "llama-4-scout-17b-16e-instruct-maas",
+          "note": "공식 현재 문서에 정확한 Scout 17B-16E Instruct MaaS ID와 GA 제공을 명시합니다. us-east5에서 사용량 과금 API로 이용하며 Google Cloud 계정·결제·설정이 필요합니다. API 호출과 계정별 이용 가능성은 검증하지 않았고, 제공자의 양자화·런타임 설정이 원래 벤치마크와 같다는 보장은 없습니다.",
+          "sources": [
+            {
+              "url": "https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/partner-models/llama/llama4-scout",
+              "checkedAt": "2026-10-28",
+              "scope": "Managed API (MaaS): exact instruct ID·GA·us-east5·Standard pay-as-you-go; 2026-10-28 갱신"
+            }
+          ]
+        },
+        {
+          "id": "meta-ai-web-scout-unconfirmed",
+          "kind": "web",
+          "label": "Meta AI · 정확한 Scout 버전 선택 미확인",
+          "url": "https://www.meta.ai/",
+          "exactVersion": "unconfirmed",
+          "hostedModelId": null,
+          "note": "Meta의 2026-07 공식 안내는 Meta AI 앱·웹을 Muse Spark 1.1이 구동한다고 설명합니다. Llama 4 Scout 체크포인트를 선택하는 경로는 확인하지 못했으므로 Meta AI를 해당 버전의 실행 경로로 간주하지 않습니다.",
+          "sources": [
+            {
+              "url": "https://about.fb.com/news/2026/07/meta-ai-muse-spark-doesnt-just-think-it-acts/",
+              "checkedAt": "2026-10-28",
+              "scope": "공식 Meta Newsroom: Meta AI 앱·meta.ai 및 Muse Spark 1.1 구동 안내"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "modelId": "meta-llama/Llama-4-Maverick-17B-128E-Instruct",
+      "modelVersion": "Llama-4-Maverick-17B-128E-Instruct",
+      "routes": [
+        {
+          "id": "google-cloud-llama4-maverick-maas",
+          "kind": "api",
+          "label": "Google Cloud 호스팅 API · Llama 4 Maverick",
+          "url": "https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/partner-models/llama/llama4-maverick",
+          "exactVersion": "confirmed",
+          "hostedModelId": "llama-4-maverick-17b-128e-instruct-maas",
+          "note": "공식 현재 문서에 정확한 Maverick 17B-128E Instruct MaaS ID와 GA 제공을 명시합니다. us-east5의 사용량 과금 API로 Google Cloud 계정·결제·설정이 필요합니다. 실제 호출은 하지 않았으며 호스팅 설정이 원래 평가 환경과 같다는 뜻은 아닙니다.",
+          "sources": [
+            {
+              "url": "https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/partner-models/llama/llama4-maverick",
+              "checkedAt": "2026-10-28",
+              "scope": "Managed API (MaaS): exact instruct ID·GA·us-east5·사용량 과금; 2026-10-28 갱신"
+            }
+          ]
+        },
+        {
+          "id": "meta-ai-web-maverick-unconfirmed",
+          "kind": "web",
+          "label": "Meta AI · 정확한 Maverick 버전 선택 미확인",
+          "url": "https://www.meta.ai/",
+          "exactVersion": "unconfirmed",
+          "hostedModelId": null,
+          "note": "공식 최신 제품 안내에서 Meta AI 앱·웹의 구동 모델은 Muse Spark 1.1로 설명됩니다. Llama 4 Maverick 고정 버전 선택은 미확인이므로 별도의 모델 선택 근거로 사용하지 않습니다.",
+          "sources": [
+            {
+              "url": "https://about.fb.com/news/2026/07/meta-ai-muse-spark-doesnt-just-think-it-acts/",
+              "checkedAt": "2026-10-28",
+              "scope": "공식 Meta Newsroom: Meta AI 앱·meta.ai 및 Muse Spark 1.1 구동 안내"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "modelId": "mistralai/Mistral-Small-3.1-24B-Instruct-2503",
+      "modelVersion": "3.1-2503",
+      "routes": [
+        {
+          "id": "mistral-vibe-web-small31",
+          "kind": "web",
+          "label": "Mistral Vibe Chat (구 Le Chat)",
+          "url": "https://chat.mistral.ai/",
+          "exactVersion": "unconfirmed",
+          "hostedModelId": null,
+          "note": "공식 웹 채팅은 존재하며 Le Chat은 2026-08-12 Vibe로 바뀌었습니다. 이 과거 체크포인트를 직접 선택·고정할 수 있다는 공식 근거는 확인하지 못했습니다. 최신 자동 라우팅을 이 모델로 연결하지 않습니다.",
+          "sources": [
+            {
+              "url": "https://help.mistral.ai/en/articles/682992-le-chat-is-now-vibe",
+              "checkedAt": "2026-10-28",
+              "scope": "공식 Help Center: Vibe Chat·기존 chat.mistral.ai 주소·이전 안내"
+            }
+          ]
+        },
+        {
+          "id": "mistral-direct-small2503-retired",
+          "kind": "api",
+          "label": "Mistral 직영 API · Small 2503 은퇴",
+          "url": "https://docs.mistral.ai/models/mistral-small-3-1-25-03",
+          "exactVersion": "retired",
+          "hostedModelId": "mistral-small-2503",
+          "note": "정확한 v25.03 모델 ID는 공식 문서에 남아 있으나 직영 API 은퇴일은 2025-11-30입니다. 현재 사용할 수 있는 API로 안내하지 않습니다. 공개 가중치의 자체 호스팅 가능성과 API 은퇴는 별개입니다.",
+          "sources": [
+            {
+              "url": "https://docs.mistral.ai/models/mistral-small-3-1-25-03",
+              "checkedAt": "2026-10-28",
+              "scope": "공식 모델 문서: mistral-small-2503·Retired·Retirement date 11/30/2025"
+            }
+          ]
+        },
+        {
+          "id": "azure-foundry-small2503-deprecated",
+          "kind": "api",
+          "label": "Microsoft Foundry · Small 2503 제공 조건 확인 필요",
+          "url": "https://learn.microsoft.com/en-us/azure/foundry/foundry-models/concepts/models-from-partners",
+          "exactVersion": "unconfirmed",
+          "hostedModelId": "mistral-small-2503",
+          "note": "공식 제공 목록은 mistral-small-2503 version 1을 명시합니다. 별도 수명주기 문서에는 2026-10-09 deprecated, 2027-02-15 은퇴 예정으로 표시됩니다. 정확한 2503 식별자는 확인했지만 일반 사용자의 신규 배포 가능성과 저장소 체크포인트의 동일성까지 확인하지 못해 확정 경로로 분류하지 않습니다. Mistral 직영 API의 은퇴일을 Azure에 전이하지 않습니다.",
+          "sources": [
+            {
+              "url": "https://learn.microsoft.com/en-us/azure/foundry/foundry-models/concepts/models-from-partners",
+              "checkedAt": "2026-10-28",
+              "scope": "공식 Foundry 파트너 모델 목록: Mistral-small-2503 및 version 1 지역별 표"
+            },
+            {
+              "url": "https://learn.microsoft.com/en-us/azure/foundry/openai/concepts/model-retirement-schedule",
+              "checkedAt": "2026-10-28",
+              "scope": "공식 수명주기: deprecated 2026-10-09; retirement 2027-02-15"
+            },
+            {
+              "url": "https://docs.mistral.ai/models/mistral-small-3-1-25-03",
+              "checkedAt": "2026-10-28",
+              "scope": "제공사 공식 Small 3.1 v25.03 식별자"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "modelId": "mistralai/Mistral-Small-3.2-24B-Instruct-2506",
+      "modelVersion": "3.2-2506",
+      "routes": [
+        {
+          "id": "deepinfra-small32-web-demo",
+          "kind": "web",
+          "label": "DeepInfra · Small 3.2 2506 웹 데모",
+          "url": "https://deepinfra.com/mistralai/Mistral-Small-3.2-24B-Instruct-2506",
+          "exactVersion": "confirmed",
+          "hostedModelId": "mistralai/Mistral-Small-3.2-24B-Instruct-2506",
+          "note": "호스팅 제공자의 전용 모델 페이지에서 exact 2506 이름·웹 데모·로그인 필요 안내를 확인했습니다. 직접 대화를 제출하지 않았습니다. FP8 제공이므로 원래 가중치의 수치 정밀도 및 벤치마크 결과와 동일하다고 보장하지 않습니다. 로그인 후 결제·크레딧·이용 가능 조건은 확인이 필요합니다.",
+          "sources": [
+            {
+              "url": "https://deepinfra.com/mistralai/Mistral-Small-3.2-24B-Instruct-2506",
+              "checkedAt": "2026-10-28",
+              "scope": "정확한 저장소 모델명·demo 탭·로그인 필요·Public·FP8 표시"
+            },
+            {
+              "url": "https://deepinfra.com/pricing",
+              "checkedAt": "2026-10-28",
+              "scope": "현재 공식 가격 목록의 Small 3.2 24B Instruct 2506 행"
+            }
+          ]
+        },
+        {
+          "id": "deepinfra-small32-api",
+          "kind": "api",
+          "label": "DeepInfra 호스팅 API · Small 3.2 2506",
+          "url": "https://deepinfra.com/mistralai/Mistral-Small-3.2-24B-Instruct-2506/api",
+          "exactVersion": "confirmed",
+          "hostedModelId": "mistralai/Mistral-Small-3.2-24B-Instruct-2506",
+          "note": "공식 OpenAI 호환 API 예제에 exact model ID가 명시되어 있습니다. 별도 DeepInfra 계정·API 키·사용량 과금 설정이 필요하며 실제 호출은 하지 않았습니다. 호스팅 형식은 FP8이므로 벤치마크의 실행 조건과 구분합니다.",
+          "sources": [
+            {
+              "url": "https://deepinfra.com/mistralai/Mistral-Small-3.2-24B-Instruct-2506/api",
+              "checkedAt": "2026-10-28",
+              "scope": "OpenAI-compatible HTTP API 예제: exact model ID 및 /v1/openai/chat/completions"
+            },
+            {
+              "url": "https://deepinfra.com/mistralai/Mistral-Small-3.2-24B-Instruct-2506",
+              "checkedAt": "2026-10-28",
+              "scope": "Public 호스팅·FP8·정확한 모델명"
+            }
+          ]
+        },
+        {
+          "id": "mistral-vibe-web-small32",
+          "kind": "web",
+          "label": "Mistral Vibe Chat (구 Le Chat)",
+          "url": "https://chat.mistral.ai/",
+          "exactVersion": "unconfirmed",
+          "hostedModelId": null,
+          "note": "공식 웹 채팅은 존재하며 Le Chat은 2026-08-12 Vibe로 바뀌었습니다. 이 과거 체크포인트를 직접 선택·고정할 수 있다는 공식 근거는 확인하지 못했습니다. 최신 자동 라우팅을 이 모델로 연결하지 않습니다.",
+          "sources": [
+            {
+              "url": "https://help.mistral.ai/en/articles/682992-le-chat-is-now-vibe",
+              "checkedAt": "2026-10-28",
+              "scope": "공식 Help Center: Vibe Chat·기존 chat.mistral.ai 주소·이전 안내"
+            }
+          ]
+        },
+        {
+          "id": "mistral-direct-small2506-deprecated",
+          "kind": "api",
+          "label": "Mistral 직영 API · Small 2506 상태 확인 필요",
+          "url": "https://docs.mistral.ai/models/mistral-small-3-2-25-06",
+          "exactVersion": "unconfirmed",
+          "hostedModelId": "mistral-small-2506",
+          "note": "공식 문서에는 v25.06과 정확한 API ID가 있으나 2026-04-30부터 deprecated로 표시됩니다. 열린 모델 문서에 현재 호출 가능 여부나 은퇴일은 명시되지 않았습니다. Deprecated를 현재 확정 제공 또는 은퇴로 단정하지 않고, DeepInfra에서 별도로 확인한 경로와 구분합니다.",
+          "sources": [
+            {
+              "url": "https://docs.mistral.ai/models/mistral-small-3-2-25-06",
+              "checkedAt": "2026-10-28",
+              "scope": "공식 모델 문서: mistral-small-2506·Deprecated·Deprecation date 4/30/2026"
+            },
+            {
+              "url": "https://docs.mistral.ai/models",
+              "checkedAt": "2026-10-28",
+              "scope": "Deprecated & retired models 표의 Small 3.2 v25.06 행"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "modelId": "mistralai/Magistral-Small-2506",
+      "modelVersion": "2506 (Small 1.0)",
+      "routes": [
+        {
+          "id": "mistral-vibe-web-magistral2506",
+          "kind": "web",
+          "label": "Mistral Vibe Chat (구 Le Chat)",
+          "url": "https://chat.mistral.ai/",
+          "exactVersion": "unconfirmed",
+          "hostedModelId": null,
+          "note": "공식 웹 채팅은 존재하며 Le Chat은 2026-08-12 Vibe로 바뀌었습니다. 이 과거 체크포인트를 직접 선택·고정할 수 있다는 공식 근거는 확인하지 못했습니다. 최신 자동 라우팅을 이 모델로 연결하지 않습니다.",
+          "sources": [
+            {
+              "url": "https://help.mistral.ai/en/articles/682992-le-chat-is-now-vibe",
+              "checkedAt": "2026-10-28",
+              "scope": "공식 Help Center: Vibe Chat·기존 chat.mistral.ai 주소·이전 안내"
+            }
+          ]
+        },
+        {
+          "id": "mistral-direct-magistral2506-retired",
+          "kind": "api",
+          "label": "Mistral 직영 API · Magistral Small 2506 은퇴",
+          "url": "https://docs.mistral.ai/models/magistral-small-1-0-25-06",
+          "exactVersion": "retired",
+          "hostedModelId": "magistral-small-2506",
+          "note": "정확한 Magistral Small 1.0 v25.06 식별자는 확인했지만 직영 API는 2025-11-30에 은퇴했습니다. 최신 Magistral·Vibe의 모델 선택이나 자동 라우팅을 이 과거 체크포인트에 연결하지 않습니다. 이번 조사에서 현재 제공되는 exact 2506 호스팅 웹·API 경로는 확보하지 못했습니다.",
+          "sources": [
+            {
+              "url": "https://docs.mistral.ai/models/magistral-small-1-0-25-06",
+              "checkedAt": "2026-10-28",
+              "scope": "공식 모델 문서: magistral-small-2506·Retired·Retirement date 11/30/2025"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "researchLog": [
+    {
+      "id": "western-access-scout",
+      "url": "https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/partner-models/llama/llama4-scout",
+      "checkedAt": "2026-10-28",
+      "status": "opened",
+      "note": "제공사 또는 호스팅 제공자 공식 원문을 열어 모델 ID·제공 조건·제품 구분을 확인했습니다."
+    },
+    {
+      "id": "western-access-maverick",
+      "url": "https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/partner-models/llama/llama4-maverick",
+      "checkedAt": "2026-10-28",
+      "status": "opened",
+      "note": "제공사 또는 호스팅 제공자 공식 원문을 열어 모델 ID·제공 조건·제품 구분을 확인했습니다."
+    },
+    {
+      "id": "western-access-metaNews",
+      "url": "https://about.fb.com/news/2026/07/meta-ai-muse-spark-doesnt-just-think-it-acts/",
+      "checkedAt": "2026-10-28",
+      "status": "opened",
+      "note": "제공사 또는 호스팅 제공자 공식 원문을 열어 모델 ID·제공 조건·제품 구분을 확인했습니다."
+    },
+    {
+      "id": "western-access-vibe",
+      "url": "https://help.mistral.ai/en/articles/682992-le-chat-is-now-vibe",
+      "checkedAt": "2026-10-28",
+      "status": "opened",
+      "note": "제공사 또는 호스팅 제공자 공식 원문을 열어 모델 ID·제공 조건·제품 구분을 확인했습니다."
+    },
+    {
+      "id": "western-access-small31",
+      "url": "https://docs.mistral.ai/models/mistral-small-3-1-25-03",
+      "checkedAt": "2026-10-28",
+      "status": "opened",
+      "note": "제공사 또는 호스팅 제공자 공식 원문을 열어 모델 ID·제공 조건·제품 구분을 확인했습니다."
+    },
+    {
+      "id": "western-access-small32",
+      "url": "https://docs.mistral.ai/models/mistral-small-3-2-25-06",
+      "checkedAt": "2026-10-28",
+      "status": "opened",
+      "note": "제공사 또는 호스팅 제공자 공식 원문을 열어 모델 ID·제공 조건·제품 구분을 확인했습니다."
+    },
+    {
+      "id": "western-access-magistral",
+      "url": "https://docs.mistral.ai/models/magistral-small-1-0-25-06",
+      "checkedAt": "2026-10-28",
+      "status": "opened",
+      "note": "제공사 또는 호스팅 제공자 공식 원문을 열어 모델 ID·제공 조건·제품 구분을 확인했습니다."
+    },
+    {
+      "id": "western-access-mistralModels",
+      "url": "https://docs.mistral.ai/models",
+      "checkedAt": "2026-10-28",
+      "status": "opened",
+      "note": "제공사 또는 호스팅 제공자 공식 원문을 열어 모델 ID·제공 조건·제품 구분을 확인했습니다."
+    },
+    {
+      "id": "western-access-deepDemo",
+      "url": "https://deepinfra.com/mistralai/Mistral-Small-3.2-24B-Instruct-2506",
+      "checkedAt": "2026-10-28",
+      "status": "opened",
+      "note": "제공사 또는 호스팅 제공자 공식 원문을 열어 모델 ID·제공 조건·제품 구분을 확인했습니다."
+    },
+    {
+      "id": "western-access-deepApi",
+      "url": "https://deepinfra.com/mistralai/Mistral-Small-3.2-24B-Instruct-2506/api",
+      "checkedAt": "2026-10-28",
+      "status": "opened",
+      "note": "제공사 또는 호스팅 제공자 공식 원문을 열어 모델 ID·제공 조건·제품 구분을 확인했습니다."
+    },
+    {
+      "id": "western-access-deepPrice",
+      "url": "https://deepinfra.com/pricing",
+      "checkedAt": "2026-10-28",
+      "status": "opened",
+      "note": "제공사 또는 호스팅 제공자 공식 원문을 열어 모델 ID·제공 조건·제품 구분을 확인했습니다."
+    },
+    {
+      "id": "western-access-azureModels",
+      "url": "https://learn.microsoft.com/en-us/azure/foundry/foundry-models/concepts/models-from-partners",
+      "checkedAt": "2026-10-28",
+      "status": "opened",
+      "note": "제공사 또는 호스팅 제공자 공식 원문을 열어 모델 ID·제공 조건·제품 구분을 확인했습니다."
+    },
+    {
+      "id": "western-access-azureLife",
+      "url": "https://learn.microsoft.com/en-us/azure/foundry/openai/concepts/model-retirement-schedule",
+      "checkedAt": "2026-10-28",
+      "status": "opened",
+      "note": "제공사 또는 호스팅 제공자 공식 원문을 열어 모델 ID·제공 조건·제품 구분을 확인했습니다."
+    },
+    {
+      "id": "western-access-togetherModels",
+      "url": "https://docs.together.ai/docs/serverless/models",
+      "checkedAt": "2026-10-28",
+      "status": "opened",
+      "note": "제공사 또는 호스팅 제공자 공식 원문을 열어 모델 ID·제공 조건·제품 구분을 확인했습니다."
+    },
+    {
+      "id": "western-access-togetherLife",
+      "url": "https://docs.together.ai/docs/deprecations",
+      "checkedAt": "2026-10-28",
+      "status": "opened",
+      "note": "제공사 또는 호스팅 제공자 공식 원문을 열어 모델 ID·제공 조건·제품 구분을 확인했습니다."
+    },
+    {
+      "id": "western-access-togetherScout",
+      "url": "https://www.together.ai/models/llama-4-scout",
+      "checkedAt": "2026-10-28",
+      "status": "opened",
+      "note": "제공사 또는 호스팅 제공자 공식 원문을 열어 모델 ID·제공 조건·제품 구분을 확인했습니다."
+    },
+    {
+      "id": "western-access-together-conflict",
+      "url": "https://docs.together.ai/docs/deprecations",
+      "checkedAt": "2026-10-28",
+      "status": "opened",
+      "note": "Scout 마케팅 페이지에 API 예제가 남아 있으나 공식 은퇴표는 Scout exact Instruct serverless 경로가 2026-02-06 제거되었다고 명시합니다. Maverick FP8 serverless도 2026-03-31 제거. 표에는 dedicated 지원 Yes가 있지만 실제 신규 dedicated 배포는 검증하지 않아 이번 일반 사용 확정 경로에 추가하지 않았습니다."
+    },
+    {
+      "id": "western-access-no-extra-models",
+      "url": null,
+      "checkedAt": "2026-10-28",
+      "status": "complete",
+      "note": "기존 다섯 모델의 일반 사용 경로만 조사했습니다. 모델·벤치마크 관측 자료를 추가하거나 변경하지 않았고 기존 자체 호스팅 fallback은 원본에 보존합니다."
+    },
+    {
+      "id": "western-access-magistral-hosting-search",
+      "url": null,
+      "checkedAt": "2026-10-28",
+      "status": "not-confirmed",
+      "note": "Together·Fireworks·DeepInfra 공식 문서를 대상으로 exact Magistral-Small-2506 호스팅 경로를 검색했으나 이번 조사에서 현재 제공을 확인할 공식 원문을 확보하지 못했습니다. 존재하지 않는다는 뜻은 아닙니다."
+    },
+    {
+      "id": "western-access-no-runtime",
+      "url": null,
+      "checkedAt": "2026-10-28",
+      "status": "not-executed",
+      "note": "회원가입·로그인·키 생성·추론 요청·외부 메시지 전송을 하지 않았습니다. confirmed는 공개 문서에 나타난 정확한 버전 선택 경로를 뜻하며 사용자 계정의 실행 성공을 보장하지 않습니다."
+    }
+  ]
+}

@@ -1,5 +1,10 @@
 import type { FeatureSupport, RecommendationSnapshot, ServicePlan, Source } from '../recommendationTypes'
 import { applyResearch } from './researchOverlay.ts'
+import { researchedModels, researchedEvaluations, expandedResearchSources } from './researchCatalog.ts'
+import { operatorEvaluations, automationConfiguration } from './operatorEvaluations.ts'
+import { providerComparisonEvaluations, markProviderComparison } from './providerComparisons.ts'
+import aaVerified from './research/aa-verified.json' with {type:'json'}
+import {publicAAObservations} from '../lib/aaSnapshot.ts'
 import { apiPlans, currentEvaluations, currentMappings, currentModels, currentResearchSources, MODEL_CHECKED_AT, reviewedPlans } from './currentModels.ts'
 const checkedAt = '2026-10-21'
 const source = (url: string): Source => ({ url, checkedAt })
@@ -57,7 +62,7 @@ const previousSnapshot: RecommendationSnapshot = {
   version: 'official-2026-10-21+supplied-research-2026-10-28', checkedAt, plans: applyResearch(plans), models: [], observations: [], cohorts: [],
   mappings: plans.map(plan => ({
     id: `${plan.id}-unconfirmed`, planId: plan.id, modelId: null, status: 'unknown', selectable: false, mode: null,
-    note: mappingEvidence[plan.serviceId].note, sources: [plan.sources[0], mappingEvidence[plan.serviceId].source],
+    note: mappingEvidence[plan.serviceId as keyof typeof mappingEvidence].note, sources: [plan.sources[0], mappingEvidence[plan.serviceId as keyof typeof mappingEvidence].source],
   })),
   sources: [
     { ...source('https://artificialanalysis.ai/methodology/intelligence-benchmarking'), name: 'Artificial Analysis 방법론', status: '방법론 확인 · 수치 미포함', note: '문서·장문·사실 정확성·코딩 평가 선정. 한국어 품질 검증 아님.' },
@@ -76,8 +81,8 @@ const previousSnapshot: RecommendationSnapshot = {
 }
 
 export const recommendationSnapshot: RecommendationSnapshot = {
-  ...previousSnapshot, version:'exact-models-2026-10-28',checkedAt:MODEL_CHECKED_AT,
-  plans:[...reviewedPlans(previousSnapshot.plans),...apiPlans()],models:currentModels,
-  mappings:currentMappings(previousSnapshot.mappings),evaluations:currentEvaluations,
-  sources:[...currentResearchSources,...previousSnapshot.sources],
+  ...previousSnapshot, version:'multi-provider-evidence-2026-10-28',checkedAt:MODEL_CHECKED_AT,
+  plans:[...reviewedPlans(previousSnapshot.plans),...apiPlans()],models:[...currentModels,...researchedModels],
+  mappings:currentMappings(previousSnapshot.mappings),evaluations:[...currentEvaluations.map(e=>e.benchmark==='AutomationBench'?automationConfiguration(e):{...e,evaluationType:e.domain==='coding'||e.domain==='science'?'agent' as const:'model' as const,agentName:null,agentVersion:null}),...researchedEvaluations.map(markProviderComparison),...operatorEvaluations,...providerComparisonEvaluations,...publicAAObservations(aaVerified,[...currentModels,...researchedModels])],
+  sources:[...expandedResearchSources,...currentResearchSources,...previousSnapshot.sources],
 }

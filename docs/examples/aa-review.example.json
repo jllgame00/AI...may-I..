@@ -1,0 +1,18 @@
+{
+  "mappings": [
+    {"aaId":"REPLACE_FROM_REAL_API_STABLE_ID","creatorId":"REPLACE_FROM_REAL_CREATOR_ID","modelId":"gpt-6.1-sol","modelVersion":"6.1","effort":"medium","identitySource":"https://artificialanalysis.ai/models/REPLACE_WITH_EXACT_MODEL_AND_EFFORT_PAGE"}
+  ],
+  "definitions": [
+    {
+      "field":"artificial_analysis_intelligence_index",
+      "benchmark":"Artificial Analysis Intelligence Index",
+      "benchmarkVersion":"5.0",
+      "domain":"general",
+      "unit":"index points",
+      "higherIsBetter":true,
+      "scope":"종합지수·주로 영어 텍스트·도구 사용 하위평가 포함. 실제 API 응답과 원문이 같은 지수 버전임을 확인한 경우에만 사용. 글쓰기·통계의 직접 점수가 아님.",
+      "components":["AA-Briefcase v1.1","AutomationBench-AA","Terminal-Bench 4.0","FrontierCode 2.0","AA-Omniscience v1.1","GDP.pdf","HLE-Diamond","CritPt v2 (Hard Subset)","Terminal-Bench-Science 0.1"],
+      "versionSource":"https://artificialanalysis.ai/methodology/intelligence-benchmarking"
+    }
+  ]
+}

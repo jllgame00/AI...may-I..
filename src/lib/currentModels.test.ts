@@ -6,10 +6,10 @@ import { compareCandidates, buildGuideBundle, executionRoutes, guideContext, int
 import { syncDrafts, editDraft, placeholders } from './promptSession.ts'
 import type { PromptRequest } from '../types.ts'
 
-const request: PromptRequest = { text:'Python 버그 수정',tasks:['coding'],overrides:{},budget:'paid',usageRoute:'api' }
-it('bundles five exact official models and actually obtained provider and independent results', () => {
-  assert.deepEqual(snapshot.models.map(m=>m.id).sort(),['gpt-6.1-sol','gpt-6.1-terra','gpt-6-astra','claude-sonnet-5-5','claude-opus-5-5'].sort())
-  assert.equal(snapshot.evaluations!.length,13)
+const request: PromptRequest = { text:'Python 버그 수정',tasks:['coding'],overrides:{},usageRoute:'api' }
+it('preserves the original five exact official models and actually obtained provider and independent results', () => {
+  assert.deepEqual(snapshot.models.filter(m=>['OpenAI','Anthropic'].includes(m.provider)).map(m=>m.id).sort(),['gpt-6.1-sol','gpt-6.1-terra','gpt-6-astra','claude-sonnet-5-5','claude-opus-5-5'].sort())
+  assert.ok(snapshot.evaluations!.length>=13)
   assert.ok(snapshot.evaluations!.some(e=>e.kind==='independent' && e.publisher==='Zapier'))
   for(const e of snapshot.evaluations!) {
     assert.ok(e.source.checkedAt && e.source.url && e.modelVersion && e.benchmarkVersion && e.terms)
@@ -34,29 +34,28 @@ it('checks actual evaluation settings and unknowns, but not publication dates al
   }
 })
 it('filters paths independently of subscription plans and shows API metering without a monthly price', () => {
-  const api=compareCandidates(request).recommendations
+  const api=compareCandidates(request).recommendations.filter(c=>!c.plan.unassigned&&!c.configuration)
   assert.equal(api.length,5)
   assert.ok(api.every(c=>c.mapping.routeKind==='api' && c.plan.billingKind==='usage' && c.score===null))
   assert.ok(api.every(c=>c.service.name===`${c.model?.provider} API`))
-  assert.equal(compareCandidates({...request,budget:'free'}).recommendations.length,0)
-  const chat=compareCandidates({...request,usageRoute:'chat'}).recommendations
+  const chat=compareCandidates({...request,usageRoute:'chat'}).recommendations.filter(c=>!c.plan.unassigned&&!c.configuration)
   assert.ok(chat.every(c=>c.mapping.routeKind==='chat'))
   assert.ok(!chat.some(c=>c.model?.id==='gpt-6.1-sol'))
-  const work=compareCandidates({...request,usageRoute:'work'}).recommendations
+  const work=compareCandidates({...request,usageRoute:'work'}).recommendations.filter(c=>!c.configuration)
   assert.equal(work.length,3)
   assert.ok(work.every(c=>c.plan.id==='chatgpt-plus' && c.mapping.routeKind==='work'))
 })
-it('keeps free condition candidates despite missing performance or other candidate information', () => {
-  const result=compareCandidates({...request,usageRoute:'consumer',budget:'free',tasks:['writing']})
-  assert.equal(result.recommendations.length,3)
-  assert.ok(result.recommendations.every(c=>c.suitability==='조건 비교 가능' && c.evidence?.length===0))
+it('keeps feature-based candidates despite missing performance or other candidate information', () => {
+  const result=compareCandidates({...request,usageRoute:'consumer',text:'환영 이메일',tasks:['writing']})
+  assert.equal(result.recommendations.filter(c=>!c.accessAlternative).length,30)
+  assert.ok(result.recommendations.every(c=>c.suitability==='조건 비교 가능' && c.evidence?.every(e=>e.domain==='writing')))
   const data=structuredClone(snapshot);data.models=[];data.evaluations=[]
-  assert.equal(compareCandidates({...request,usageRoute:'consumer',budget:'free'},data).recommendations.filter(c=>c.suitability==='조건 비교 가능').length,3)
+  assert.equal(compareCandidates({...request,usageRoute:'consumer',},data).recommendations.filter(c=>c.suitability==='조건 비교 가능').length,10)
 })
 it('never turns coding or workflow evaluations into writing or survey success scores', () => {
   for(const task of ['writing','analysis'] as const) {
     const result=compareCandidates({...request,text:'설문 통계 보고서',tasks:[task]})
-    assert.ok(result.recommendations.every(c=>c.evidence?.length===0 && c.score===null))
+    assert.ok(result.recommendations.every(c=>c.evidence?.every(e=>e.domain==='writing' && task==='writing') && c.score===null))
   }
 })
 it('propagates exact model, mode, route and billing into stages and preserves edited drafts on a model change', () => {
@@ -75,8 +74,8 @@ it('propagates exact model, mode, route and billing into stages and preserves ed
   assert.notEqual(drafts[t.id].context,guideContext(next))
   assert.ok(next.text.includes(b.model!.id));assert.doesNotMatch(next.text,/모델별 최적화가 검증/)
 })
-it('only attaches evidence to dated, manual, exact model-mode access mappings', () => {
-  for(const change of [{modelVersion:'6.2'},{sources:[]},{mode:null},{mode:'unsupported'},{selection:'automatic' as const}]) {
+it('only attaches model evidence to exact releases and valid modes, never automatic routing', () => {
+  for(const change of [{modelVersion:'6.2'},{mode:null},{mode:'unsupported'},{selection:'automatic' as const}]) {
     const data=structuredClone(snapshot)
     const mapping=data.mappings.find(m=>m.modelId==='gpt-6.1-terra' && m.routeKind==='api')!
     Object.assign(mapping,change)

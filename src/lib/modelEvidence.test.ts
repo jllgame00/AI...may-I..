@@ -4,7 +4,7 @@ import { parseModelEvidence, loadModelEvidence, evidenceForCandidate } from './m
 import { modelEvidenceFixture } from './fixtures/modelEvidence.ts'
 import { fixture } from './fixtures/recommendation.ts'
 import { analyzeRequest } from './recommend.ts'
-const request = { text: '자료 분석', tasks: ['analysis'] as const, budget: 'paid' as const, priority: 'quality' as const, requiredFeatures: [] }
+const request = { text: '자료 분석', tasks: ['analysis'] as const, priority: 'quality' as const, requiredFeatures: [] }
 function candidate() {
   const data = fixture(); data.mappings[0].status = 'unknown'
   return analyzeRequest({ ...request, tasks: ['analysis'] }, data).recommendations.find(r => r.plan.id === 'plan-0')!
@@ -18,7 +18,7 @@ it('retains model evidence with unknown plan mapping without changing recommenda
   assert.deepEqual(item, before)
 })
 it('does not change current choices, ordering or ties after historical rating changes (T11)', () => {
-  const input = { text: '자료 분석 발표 대본', budget: 'free' as const, priority: 'quality' as const }
+  const input = { text: '자료 분석 발표 대본', priority: 'quality' as const }
   const result = analyzeRequest(input)
   const before = structuredClone(result)
   const historical = modelEvidenceFixture()

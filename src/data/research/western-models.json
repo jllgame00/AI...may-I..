@@ -1,0 +1,1604 @@
+{
+  "models": [
+    {
+      "id": "meta-llama/Llama-4-Scout-17B-16E-Instruct",
+      "name": "Llama 4 Scout 17B-16E Instruct",
+      "version": "Llama-4-Scout-17B-16E-Instruct",
+      "provider": "Meta",
+      "reasoning": "미확인",
+      "modes": [],
+      "capabilities": [
+        "텍스트·이미지 입력",
+        "텍스트·코드 출력"
+      ],
+      "limits": [
+        "Llama 4 Community License 및 저장소 접근 조건 적용",
+        "10M context는 모델 카드 사양이며 사용자 장비에서 검증하지 않음"
+      ],
+      "sources": [
+        {
+          "url": "https://huggingface.co/meta-llama/Llama-4-Scout-17B-16E-Instruct",
+          "checkedAt": "2026-10-28",
+          "scope": "공식 모델 카드: 정확한 저장소 ID, 해당 릴리스의 기능·벤치마크 표"
+        }
+      ],
+      "availability": "공식 가중치 저장소와 자체 호스팅 예제 확인. 실제 다운로드·실행 및 사용자 장비 적합성은 미확인.",
+      "route": {
+        "kind": "self-hosted",
+        "url": "https://huggingface.co/meta-llama/Llama-4-Scout-17B-16E-Instruct",
+        "status": "confirmed",
+        "note": "공식 저장소의 해당 가중치를 사용자 환경에 배포하는 경로. 채팅 구독 권한과 별개이며 로컬 실행을 검증하지 않음."
+      }
+    },
+    {
+      "id": "meta-llama/Llama-4-Maverick-17B-128E-Instruct",
+      "name": "Llama 4 Maverick 17B-128E Instruct",
+      "version": "Llama-4-Maverick-17B-128E-Instruct",
+      "provider": "Meta",
+      "reasoning": "미확인",
+      "modes": [],
+      "capabilities": [
+        "텍스트·이미지 입력",
+        "텍스트·코드 출력"
+      ],
+      "limits": [
+        "Llama 4 Community License 및 저장소 접근 조건 적용",
+        "1M context는 모델 카드 사양이며 사용자 장비에서 검증하지 않음"
+      ],
+      "sources": [
+        {
+          "url": "https://huggingface.co/meta-llama/Llama-4-Maverick-17B-128E-Instruct",
+          "checkedAt": "2026-10-28",
+          "scope": "공식 모델 카드: 정확한 저장소 ID, 해당 릴리스의 기능·벤치마크 표"
+        }
+      ],
+      "availability": "공식 가중치 저장소와 자체 호스팅 예제 확인. 실제 다운로드·실행 및 사용자 장비 적합성은 미확인.",
+      "route": {
+        "kind": "self-hosted",
+        "url": "https://huggingface.co/meta-llama/Llama-4-Maverick-17B-128E-Instruct",
+        "status": "confirmed",
+        "note": "공식 저장소의 해당 가중치를 사용자 환경에 배포하는 경로. 채팅 구독 권한과 별개이며 로컬 실행을 검증하지 않음."
+      }
+    },
+    {
+      "id": "mistralai/Mistral-Small-3.1-24B-Instruct-2503",
+      "name": "Mistral Small 3.1 24B Instruct 2503",
+      "version": "3.1-2503",
+      "provider": "Mistral AI",
+      "reasoning": "미확인",
+      "modes": [],
+      "capabilities": [
+        "텍스트·이미지 입력",
+        "함수 호출",
+        "JSON 출력"
+      ],
+      "limits": [
+        "Apache 2.0 가중치",
+        "128k context; 양자화·장비 구성에 따라 실행 요건 상이"
+      ],
+      "sources": [
+        {
+          "url": "https://huggingface.co/mistralai/Mistral-Small-3.1-24B-Instruct-2503",
+          "checkedAt": "2026-10-28",
+          "scope": "공식 모델 카드: 정확한 저장소 ID, 해당 릴리스의 기능·벤치마크 표"
+        }
+      ],
+      "availability": "공식 가중치 저장소와 자체 호스팅 예제 확인. 실제 다운로드·실행 및 사용자 장비 적합성은 미확인.",
+      "route": {
+        "kind": "self-hosted",
+        "url": "https://huggingface.co/mistralai/Mistral-Small-3.1-24B-Instruct-2503",
+        "status": "confirmed",
+        "note": "공식 저장소의 해당 가중치를 사용자 환경에 배포하는 경로. 채팅 구독 권한과 별개이며 로컬 실행을 검증하지 않음."
+      }
+    },
+    {
+      "id": "mistralai/Mistral-Small-3.2-24B-Instruct-2506",
+      "name": "Mistral Small 3.2 24B Instruct 2506",
+      "version": "3.2-2506",
+      "provider": "Mistral AI",
+      "reasoning": "미확인",
+      "modes": [],
+      "capabilities": [
+        "텍스트·이미지 입력",
+        "함수 호출"
+      ],
+      "limits": [
+        "Apache 2.0 가중치",
+        "공식 카드의 bf16/fp16 GPU 메모리 안내 약55GB; 로컬 미실행"
+      ],
+      "sources": [
+        {
+          "url": "https://huggingface.co/mistralai/Mistral-Small-3.2-24B-Instruct-2506",
+          "checkedAt": "2026-10-28",
+          "scope": "공식 모델 카드: 정확한 저장소 ID, 해당 릴리스의 기능·벤치마크 표"
+        }
+      ],
+      "availability": "공식 가중치 저장소와 자체 호스팅 예제 확인. 실제 다운로드·실행 및 사용자 장비 적합성은 미확인.",
+      "route": {
+        "kind": "self-hosted",
+        "url": "https://huggingface.co/mistralai/Mistral-Small-3.2-24B-Instruct-2506",
+        "status": "confirmed",
+        "note": "공식 저장소의 해당 가중치를 사용자 환경에 배포하는 경로. 채팅 구독 권한과 별개이며 로컬 실행을 검증하지 않음."
+      }
+    },
+    {
+      "id": "mistralai/Magistral-Small-2506",
+      "name": "Magistral Small 2506",
+      "version": "2506 (Small 1.0)",
+      "provider": "Mistral AI",
+      "reasoning": "지원",
+      "modes": [],
+      "capabilities": [
+        "긴 추론",
+        "다국어 텍스트"
+      ],
+      "limits": [
+        "Apache 2.0 가중치",
+        "128k context이나40k 이후 품질 저하 가능; 제공자는40k 최대 길이 권장"
+      ],
+      "sources": [
+        {
+          "url": "https://huggingface.co/mistralai/Magistral-Small-2506",
+          "checkedAt": "2026-10-28",
+          "scope": "공식 모델 카드: 정확한 저장소 ID, 해당 릴리스의 기능·벤치마크 표"
+        }
+      ],
+      "availability": "공식 가중치 저장소와 자체 호스팅 예제 확인. 실제 다운로드·실행 및 사용자 장비 적합성은 미확인.",
+      "route": {
+        "kind": "self-hosted",
+        "url": "https://huggingface.co/mistralai/Magistral-Small-2506",
+        "status": "confirmed",
+        "note": "공식 저장소의 해당 가중치를 사용자 환경에 배포하는 경로. 채팅 구독 권한과 별개이며 로컬 실행을 검증하지 않음."
+      }
+    },
+    {
+      "id": "Grok 4.6",
+      "name": "Grok 4.6",
+      "version": "4.6",
+      "provider": "SpaceXSI (xAI)",
+      "reasoning": "지원",
+      "modes": [
+        "low",
+        "medium",
+        "high",
+        "xhigh"
+      ],
+      "capabilities": [
+        "코딩",
+        "에이전트 작업",
+        "텍스트·이미지 입력"
+      ],
+      "limits": [
+        "공식 발표의 버전명으로 식별. API 슬러그는 열린 원문에서 확인되지 않아 추정하지 않음.",
+        "현재4.6 안내 링크가4.7 안내로 리디렉션되어 정확한4.6 실행 경로는 미확인."
+      ],
+      "sources": [
+        {
+          "url": "https://x.ai/news/grok-4-6",
+          "checkedAt": "2026-10-28",
+          "scope": "2026-08-12 릴리스·Grok4.6 High 평가 표"
+        },
+        {
+          "url": "https://docs.x.ai/developers/release-notes",
+          "checkedAt": "2026-10-28",
+          "scope": "8월12일 Grok4.6 API 출시·reasoning 설정"
+        }
+      ],
+      "availability": "공식 출시 및 API 제공 발표 확인. 현재 정확한4.6 엔드포인트 제공 여부는 미확인.",
+      "route": {
+        "kind": "unknown",
+        "url": "https://x.ai/news/grok-4-6",
+        "status": "unknown",
+        "note": "Grok4.6은 공개 버전명 ID. 현재 API 모델 ID를 확인한 뒤 실행해야 함."
+      }
+    },
+    {
+      "id": "grok-4.7",
+      "name": "Grok 4.7",
+      "version": "4.7",
+      "provider": "SpaceXSI (xAI)",
+      "reasoning": "지원",
+      "modes": [
+        "low",
+        "medium",
+        "high",
+        "xhigh"
+      ],
+      "capabilities": [
+        "코딩",
+        "에이전트 작업",
+        "텍스트·이미지 입력",
+        "함수 호출"
+      ],
+      "limits": [
+        "500k context; 계정별 rate limit은 별도",
+        "API 제공과 개인 채팅 구독의 정확한 모델 선택 권한은 별개"
+      ],
+      "sources": [
+        {
+          "url": "https://x.ai/news/grok-4-7",
+          "checkedAt": "2026-10-28",
+          "scope": "2026-09-21 릴리스·성능표"
+        },
+        {
+          "url": "https://docs.x.ai/developers/grok-4-7",
+          "checkedAt": "2026-10-28",
+          "scope": "현재API ID grok-4.7·설정·제공경로"
+        }
+      ],
+      "availability": "공식 현재 개발자 안내에서 grok-4.7 API 제공 확인.",
+      "route": {
+        "kind": "api",
+        "url": "https://docs.x.ai/developers/grok-4-7",
+        "status": "confirmed",
+        "note": "공식 문서의 grok-4.7 API ID 사용. 별도 계정·사용량 과금; 실제 호출 미실행."
+      }
+    },
+    {
+      "id": "gemini-4-argon",
+      "name": "Gemini 4 Argon",
+      "version": "gemini-4-argon",
+      "provider": "Google",
+      "reasoning": "지원",
+      "modes": [
+        "low",
+        "medium",
+        "high"
+      ],
+      "capabilities": [
+        "텍스트·이미지·오디오·비디오 입력",
+        "텍스트 출력",
+        "함수 호출"
+      ],
+      "limits": [
+        "GA 출시2026-10-13; Agent Platform 은퇴일2027-10-13 이후",
+        "context1,048,576; 출력은 입력과 공유하며API별 처리 방식 상이"
+      ],
+      "sources": [
+        {
+          "url": "https://deepmind.google/models/model-cards/gemini-4-argon/",
+          "checkedAt": "2026-10-28",
+          "scope": "공식 버전 발표·평가 점수"
+        },
+        {
+          "url": "https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/gemini/4-argon",
+          "checkedAt": "2026-10-28",
+          "scope": "현재 모델ID·출시 단계·API 제공"
+        },
+        {
+          "url": "https://deepmind.google/models/evals-methodology/gemini-4-argon",
+          "checkedAt": "2026-10-28",
+          "scope": "평가 설정·도구·하네스 방법론"
+        }
+      ],
+      "availability": "2026-10-28 공식 Google Cloud 모델 페이지에서 해당 API ID 제공 확인.",
+      "route": {
+        "kind": "api",
+        "url": "https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/gemini/4-argon",
+        "status": "confirmed",
+        "note": "공식API 경로. 계정·지역·과금 및 실제 호출 가능성은 사용자가 별도 확인; 개인 구독 권한으로 전이하지 않음."
+      }
+    },
+    {
+      "id": "gemini-3.1-pro-preview",
+      "name": "Gemini 3.1 Pro Preview",
+      "version": "gemini-3.1-pro-preview",
+      "provider": "Google",
+      "reasoning": "지원",
+      "modes": [
+        "low",
+        "medium",
+        "high"
+      ],
+      "capabilities": [
+        "텍스트·이미지·오디오·비디오 입력",
+        "텍스트 출력",
+        "함수 호출"
+      ],
+      "limits": [
+        "Public preview; 고정 날짜 스냅샷 ID는 미공개",
+        "context1,048,576; 최대출력65,536"
+      ],
+      "sources": [
+        {
+          "url": "https://deepmind.google/models/model-cards/gemini-3-1-pro/",
+          "checkedAt": "2026-10-28",
+          "scope": "공식 버전 발표·평가 점수"
+        },
+        {
+          "url": "https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/gemini/3-1-pro",
+          "checkedAt": "2026-10-28",
+          "scope": "현재 모델ID·출시 단계·API 제공"
+        },
+        {
+          "url": "https://deepmind.google/models/evals-methodology/gemini-3-1-pro",
+          "checkedAt": "2026-10-28",
+          "scope": "평가 설정·도구·하네스 방법론"
+        }
+      ],
+      "availability": "2026-10-28 공식 Google Cloud 모델 페이지에서 해당 API ID 제공 확인.",
+      "route": {
+        "kind": "api",
+        "url": "https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/gemini/3-1-pro",
+        "status": "confirmed",
+        "note": "공식API 경로. 계정·지역·과금 및 실제 호출 가능성은 사용자가 별도 확인; 개인 구독 권한으로 전이하지 않음."
+      }
+    },
+    {
+      "id": "gemini-3-flash-preview",
+      "name": "Gemini 3 Flash Preview",
+      "version": "gemini-3-flash-preview",
+      "provider": "Google",
+      "reasoning": "지원",
+      "modes": [],
+      "capabilities": [
+        "텍스트·이미지·오디오·비디오 입력",
+        "텍스트 출력",
+        "함수 호출"
+      ],
+      "limits": [
+        "Public preview; 고정 날짜 스냅샷 ID는 미공개",
+        "context1,048,576; 최대출력65,536"
+      ],
+      "sources": [
+        {
+          "url": "https://blog.google/products-and-platforms/products/gemini/gemini-3-flash/",
+          "checkedAt": "2026-10-28",
+          "scope": "공식 버전 발표·평가 점수"
+        },
+        {
+          "url": "https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/gemini/3-flash",
+          "checkedAt": "2026-10-28",
+          "scope": "현재 모델ID·출시 단계·API 제공"
+        }
+      ],
+      "availability": "2026-10-28 공식 Google Cloud 모델 페이지에서 해당 API ID 제공 확인.",
+      "route": {
+        "kind": "api",
+        "url": "https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/gemini/3-flash",
+        "status": "confirmed",
+        "note": "공식API 경로. 계정·지역·과금 및 실제 호출 가능성은 사용자가 별도 확인; 개인 구독 권한으로 전이하지 않음."
+      }
+    }
+  ],
+  "observations": [
+    {
+      "id": "western-scout-mmmu",
+      "modelId": "meta-llama/Llama-4-Scout-17B-16E-Instruct",
+      "modelVersion": "Llama-4-Scout-17B-16E-Instruct",
+      "benchmark": "MMMU",
+      "benchmarkVersion": "미공개",
+      "subset": null,
+      "domain": "vision",
+      "rawScore": 69.4,
+      "unit": "%",
+      "higherIsBetter": true,
+      "effort": "0-shot",
+      "tools": null,
+      "harness": null,
+      "environment": null,
+      "trials": null,
+      "fallbacks": null,
+      "evaluator": "Meta",
+      "publisher": "Meta",
+      "kind": "provider",
+      "publishedAt": "2025-04-05",
+      "evaluatedAt": null,
+      "source": {
+        "url": "https://huggingface.co/meta-llama/Llama-4-Scout-17B-16E-Instruct",
+        "checkedAt": "2026-10-28",
+        "scope": "Instruction tuned models: MMMU; 0-shot accuracy"
+      },
+      "limitations": "공식 Instruction tuned models 표의 해당 모델 열. 사전학습 모델 행과 구분. 샘플링·반복 수·평가 실행일 미공개.",
+      "terms": "공개 원문에 제시된 집계 점수. 평가 데이터·코드의 재사용 조건은 별도 확인.",
+      "evaluationType": "model",
+      "agentName": null,
+      "agentVersion": null
+    },
+    {
+      "id": "western-scout-gpqa",
+      "modelId": "meta-llama/Llama-4-Scout-17B-16E-Instruct",
+      "modelVersion": "Llama-4-Scout-17B-16E-Instruct",
+      "benchmark": "GPQA",
+      "benchmarkVersion": "미공개",
+      "subset": "Diamond",
+      "domain": "science",
+      "rawScore": 57.2,
+      "unit": "%",
+      "higherIsBetter": true,
+      "effort": "0-shot",
+      "tools": null,
+      "harness": null,
+      "environment": null,
+      "trials": null,
+      "fallbacks": null,
+      "evaluator": "Meta",
+      "publisher": "Meta",
+      "kind": "provider",
+      "publishedAt": "2025-04-05",
+      "evaluatedAt": null,
+      "source": {
+        "url": "https://huggingface.co/meta-llama/Llama-4-Scout-17B-16E-Instruct",
+        "checkedAt": "2026-10-28",
+        "scope": "Instruction tuned models: GPQA Diamond; 0-shot accuracy"
+      },
+      "limitations": "공식 Instruction tuned models 표의 해당 모델 열. 사전학습 모델 행과 구분. 샘플링·반복 수·평가 실행일 미공개.",
+      "terms": "공개 원문에 제시된 집계 점수. 평가 데이터·코드의 재사용 조건은 별도 확인.",
+      "evaluationType": "model",
+      "agentName": null,
+      "agentVersion": null
+    },
+    {
+      "id": "western-scout-lcb",
+      "modelId": "meta-llama/Llama-4-Scout-17B-16E-Instruct",
+      "modelVersion": "Llama-4-Scout-17B-16E-Instruct",
+      "benchmark": "LiveCodeBench",
+      "benchmarkVersion": "미공개",
+      "subset": "10/01/2024-02/01/2025",
+      "domain": "coding",
+      "rawScore": 32.8,
+      "unit": "%",
+      "higherIsBetter": true,
+      "effort": "0-shot",
+      "tools": null,
+      "harness": null,
+      "environment": null,
+      "trials": null,
+      "fallbacks": null,
+      "evaluator": "Meta",
+      "publisher": "Meta",
+      "kind": "provider",
+      "publishedAt": "2025-04-05",
+      "evaluatedAt": null,
+      "source": {
+        "url": "https://huggingface.co/meta-llama/Llama-4-Scout-17B-16E-Instruct",
+        "checkedAt": "2026-10-28",
+        "scope": "Instruction tuned models: LiveCodeBench 10/01/2024-02/01/2025; 0-shot pass@1"
+      },
+      "limitations": "공식 Instruction tuned models 표의 해당 모델 열. 사전학습 모델 행과 구분. 샘플링·반복 수·평가 실행일 미공개. 날짜 범위 표기를 원문 그대로 보존; pass@1.",
+      "terms": "공개 원문에 제시된 집계 점수. 평가 데이터·코드의 재사용 조건은 별도 확인.",
+      "evaluationType": "model",
+      "agentName": null,
+      "agentVersion": null
+    },
+    {
+      "id": "western-maverick-mmmu",
+      "modelId": "meta-llama/Llama-4-Maverick-17B-128E-Instruct",
+      "modelVersion": "Llama-4-Maverick-17B-128E-Instruct",
+      "benchmark": "MMMU",
+      "benchmarkVersion": "미공개",
+      "subset": null,
+      "domain": "vision",
+      "rawScore": 73.4,
+      "unit": "%",
+      "higherIsBetter": true,
+      "effort": "0-shot",
+      "tools": null,
+      "harness": null,
+      "environment": null,
+      "trials": null,
+      "fallbacks": null,
+      "evaluator": "Meta",
+      "publisher": "Meta",
+      "kind": "provider",
+      "publishedAt": "2025-04-05",
+      "evaluatedAt": null,
+      "source": {
+        "url": "https://huggingface.co/meta-llama/Llama-4-Maverick-17B-128E-Instruct",
+        "checkedAt": "2026-10-28",
+        "scope": "Instruction tuned models: MMMU; 0-shot accuracy"
+      },
+      "limitations": "공식 Instruction tuned models 표의 해당 모델 열. 사전학습 모델 행과 구분. 샘플링·반복 수·평가 실행일 미공개.",
+      "terms": "공개 원문에 제시된 집계 점수. 평가 데이터·코드의 재사용 조건은 별도 확인.",
+      "evaluationType": "model",
+      "agentName": null,
+      "agentVersion": null
+    },
+    {
+      "id": "western-maverick-gpqa",
+      "modelId": "meta-llama/Llama-4-Maverick-17B-128E-Instruct",
+      "modelVersion": "Llama-4-Maverick-17B-128E-Instruct",
+      "benchmark": "GPQA",
+      "benchmarkVersion": "미공개",
+      "subset": "Diamond",
+      "domain": "science",
+      "rawScore": 69.8,
+      "unit": "%",
+      "higherIsBetter": true,
+      "effort": "0-shot",
+      "tools": null,
+      "harness": null,
+      "environment": null,
+      "trials": null,
+      "fallbacks": null,
+      "evaluator": "Meta",
+      "publisher": "Meta",
+      "kind": "provider",
+      "publishedAt": "2025-04-05",
+      "evaluatedAt": null,
+      "source": {
+        "url": "https://huggingface.co/meta-llama/Llama-4-Maverick-17B-128E-Instruct",
+        "checkedAt": "2026-10-28",
+        "scope": "Instruction tuned models: GPQA Diamond; 0-shot accuracy"
+      },
+      "limitations": "공식 Instruction tuned models 표의 해당 모델 열. 사전학습 모델 행과 구분. 샘플링·반복 수·평가 실행일 미공개.",
+      "terms": "공개 원문에 제시된 집계 점수. 평가 데이터·코드의 재사용 조건은 별도 확인.",
+      "evaluationType": "model",
+      "agentName": null,
+      "agentVersion": null
+    },
+    {
+      "id": "western-maverick-lcb",
+      "modelId": "meta-llama/Llama-4-Maverick-17B-128E-Instruct",
+      "modelVersion": "Llama-4-Maverick-17B-128E-Instruct",
+      "benchmark": "LiveCodeBench",
+      "benchmarkVersion": "미공개",
+      "subset": "10/01/2024-02/01/2025",
+      "domain": "coding",
+      "rawScore": 43.4,
+      "unit": "%",
+      "higherIsBetter": true,
+      "effort": "0-shot",
+      "tools": null,
+      "harness": null,
+      "environment": null,
+      "trials": null,
+      "fallbacks": null,
+      "evaluator": "Meta",
+      "publisher": "Meta",
+      "kind": "provider",
+      "publishedAt": "2025-04-05",
+      "evaluatedAt": null,
+      "source": {
+        "url": "https://huggingface.co/meta-llama/Llama-4-Maverick-17B-128E-Instruct",
+        "checkedAt": "2026-10-28",
+        "scope": "Instruction tuned models: LiveCodeBench 10/01/2024-02/01/2025; 0-shot pass@1"
+      },
+      "limitations": "공식 Instruction tuned models 표의 해당 모델 열. 사전학습 모델 행과 구분. 샘플링·반복 수·평가 실행일 미공개. 날짜 범위 표기를 원문 그대로 보존; pass@1.",
+      "terms": "공개 원문에 제시된 집계 점수. 평가 데이터·코드의 재사용 조건은 별도 확인.",
+      "evaluationType": "model",
+      "agentName": null,
+      "agentVersion": null
+    },
+    {
+      "id": "western-small31-math",
+      "modelId": "mistralai/Mistral-Small-3.1-24B-Instruct-2503",
+      "modelVersion": "3.1-2503",
+      "benchmark": "MATH",
+      "benchmarkVersion": "미공개",
+      "subset": null,
+      "domain": "math",
+      "rawScore": 69.3,
+      "unit": "%",
+      "higherIsBetter": true,
+      "effort": null,
+      "tools": null,
+      "harness": null,
+      "environment": null,
+      "trials": null,
+      "fallbacks": null,
+      "evaluator": "Mistral AI",
+      "publisher": "Mistral AI",
+      "kind": "provider",
+      "publishedAt": null,
+      "evaluatedAt": null,
+      "source": {
+        "url": "https://huggingface.co/mistralai/Mistral-Small-3.1-24B-Instruct-2503",
+        "checkedAt": "2026-10-28",
+        "scope": "Instruction Evals / Text: Small3.1 Instruct MATH"
+      },
+      "limitations": "제공자 보고 수치. 평가 날짜·반복 수·상세 하네스가 없으면 미확인으로 유지; 서로 다른 제공자의 수치를 동일 조건으로 간주하지 않음.",
+      "terms": "공개 원문에 제시된 집계 점수. 평가 데이터·코드의 재사용 조건은 별도 확인.",
+      "evaluationType": "model",
+      "agentName": null,
+      "agentVersion": null
+    },
+    {
+      "id": "western-small31-gpqa",
+      "modelId": "mistralai/Mistral-Small-3.1-24B-Instruct-2503",
+      "modelVersion": "3.1-2503",
+      "benchmark": "GPQA",
+      "benchmarkVersion": "미공개",
+      "subset": "Diamond",
+      "domain": "science",
+      "rawScore": 45.96,
+      "unit": "%",
+      "higherIsBetter": true,
+      "effort": "5-shot CoT",
+      "tools": null,
+      "harness": null,
+      "environment": null,
+      "trials": null,
+      "fallbacks": null,
+      "evaluator": "Mistral AI",
+      "publisher": "Mistral AI",
+      "kind": "provider",
+      "publishedAt": null,
+      "evaluatedAt": null,
+      "source": {
+        "url": "https://huggingface.co/mistralai/Mistral-Small-3.1-24B-Instruct-2503",
+        "checkedAt": "2026-10-28",
+        "scope": "Instruction Evals / Text: GPQA Diamond (5-shot CoT)"
+      },
+      "limitations": "제공자 보고 수치. 평가 날짜·반복 수·상세 하네스가 없으면 미확인으로 유지; 서로 다른 제공자의 수치를 동일 조건으로 간주하지 않음.",
+      "terms": "공개 원문에 제시된 집계 점수. 평가 데이터·코드의 재사용 조건은 별도 확인.",
+      "evaluationType": "model",
+      "agentName": null,
+      "agentVersion": null
+    },
+    {
+      "id": "western-small31-humaneval",
+      "modelId": "mistralai/Mistral-Small-3.1-24B-Instruct-2503",
+      "modelVersion": "3.1-2503",
+      "benchmark": "HumanEval",
+      "benchmarkVersion": "미공개",
+      "subset": null,
+      "domain": "coding",
+      "rawScore": 88.41,
+      "unit": "%",
+      "higherIsBetter": true,
+      "effort": null,
+      "tools": null,
+      "harness": null,
+      "environment": null,
+      "trials": null,
+      "fallbacks": null,
+      "evaluator": "Mistral AI",
+      "publisher": "Mistral AI",
+      "kind": "provider",
+      "publishedAt": null,
+      "evaluatedAt": null,
+      "source": {
+        "url": "https://huggingface.co/mistralai/Mistral-Small-3.1-24B-Instruct-2503",
+        "checkedAt": "2026-10-28",
+        "scope": "Instruction Evals / Text: HumanEval"
+      },
+      "limitations": "공식 표의HumanEval 집계 %. pass@k는 해당 열에 미표기; HumanEval Plus Pass@5와 혼합하지 않음. 제공자는 타 모델 수치는 기보고값 또는 자체 하네스 재평가라고 명시하므로 교차모델 동조건 비교를 보류.",
+      "terms": "공개 원문에 제시된 집계 점수. 평가 데이터·코드의 재사용 조건은 별도 확인.",
+      "evaluationType": "model",
+      "agentName": null,
+      "agentVersion": null
+    },
+    {
+      "id": "western-small32-math",
+      "modelId": "mistralai/Mistral-Small-3.2-24B-Instruct-2506",
+      "modelVersion": "3.2-2506",
+      "benchmark": "MATH",
+      "benchmarkVersion": "미공개",
+      "subset": null,
+      "domain": "math",
+      "rawScore": 69.42,
+      "unit": "%",
+      "higherIsBetter": true,
+      "effort": null,
+      "tools": null,
+      "harness": null,
+      "environment": null,
+      "trials": null,
+      "fallbacks": null,
+      "evaluator": "Mistral AI",
+      "publisher": "Mistral AI",
+      "kind": "provider",
+      "publishedAt": null,
+      "evaluatedAt": null,
+      "source": {
+        "url": "https://huggingface.co/mistralai/Mistral-Small-3.2-24B-Instruct-2506",
+        "checkedAt": "2026-10-28",
+        "scope": "Benchmark Results / STEM: Small3.2 Instruct MATH"
+      },
+      "limitations": "제공자 보고 수치. 평가 날짜·반복 수·상세 하네스가 없으면 미확인으로 유지; 서로 다른 제공자의 수치를 동일 조건으로 간주하지 않음.",
+      "terms": "공개 원문에 제시된 집계 점수. 평가 데이터·코드의 재사용 조건은 별도 확인.",
+      "evaluationType": "model",
+      "agentName": null,
+      "agentVersion": null
+    },
+    {
+      "id": "western-small32-gpqa",
+      "modelId": "mistralai/Mistral-Small-3.2-24B-Instruct-2506",
+      "modelVersion": "3.2-2506",
+      "benchmark": "GPQA",
+      "benchmarkVersion": "미공개",
+      "subset": "Diamond",
+      "domain": "science",
+      "rawScore": 46.13,
+      "unit": "%",
+      "higherIsBetter": true,
+      "effort": "5-shot CoT",
+      "tools": null,
+      "harness": null,
+      "environment": null,
+      "trials": null,
+      "fallbacks": null,
+      "evaluator": "Mistral AI",
+      "publisher": "Mistral AI",
+      "kind": "provider",
+      "publishedAt": null,
+      "evaluatedAt": null,
+      "source": {
+        "url": "https://huggingface.co/mistralai/Mistral-Small-3.2-24B-Instruct-2506",
+        "checkedAt": "2026-10-28",
+        "scope": "Benchmark Results / STEM: GPQA Diamond (5-shot CoT)"
+      },
+      "limitations": "제공자 보고 수치. 평가 날짜·반복 수·상세 하네스가 없으면 미확인으로 유지; 서로 다른 제공자의 수치를 동일 조건으로 간주하지 않음.",
+      "terms": "공개 원문에 제시된 집계 점수. 평가 데이터·코드의 재사용 조건은 별도 확인.",
+      "evaluationType": "model",
+      "agentName": null,
+      "agentVersion": null
+    },
+    {
+      "id": "western-small32-humanevalplus",
+      "modelId": "mistralai/Mistral-Small-3.2-24B-Instruct-2506",
+      "modelVersion": "3.2-2506",
+      "benchmark": "HumanEval Plus",
+      "benchmarkVersion": "미공개",
+      "subset": "Pass@5",
+      "domain": "coding",
+      "rawScore": 92.9,
+      "unit": "%",
+      "higherIsBetter": true,
+      "effort": null,
+      "tools": null,
+      "harness": null,
+      "environment": null,
+      "trials": null,
+      "fallbacks": null,
+      "evaluator": "Mistral AI",
+      "publisher": "Mistral AI",
+      "kind": "provider",
+      "publishedAt": null,
+      "evaluatedAt": null,
+      "source": {
+        "url": "https://huggingface.co/mistralai/Mistral-Small-3.2-24B-Instruct-2506",
+        "checkedAt": "2026-10-28",
+        "scope": "Benchmark Results / STEM: HumanEval Plus - Pass@5"
+      },
+      "limitations": "Pass@5임을 원문이 명시. Pass@1 HumanEval과 동일 지표가 아니며5를독립 반복평가 횟수로 추정하지 않음.",
+      "terms": "공개 원문에 제시된 집계 점수. 평가 데이터·코드의 재사용 조건은 별도 확인.",
+      "evaluationType": "model",
+      "agentName": null,
+      "agentVersion": null
+    },
+    {
+      "id": "western-magistral-aime24",
+      "modelId": "mistralai/Magistral-Small-2506",
+      "modelVersion": "2506 (Small 1.0)",
+      "benchmark": "AIME",
+      "benchmarkVersion": "2024",
+      "subset": null,
+      "domain": "math",
+      "rawScore": 70.68,
+      "unit": "%",
+      "higherIsBetter": true,
+      "effort": null,
+      "tools": null,
+      "harness": null,
+      "environment": null,
+      "trials": null,
+      "fallbacks": null,
+      "evaluator": "Mistral AI",
+      "publisher": "Mistral AI",
+      "kind": "provider",
+      "publishedAt": null,
+      "evaluatedAt": null,
+      "source": {
+        "url": "https://huggingface.co/mistralai/Magistral-Small-2506",
+        "checkedAt": "2026-10-28",
+        "scope": "Benchmark Results: Magistral Small 행"
+      },
+      "limitations": "공식Small2506 카드의Magistral Small 행. AIME은pass@1 명시; GPQA·LCB 열의집계 방식은미표기. 반복 수·실행 설정은 미공개. 카드의사용 권장 sampling값을실제 평가 설정으로 전이하지 않음.",
+      "terms": "공개 원문에 제시된 집계 점수. 평가 데이터·코드의 재사용 조건은 별도 확인.",
+      "evaluationType": "model",
+      "agentName": null,
+      "agentVersion": null
+    },
+    {
+      "id": "western-magistral-aime25",
+      "modelId": "mistralai/Magistral-Small-2506",
+      "modelVersion": "2506 (Small 1.0)",
+      "benchmark": "AIME",
+      "benchmarkVersion": "2025",
+      "subset": null,
+      "domain": "math",
+      "rawScore": 62.76,
+      "unit": "%",
+      "higherIsBetter": true,
+      "effort": null,
+      "tools": null,
+      "harness": null,
+      "environment": null,
+      "trials": null,
+      "fallbacks": null,
+      "evaluator": "Mistral AI",
+      "publisher": "Mistral AI",
+      "kind": "provider",
+      "publishedAt": null,
+      "evaluatedAt": null,
+      "source": {
+        "url": "https://huggingface.co/mistralai/Magistral-Small-2506",
+        "checkedAt": "2026-10-28",
+        "scope": "Benchmark Results: Magistral Small 행"
+      },
+      "limitations": "공식Small2506 카드의Magistral Small 행. AIME은pass@1 명시; GPQA·LCB 열의집계 방식은미표기. 반복 수·실행 설정은 미공개. 카드의사용 권장 sampling값을실제 평가 설정으로 전이하지 않음.",
+      "terms": "공개 원문에 제시된 집계 점수. 평가 데이터·코드의 재사용 조건은 별도 확인.",
+      "evaluationType": "model",
+      "agentName": null,
+      "agentVersion": null
+    },
+    {
+      "id": "western-magistral-gpqa",
+      "modelId": "mistralai/Magistral-Small-2506",
+      "modelVersion": "2506 (Small 1.0)",
+      "benchmark": "GPQA",
+      "benchmarkVersion": "미공개",
+      "subset": "Diamond",
+      "domain": "science",
+      "rawScore": 68.18,
+      "unit": "%",
+      "higherIsBetter": true,
+      "effort": null,
+      "tools": null,
+      "harness": null,
+      "environment": null,
+      "trials": null,
+      "fallbacks": null,
+      "evaluator": "Mistral AI",
+      "publisher": "Mistral AI",
+      "kind": "provider",
+      "publishedAt": null,
+      "evaluatedAt": null,
+      "source": {
+        "url": "https://huggingface.co/mistralai/Magistral-Small-2506",
+        "checkedAt": "2026-10-28",
+        "scope": "Benchmark Results: Magistral Small 행"
+      },
+      "limitations": "공식Small2506 카드의Magistral Small 행. AIME은pass@1 명시; GPQA·LCB 열의집계 방식은미표기. 반복 수·실행 설정은 미공개. 카드의사용 권장 sampling값을실제 평가 설정으로 전이하지 않음.",
+      "terms": "공개 원문에 제시된 집계 점수. 평가 데이터·코드의 재사용 조건은 별도 확인.",
+      "evaluationType": "model",
+      "agentName": null,
+      "agentVersion": null
+    },
+    {
+      "id": "western-magistral-lcb",
+      "modelId": "mistralai/Magistral-Small-2506",
+      "modelVersion": "2506 (Small 1.0)",
+      "benchmark": "LiveCodeBench",
+      "benchmarkVersion": "v5",
+      "subset": null,
+      "domain": "coding",
+      "rawScore": 55.84,
+      "unit": "%",
+      "higherIsBetter": true,
+      "effort": null,
+      "tools": null,
+      "harness": null,
+      "environment": null,
+      "trials": null,
+      "fallbacks": null,
+      "evaluator": "Mistral AI",
+      "publisher": "Mistral AI",
+      "kind": "provider",
+      "publishedAt": null,
+      "evaluatedAt": null,
+      "source": {
+        "url": "https://huggingface.co/mistralai/Magistral-Small-2506",
+        "checkedAt": "2026-10-28",
+        "scope": "Benchmark Results: Magistral Small 행"
+      },
+      "limitations": "공식Small2506 카드의Magistral Small 행. AIME은pass@1 명시; GPQA·LCB 열의집계 방식은미표기. 반복 수·실행 설정은 미공개. 카드의사용 권장 sampling값을실제 평가 설정으로 전이하지 않음.",
+      "terms": "공개 원문에 제시된 집계 점수. 평가 데이터·코드의 재사용 조건은 별도 확인.",
+      "evaluationType": "model",
+      "agentName": null,
+      "agentVersion": null
+    },
+    {
+      "id": "western-grok46-cursor",
+      "modelId": "Grok 4.6",
+      "modelVersion": "4.6",
+      "benchmark": "CursorBench",
+      "benchmarkVersion": "3.2",
+      "subset": null,
+      "domain": "coding",
+      "rawScore": 69.9,
+      "unit": "%",
+      "higherIsBetter": true,
+      "effort": "high",
+      "tools": null,
+      "harness": null,
+      "environment": null,
+      "trials": null,
+      "fallbacks": null,
+      "evaluator": "SpaceXSI (xAI)",
+      "publisher": "SpaceXSI (xAI)",
+      "kind": "provider",
+      "publishedAt": "2026-08-12",
+      "evaluatedAt": null,
+      "source": {
+        "url": "https://x.ai/news/grok-4-6",
+        "checkedAt": "2026-10-28",
+        "scope": "공식 평가표 CursorBench 행"
+      },
+      "limitations": "공식 출시표의해당 모델/effort 열. 에이전트 하네스·실행환경·반복 수·도구별 상세설정은 미공개; 모델 단독 점수로 간주하지 않음.",
+      "terms": "공개 원문에 제시된 집계 점수. 평가 데이터·코드의 재사용 조건은 별도 확인.",
+      "evaluationType": "agent",
+      "agentName": null,
+      "agentVersion": null
+    },
+    {
+      "id": "western-grok46-deepswe",
+      "modelId": "Grok 4.6",
+      "modelVersion": "4.6",
+      "benchmark": "DeepSWE",
+      "benchmarkVersion": "1.1",
+      "subset": null,
+      "domain": "coding",
+      "rawScore": 65.9,
+      "unit": "%",
+      "higherIsBetter": true,
+      "effort": "high",
+      "tools": null,
+      "harness": null,
+      "environment": null,
+      "trials": null,
+      "fallbacks": null,
+      "evaluator": "SpaceXSI (xAI)",
+      "publisher": "SpaceXSI (xAI)",
+      "kind": "provider",
+      "publishedAt": "2026-08-12",
+      "evaluatedAt": null,
+      "source": {
+        "url": "https://x.ai/news/grok-4-6",
+        "checkedAt": "2026-10-28",
+        "scope": "공식 평가표 DeepSWE v1.1 행"
+      },
+      "limitations": "공식 출시표의해당 모델/effort 열. 에이전트 하네스·실행환경·반복 수·도구별 상세설정은 미공개; 모델 단독 점수로 간주하지 않음. 최초4.6 발표표65.9%; 이후4.7 발표의비교열65.2%와조건일치가확인되지 않아 합치지 않음.",
+      "terms": "공개 원문에 제시된 집계 점수. 평가 데이터·코드의 재사용 조건은 별도 확인.",
+      "evaluationType": "agent",
+      "agentName": null,
+      "agentVersion": null
+    },
+    {
+      "id": "western-grok46-terminal",
+      "modelId": "Grok 4.6",
+      "modelVersion": "4.6",
+      "benchmark": "Terminal-Bench",
+      "benchmarkVersion": "3.0",
+      "subset": null,
+      "domain": "coding",
+      "rawScore": 26,
+      "unit": "%",
+      "higherIsBetter": true,
+      "effort": "high",
+      "tools": null,
+      "harness": null,
+      "environment": null,
+      "trials": null,
+      "fallbacks": null,
+      "evaluator": "SpaceXSI (xAI)",
+      "publisher": "SpaceXSI (xAI)",
+      "kind": "provider",
+      "publishedAt": "2026-08-12",
+      "evaluatedAt": null,
+      "source": {
+        "url": "https://x.ai/news/grok-4-6",
+        "checkedAt": "2026-10-28",
+        "scope": "공식 평가표 Terminal-Bench 행"
+      },
+      "limitations": "공식 출시표의해당 모델/effort 열. 에이전트 하네스·실행환경·반복 수·도구별 상세설정은 미공개; 모델 단독 점수로 간주하지 않음.",
+      "terms": "공개 원문에 제시된 집계 점수. 평가 데이터·코드의 재사용 조건은 별도 확인.",
+      "evaluationType": "agent",
+      "agentName": null,
+      "agentVersion": null
+    },
+    {
+      "id": "western-grok47-cursor",
+      "modelId": "grok-4.7",
+      "modelVersion": "4.7",
+      "benchmark": "CursorBench",
+      "benchmarkVersion": "4.0",
+      "subset": null,
+      "domain": "coding",
+      "rawScore": 46.3,
+      "unit": "%",
+      "higherIsBetter": true,
+      "effort": "xhigh",
+      "tools": null,
+      "harness": null,
+      "environment": null,
+      "trials": null,
+      "fallbacks": null,
+      "evaluator": "SpaceXSI (xAI)",
+      "publisher": "SpaceXSI (xAI)",
+      "kind": "provider",
+      "publishedAt": "2026-09-21",
+      "evaluatedAt": null,
+      "source": {
+        "url": "https://x.ai/news/grok-4-7",
+        "checkedAt": "2026-10-28",
+        "scope": "공식 평가표 CursorBench 행"
+      },
+      "limitations": "공식 출시표의해당 모델/effort 열. 에이전트 하네스·실행환경·반복 수·도구별 상세설정은 미공개; 모델 단독 점수로 간주하지 않음.",
+      "terms": "공개 원문에 제시된 집계 점수. 평가 데이터·코드의 재사용 조건은 별도 확인.",
+      "evaluationType": "agent",
+      "agentName": null,
+      "agentVersion": null
+    },
+    {
+      "id": "western-grok47-deepswe",
+      "modelId": "grok-4.7",
+      "modelVersion": "4.7",
+      "benchmark": "DeepSWE",
+      "benchmarkVersion": "1.1",
+      "subset": null,
+      "domain": "coding",
+      "rawScore": 71,
+      "unit": "%",
+      "higherIsBetter": true,
+      "effort": "high",
+      "tools": null,
+      "harness": null,
+      "environment": null,
+      "trials": null,
+      "fallbacks": null,
+      "evaluator": "SpaceXSI (xAI)",
+      "publisher": "SpaceXSI (xAI)",
+      "kind": "provider",
+      "publishedAt": "2026-09-21",
+      "evaluatedAt": null,
+      "source": {
+        "url": "https://x.ai/news/grok-4-7",
+        "checkedAt": "2026-10-28",
+        "scope": "공식 평가표 DeepSWE v1.1 행"
+      },
+      "limitations": "공식 출시표의해당 모델/effort 열. 에이전트 하네스·실행환경·반복 수·도구별 상세설정은 미공개; 모델 단독 점수로 간주하지 않음. 71.0%는별표 각주의high effort; 나머지표의xHigh를전이하지 않음.",
+      "terms": "공개 원문에 제시된 집계 점수. 평가 데이터·코드의 재사용 조건은 별도 확인.",
+      "evaluationType": "agent",
+      "agentName": null,
+      "agentVersion": null
+    },
+    {
+      "id": "western-grok47-terminal",
+      "modelId": "grok-4.7",
+      "modelVersion": "4.7",
+      "benchmark": "Terminal-Bench",
+      "benchmarkVersion": "4.0",
+      "subset": null,
+      "domain": "coding",
+      "rawScore": 37.6,
+      "unit": "%",
+      "higherIsBetter": true,
+      "effort": "xhigh",
+      "tools": null,
+      "harness": null,
+      "environment": null,
+      "trials": null,
+      "fallbacks": null,
+      "evaluator": "SpaceXSI (xAI)",
+      "publisher": "SpaceXSI (xAI)",
+      "kind": "provider",
+      "publishedAt": "2026-09-21",
+      "evaluatedAt": null,
+      "source": {
+        "url": "https://x.ai/news/grok-4-7",
+        "checkedAt": "2026-10-28",
+        "scope": "공식 평가표 Terminal-Bench 행"
+      },
+      "limitations": "공식 출시표의해당 모델/effort 열. 에이전트 하네스·실행환경·반복 수·도구별 상세설정은 미공개; 모델 단독 점수로 간주하지 않음.",
+      "terms": "공개 원문에 제시된 집계 점수. 평가 데이터·코드의 재사용 조건은 별도 확인.",
+      "evaluationType": "agent",
+      "agentName": null,
+      "agentVersion": null
+    },
+    {
+      "id": "western-argon-deepswe",
+      "modelId": "gemini-4-argon",
+      "modelVersion": "gemini-4-argon",
+      "benchmark": "DeepSWE",
+      "benchmarkVersion": "1.1",
+      "subset": null,
+      "domain": "coding",
+      "rawScore": 77.9,
+      "unit": "%",
+      "higherIsBetter": true,
+      "effort": "high",
+      "tools": null,
+      "harness": "mini-swe",
+      "environment": null,
+      "trials": null,
+      "fallbacks": null,
+      "evaluator": "Google",
+      "publisher": "Google",
+      "kind": "provider",
+      "publishedAt": "2026-10-13",
+      "evaluatedAt": null,
+      "source": {
+        "url": "https://deepmind.google/models/model-cards/gemini-4-argon/",
+        "checkedAt": "2026-10-28",
+        "scope": "Results: Agentic coding DeepSWE v1.1; 연결 방법론"
+      },
+      "limitations": "공식 카드와 연결된방법론: Gemini API 최고thinking, pass@1. 소규모벤치마크는여러trial 평균이나정확한횟수 미공개. 하네스가다른 타제공자 점수와직접 비교보류.",
+      "terms": "공개 원문에 제시된 집계 점수. 평가 데이터·코드의 재사용 조건은 별도 확인.",
+      "evaluationType": "agent",
+      "agentName": "mini-swe",
+      "agentVersion": null
+    },
+    {
+      "id": "western-argon-terminal",
+      "modelId": "gemini-4-argon",
+      "modelVersion": "gemini-4-argon",
+      "benchmark": "Terminal-Bench",
+      "benchmarkVersion": "4.0",
+      "subset": null,
+      "domain": "coding",
+      "rawScore": 57.4,
+      "unit": "%",
+      "higherIsBetter": true,
+      "effort": "high",
+      "tools": null,
+      "harness": null,
+      "environment": null,
+      "trials": null,
+      "fallbacks": null,
+      "evaluator": "Google",
+      "publisher": "Google",
+      "kind": "provider",
+      "publishedAt": "2026-10-13",
+      "evaluatedAt": null,
+      "source": {
+        "url": "https://deepmind.google/models/model-cards/gemini-4-argon/",
+        "checkedAt": "2026-10-28",
+        "scope": "Results: Terminal-bench4.0; 연결 방법론"
+      },
+      "limitations": "공식 카드와 연결된방법론: Gemini API 최고thinking, pass@1. 소규모벤치마크는여러trial 평균이나정확한횟수 미공개. 하네스가다른 타제공자 점수와직접 비교보류.",
+      "terms": "공개 원문에 제시된 집계 점수. 평가 데이터·코드의 재사용 조건은 별도 확인.",
+      "evaluationType": "agent",
+      "agentName": null,
+      "agentVersion": null
+    },
+    {
+      "id": "western-argon-labbench",
+      "modelId": "gemini-4-argon",
+      "modelVersion": "gemini-4-argon",
+      "benchmark": "LABBench",
+      "benchmarkVersion": "2",
+      "subset": null,
+      "domain": "science",
+      "rawScore": 88.8,
+      "unit": "%",
+      "higherIsBetter": true,
+      "effort": "high",
+      "tools": "Linux terminal; bioinfo tools; Python; R; internet",
+      "harness": null,
+      "environment": "Linux terminal, pre-installed bioinformatics tools",
+      "trials": null,
+      "fallbacks": null,
+      "evaluator": "Google",
+      "publisher": "Google",
+      "kind": "provider",
+      "publishedAt": "2026-10-13",
+      "evaluatedAt": null,
+      "source": {
+        "url": "https://deepmind.google/models/model-cards/gemini-4-argon/",
+        "checkedAt": "2026-10-28",
+        "scope": "Results: LABBench2; 연결 방법론"
+      },
+      "limitations": "공식 카드와 연결된방법론: Gemini API 최고thinking, pass@1. 소규모벤치마크는여러trial 평균이나정확한횟수 미공개. 하네스가다른 타제공자 점수와직접 비교보류.",
+      "terms": "공개 원문에 제시된 집계 점수. 평가 데이터·코드의 재사용 조건은 별도 확인.",
+      "evaluationType": "agent",
+      "agentName": null,
+      "agentVersion": null
+    },
+    {
+      "id": "western-argon-lvbench",
+      "modelId": "gemini-4-argon",
+      "modelVersion": "gemini-4-argon",
+      "benchmark": "LVBench",
+      "benchmarkVersion": "미공개",
+      "subset": null,
+      "domain": "vision",
+      "rawScore": 91.7,
+      "unit": "%",
+      "higherIsBetter": true,
+      "effort": "high",
+      "tools": "없음",
+      "harness": null,
+      "environment": "비디오 입력1FPS",
+      "trials": null,
+      "fallbacks": null,
+      "evaluator": "Google",
+      "publisher": "Google",
+      "kind": "provider",
+      "publishedAt": "2026-10-13",
+      "evaluatedAt": null,
+      "source": {
+        "url": "https://deepmind.google/models/model-cards/gemini-4-argon/",
+        "checkedAt": "2026-10-28",
+        "scope": "Results: LVBench; 연결 방법론"
+      },
+      "limitations": "Google 자체평가. 방법론은Gemini에1FPS 적용; 비교모델은API 제한으로다른프레임수 사용. 동일입력조건의타모델비교로 간주하지 않음. 최고thinking, pass@1; trial횟수 미공개.",
+      "terms": "공개 원문에 제시된 집계 점수. 평가 데이터·코드의 재사용 조건은 별도 확인.",
+      "evaluationType": "model",
+      "agentName": null,
+      "agentVersion": null
+    },
+    {
+      "id": "western-pro31-gpqa",
+      "modelId": "gemini-3.1-pro-preview",
+      "modelVersion": "gemini-3.1-pro-preview",
+      "benchmark": "GPQA",
+      "benchmarkVersion": "미공개",
+      "subset": "Diamond",
+      "domain": "science",
+      "rawScore": 94.3,
+      "unit": "%",
+      "higherIsBetter": true,
+      "effort": "high",
+      "tools": "없음",
+      "harness": null,
+      "environment": null,
+      "trials": null,
+      "fallbacks": null,
+      "evaluator": "Google",
+      "publisher": "Google",
+      "kind": "provider",
+      "publishedAt": "2026-02-19",
+      "evaluatedAt": null,
+      "source": {
+        "url": "https://deepmind.google/models/model-cards/gemini-3-1-pro/",
+        "checkedAt": "2026-10-28",
+        "scope": "Results: GPQA Diamond; No tools; High"
+      },
+      "limitations": "Gemini API gemini-3.1-pro-preview, 기본sampling, pass@1; 소규모평가는여러trial 평균이나횟수 미공개. 카드의High 열.",
+      "terms": "공개 원문에 제시된 집계 점수. 평가 데이터·코드의 재사용 조건은 별도 확인.",
+      "evaluationType": "model",
+      "agentName": null,
+      "agentVersion": null
+    },
+    {
+      "id": "western-pro31-hle",
+      "modelId": "gemini-3.1-pro-preview",
+      "modelVersion": "gemini-3.1-pro-preview",
+      "benchmark": "Humanity's Last Exam",
+      "benchmarkVersion": "미공개",
+      "subset": "full set (text + multimodal)",
+      "domain": "reasoning",
+      "rawScore": 44.4,
+      "unit": "%",
+      "higherIsBetter": true,
+      "effort": "high",
+      "tools": "없음",
+      "harness": null,
+      "environment": null,
+      "trials": null,
+      "fallbacks": null,
+      "evaluator": "Google",
+      "publisher": "Google",
+      "kind": "provider",
+      "publishedAt": "2026-02-19",
+      "evaluatedAt": null,
+      "source": {
+        "url": "https://deepmind.google/models/model-cards/gemini-3-1-pro/",
+        "checkedAt": "2026-10-28",
+        "scope": "Results: HLE full set text+MM; No tools; High"
+      },
+      "limitations": "Gemini API gemini-3.1-pro-preview, 기본sampling, pass@1; 소규모평가는여러trial 평균이나횟수 미공개. 카드의High 열.",
+      "terms": "공개 원문에 제시된 집계 점수. 평가 데이터·코드의 재사용 조건은 별도 확인.",
+      "evaluationType": "model",
+      "agentName": null,
+      "agentVersion": null
+    },
+    {
+      "id": "western-pro31-terminal",
+      "modelId": "gemini-3.1-pro-preview",
+      "modelVersion": "gemini-3.1-pro-preview",
+      "benchmark": "Terminal-Bench",
+      "benchmarkVersion": "2.0",
+      "subset": null,
+      "domain": "coding",
+      "rawScore": 68.5,
+      "unit": "%",
+      "higherIsBetter": true,
+      "effort": "high",
+      "tools": null,
+      "harness": "Terminus-2",
+      "environment": null,
+      "trials": null,
+      "fallbacks": null,
+      "evaluator": "Google",
+      "publisher": "Google",
+      "kind": "provider",
+      "publishedAt": "2026-02-19",
+      "evaluatedAt": null,
+      "source": {
+        "url": "https://deepmind.google/models/model-cards/gemini-3-1-pro/",
+        "checkedAt": "2026-10-28",
+        "scope": "Results: Terminal-Bench2.0 Terminus-2; High"
+      },
+      "limitations": "Gemini API gemini-3.1-pro-preview, 기본sampling, pass@1; 소규모평가는여러trial 평균이나횟수 미공개. 카드의High 열.",
+      "terms": "공개 원문에 제시된 집계 점수. 평가 데이터·코드의 재사용 조건은 별도 확인.",
+      "evaluationType": "agent",
+      "agentName": "Terminus",
+      "agentVersion": "2"
+    },
+    {
+      "id": "western-pro31-mmmupro",
+      "modelId": "gemini-3.1-pro-preview",
+      "modelVersion": "gemini-3.1-pro-preview",
+      "benchmark": "MMMU-Pro",
+      "benchmarkVersion": "미공개",
+      "subset": "Standard (10 options) 및 Vision 평균",
+      "domain": "vision",
+      "rawScore": 80.5,
+      "unit": "%",
+      "higherIsBetter": true,
+      "effort": "high",
+      "tools": "없음",
+      "harness": null,
+      "environment": null,
+      "trials": null,
+      "fallbacks": null,
+      "evaluator": "Google",
+      "publisher": "Google",
+      "kind": "provider",
+      "publishedAt": "2026-02-19",
+      "evaluatedAt": null,
+      "source": {
+        "url": "https://deepmind.google/models/model-cards/gemini-3-1-pro/",
+        "checkedAt": "2026-10-28",
+        "scope": "Results: MMMU-Pro No tools; High"
+      },
+      "limitations": "Gemini API gemini-3.1-pro-preview, 기본sampling, pass@1; 소규모평가는여러trial 평균이나횟수 미공개. 카드의High 열.",
+      "terms": "공개 원문에 제시된 집계 점수. 평가 데이터·코드의 재사용 조건은 별도 확인.",
+      "evaluationType": "model",
+      "agentName": null,
+      "agentVersion": null
+    },
+    {
+      "id": "western-flash3-gpqa",
+      "modelId": "gemini-3-flash-preview",
+      "modelVersion": "gemini-3-flash-preview",
+      "benchmark": "GPQA",
+      "benchmarkVersion": "미공개",
+      "subset": "Diamond",
+      "domain": "science",
+      "rawScore": 90.4,
+      "unit": "%",
+      "higherIsBetter": true,
+      "effort": null,
+      "tools": null,
+      "harness": null,
+      "environment": null,
+      "trials": null,
+      "fallbacks": null,
+      "evaluator": "Google",
+      "publisher": "Google",
+      "kind": "provider",
+      "publishedAt": "2025-12-17",
+      "evaluatedAt": null,
+      "source": {
+        "url": "https://blog.google/products-and-platforms/products/gemini/gemini-3-flash/",
+        "checkedAt": "2026-10-28",
+        "scope": "Gemini3 Flash: frontier intelligence at scale, GPQA Diamond90.4%"
+      },
+      "limitations": "공식출시 본문의수치. 벤치마크별effort·평가날짜·반복수·하네스는본문에미공개; 현재preview ID의모든업데이트에서같은점수라고보장하지 않음.",
+      "terms": "공개 원문에 제시된 집계 점수. 평가 데이터·코드의 재사용 조건은 별도 확인.",
+      "evaluationType": "model",
+      "agentName": null,
+      "agentVersion": null
+    },
+    {
+      "id": "western-flash3-hle",
+      "modelId": "gemini-3-flash-preview",
+      "modelVersion": "gemini-3-flash-preview",
+      "benchmark": "Humanity's Last Exam",
+      "benchmarkVersion": "미공개",
+      "subset": null,
+      "domain": "reasoning",
+      "rawScore": 33.7,
+      "unit": "%",
+      "higherIsBetter": true,
+      "effort": null,
+      "tools": "없음",
+      "harness": null,
+      "environment": null,
+      "trials": null,
+      "fallbacks": null,
+      "evaluator": "Google",
+      "publisher": "Google",
+      "kind": "provider",
+      "publishedAt": "2025-12-17",
+      "evaluatedAt": null,
+      "source": {
+        "url": "https://blog.google/products-and-platforms/products/gemini/gemini-3-flash/",
+        "checkedAt": "2026-10-28",
+        "scope": "Gemini3 Flash: HLE33.7% without tools"
+      },
+      "limitations": "공식출시 본문의수치. 벤치마크별effort·평가날짜·반복수·하네스는본문에미공개; 현재preview ID의모든업데이트에서같은점수라고보장하지 않음.",
+      "terms": "공개 원문에 제시된 집계 점수. 평가 데이터·코드의 재사용 조건은 별도 확인.",
+      "evaluationType": "model",
+      "agentName": null,
+      "agentVersion": null
+    },
+    {
+      "id": "western-flash3-mmmupro",
+      "modelId": "gemini-3-flash-preview",
+      "modelVersion": "gemini-3-flash-preview",
+      "benchmark": "MMMU-Pro",
+      "benchmarkVersion": "미공개",
+      "subset": null,
+      "domain": "vision",
+      "rawScore": 81.2,
+      "unit": "%",
+      "higherIsBetter": true,
+      "effort": null,
+      "tools": null,
+      "harness": null,
+      "environment": null,
+      "trials": null,
+      "fallbacks": null,
+      "evaluator": "Google",
+      "publisher": "Google",
+      "kind": "provider",
+      "publishedAt": "2025-12-17",
+      "evaluatedAt": null,
+      "source": {
+        "url": "https://blog.google/products-and-platforms/products/gemini/gemini-3-flash/",
+        "checkedAt": "2026-10-28",
+        "scope": "Gemini3 Flash: MMMU Pro81.2%"
+      },
+      "limitations": "공식출시 본문의수치. 벤치마크별effort·평가날짜·반복수·하네스는본문에미공개; 현재preview ID의모든업데이트에서같은점수라고보장하지 않음.",
+      "terms": "공개 원문에 제시된 집계 점수. 평가 데이터·코드의 재사용 조건은 별도 확인.",
+      "evaluationType": "model",
+      "agentName": null,
+      "agentVersion": null
+    }
+  ],
+  "researchLog": [
+    {
+      "id": "western-source-scout",
+      "url": "https://huggingface.co/meta-llama/Llama-4-Scout-17B-16E-Instruct",
+      "checkedAt": "2026-10-28",
+      "status": "opened",
+      "note": "공식 원문 열람. 모델 정보·숫자 또는 연결 방법론에 확인된 범위만 수록."
+    },
+    {
+      "id": "western-source-maverick",
+      "url": "https://huggingface.co/meta-llama/Llama-4-Maverick-17B-128E-Instruct",
+      "checkedAt": "2026-10-28",
+      "status": "opened",
+      "note": "공식 원문 열람. 모델 정보·숫자 또는 연결 방법론에 확인된 범위만 수록."
+    },
+    {
+      "id": "western-source-small31",
+      "url": "https://huggingface.co/mistralai/Mistral-Small-3.1-24B-Instruct-2503",
+      "checkedAt": "2026-10-28",
+      "status": "opened",
+      "note": "공식 원문 열람. 모델 정보·숫자 또는 연결 방법론에 확인된 범위만 수록."
+    },
+    {
+      "id": "western-source-small32",
+      "url": "https://huggingface.co/mistralai/Mistral-Small-3.2-24B-Instruct-2506",
+      "checkedAt": "2026-10-28",
+      "status": "opened",
+      "note": "공식 원문 열람. 모델 정보·숫자 또는 연결 방법론에 확인된 범위만 수록."
+    },
+    {
+      "id": "western-source-magistral",
+      "url": "https://huggingface.co/mistralai/Magistral-Small-2506",
+      "checkedAt": "2026-10-28",
+      "status": "opened",
+      "note": "공식 원문 열람. 모델 정보·숫자 또는 연결 방법론에 확인된 범위만 수록."
+    },
+    {
+      "id": "western-source-grok46",
+      "url": "https://x.ai/news/grok-4-6",
+      "checkedAt": "2026-10-28",
+      "status": "opened",
+      "note": "공식 원문 열람. 모델 정보·숫자 또는 연결 방법론에 확인된 범위만 수록."
+    },
+    {
+      "id": "western-source-grok47",
+      "url": "https://x.ai/news/grok-4-7",
+      "checkedAt": "2026-10-28",
+      "status": "opened",
+      "note": "공식 원문 열람. 모델 정보·숫자 또는 연결 방법론에 확인된 범위만 수록."
+    },
+    {
+      "id": "western-source-grokDocs",
+      "url": "https://docs.x.ai/developers/grok-4-7",
+      "checkedAt": "2026-10-28",
+      "status": "opened",
+      "note": "공식 원문 열람. 모델 정보·숫자 또는 연결 방법론에 확인된 범위만 수록."
+    },
+    {
+      "id": "western-source-grokRelease",
+      "url": "https://docs.x.ai/developers/release-notes",
+      "checkedAt": "2026-10-28",
+      "status": "opened",
+      "note": "공식 원문 열람. 모델 정보·숫자 또는 연결 방법론에 확인된 범위만 수록."
+    },
+    {
+      "id": "western-source-argon",
+      "url": "https://deepmind.google/models/model-cards/gemini-4-argon/",
+      "checkedAt": "2026-10-28",
+      "status": "opened",
+      "note": "공식 원문 열람. 모델 정보·숫자 또는 연결 방법론에 확인된 범위만 수록."
+    },
+    {
+      "id": "western-source-argonDocs",
+      "url": "https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/gemini/4-argon",
+      "checkedAt": "2026-10-28",
+      "status": "opened",
+      "note": "공식 원문 열람. 모델 정보·숫자 또는 연결 방법론에 확인된 범위만 수록."
+    },
+    {
+      "id": "western-source-argonMethod",
+      "url": "https://deepmind.google/models/evals-methodology/gemini-4-argon",
+      "checkedAt": "2026-10-28",
+      "status": "opened",
+      "note": "공식 원문 열람. 모델 정보·숫자 또는 연결 방법론에 확인된 범위만 수록."
+    },
+    {
+      "id": "western-source-pro31",
+      "url": "https://deepmind.google/models/model-cards/gemini-3-1-pro/",
+      "checkedAt": "2026-10-28",
+      "status": "opened",
+      "note": "공식 원문 열람. 모델 정보·숫자 또는 연결 방법론에 확인된 범위만 수록."
+    },
+    {
+      "id": "western-source-pro31Docs",
+      "url": "https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/gemini/3-1-pro",
+      "checkedAt": "2026-10-28",
+      "status": "opened",
+      "note": "공식 원문 열람. 모델 정보·숫자 또는 연결 방법론에 확인된 범위만 수록."
+    },
+    {
+      "id": "western-source-pro31Method",
+      "url": "https://deepmind.google/models/evals-methodology/gemini-3-1-pro",
+      "checkedAt": "2026-10-28",
+      "status": "opened",
+      "note": "공식 원문 열람. 모델 정보·숫자 또는 연결 방법론에 확인된 범위만 수록."
+    },
+    {
+      "id": "western-source-flash3",
+      "url": "https://blog.google/products-and-platforms/products/gemini/gemini-3-flash/",
+      "checkedAt": "2026-10-28",
+      "status": "opened",
+      "note": "공식 원문 열람. 모델 정보·숫자 또는 연결 방법론에 확인된 범위만 수록."
+    },
+    {
+      "id": "western-source-flash3Docs",
+      "url": "https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/gemini/3-flash",
+      "checkedAt": "2026-10-28",
+      "status": "opened",
+      "note": "공식 원문 열람. 모델 정보·숫자 또는 연결 방법론에 확인된 범위만 수록."
+    },
+    {
+      "id": "western-retired-grok",
+      "url": "https://docs.x.ai/developers/migration/may-15-retirement",
+      "checkedAt": "2026-10-28",
+      "status": "opened",
+      "note": "grok-4-0709 및grok-4-fast-reasoning/non-reasoning은2026-05-15 은퇴·grok-4.3 리디렉션. 정확한과거모델실행경로가아니므로모델·관측카탈로그에서제외."
+    },
+    {
+      "id": "western-grok46-guide",
+      "url": "https://docs.x.ai/developers/grok-4-6",
+      "checkedAt": "2026-10-28",
+      "status": "redirected",
+      "note": "공식release notes 링크를열었으나 /developers/grok-4-7 로리디렉션. 4.6 APIID를추정하지 않고공개버전명으로식별; route unknown."
+    },
+    {
+      "id": "western-google-deprecations",
+      "url": "https://ai.google.dev/gemini-api/docs/deprecations",
+      "checkedAt": "2026-10-28",
+      "status": "failed",
+      "note": "UnexpectedStatusCode로열람실패1회. 재시도·우회없음. 2.0/2.5 역사적점수는수집했으나현재catalog에추가하지않음."
+    },
+    {
+      "id": "western-excluded-inheritance",
+      "url": "https://huggingface.co/mistralai/Mistral-Small-3.2-24B-Instruct-2506",
+      "checkedAt": "2026-10-28",
+      "status": "opened",
+      "note": "Small3.2 성능이3.1과비슷하다는서술로점수를복사하지않음.각모델행의실제숫자만수록."
+    }
+  ]
+}
