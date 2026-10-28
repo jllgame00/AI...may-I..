@@ -13,7 +13,7 @@ export function fixture(): RecommendationSnapshot {
       features: { pdf: { status: 'supported', note: 'fixture', sources: [source] }, web: { status: 'supported', note: 'fixture', sources: [source] } },
       limits: ['fixture limit'], freeScope: 'fixture scope', upgrade: 'fixture upgrade', sources: [source],
     })),
-    mappings: modelIds.map((modelId, i) => ({ id: `choice-${i}`, planId: `plan-${i}`, modelId, modelVersion:'fixture-v1', status: 'confirmed', selectable: true, mode: 'standard', note: 'fixture', sources: [source] })),
+    mappings: modelIds.map((modelId, i) => ({ id: `choice-${i}`, planId: `plan-${i}`, modelId, modelVersion:'fixture-v1', routeKind:'chat', status: 'confirmed', selectable: true, mode: 'standard', note: 'fixture', sources: [source] })),
     cohorts: evaluations.map(evaluationId => ({ id: evaluationId, evaluationId, version: 'v1', environment: 'test-env', agentVersion: 'test-agent-v1', evaluationMode: 'standard', unit: 'points', higherIsBetter: true, evaluatedAt: '2026-01-01', modelIds })),
     observations: evaluations.flatMap(evaluationId => modelIds.map((modelId, i) => ({
       id: `${evaluationId}-${modelId}`, modelId, evaluationId, version: 'v1', environment: 'test-env', agentVersion: 'test-agent-v1', evaluationMode: 'standard', unit: 'points', higherIsBetter: true, evaluatedAt: '2026-01-01',

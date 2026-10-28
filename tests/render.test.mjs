@@ -8,154 +8,97 @@ import { createElement } from 'react'
 import { renderToStaticMarkup } from 'react-dom/server'
 
 registerHooks({
-  resolve(specifier,context,next) {
-    if (specifier.startsWith('.') && !/\.[a-z]+$/i.test(specifier)) for (const extension of ['.ts','.tsx']) {
-      const url = new URL(specifier+extension,context.parentURL)
-      if (existsSync(fileURLToPath(url))) return next(url.href,context)
-    }
+  resolve(specifier,context,next){
+    if(specifier.startsWith('.')&&!/\.[a-z]+$/i.test(specifier))for(const ext of ['.ts','.tsx']){const url=new URL(specifier+ext,context.parentURL);if(existsSync(fileURLToPath(url)))return next(url.href,context)}
     return next(specifier,context)
   },
-  load(url,context,next) {
-    if (url.endsWith('.tsx')) return { format: 'module', shortCircuit: true, source: ts.transpileModule(readFileSync(new URL(url),'utf8'),{ compilerOptions: { jsx: ts.JsxEmit.ReactJSX, module: ts.ModuleKind.ESNext, target: ts.ScriptTarget.ES2022 } }).outputText }
-    return next(url,context)
-  },
+  load(url,context,next){if(url.endsWith('.tsx'))return {format:'module',shortCircuit:true,source:ts.transpileModule(readFileSync(new URL(url),'utf8'),{compilerOptions:{jsx:ts.JsxEmit.ReactJSX,module:ts.ModuleKind.ESNext,target:ts.ScriptTarget.ES2022}}).outputText};return next(url,context)},
 })
-const { default: App } = await import('../src/App.tsx')
-const { default: Editor } = await import('../src/components/PromptEditor.tsx')
-const { default: Fields } = await import('../src/components/ConditionFields.tsx')
-const { default: Comparison } = await import('../src/components/CandidateComparison.tsx')
-const { compareCandidates,buildGuideBundle } = await import('../src/lib/aiGuide.ts')
-const { default: StageWorkspace } = await import('../src/components/StageWorkspace.tsx')
-const { planPrice } = await import('../src/lib/usageConditions.ts')
-const noop = () => {}
-it('removes budget inputs and keeps costs out of model comparison until a model is selected', () => {
-  const inputHtml=renderToStaticMarkup(createElement(App))
-  assert.doesNotMatch(inputHtml,/name="budget"|무료만 사용|무료 선호|비용 절약/)
-  const request={text:'Python 버그 수정',tasks:['coding'],overrides:{},usageRoute:'consumer'}
-  const comparison=compareCandidates(request)
-  const html=renderToStaticMarkup(createElement(Comparison,{comparison,request,selected:null,onSelect:noop,onEdit:noop}))
-  assert.doesNotMatch(html,/입력 USD|100만 토큰당|비용·무료 범위|무료만 사용|무료 선호/)
-  assert.match(html,/작업 조건/);assert.match(html,/연결 미확인/)
-  const c=comparison.recommendations.find(c=>c.model?.id==='gpt-6.1-terra')
-  const selection={default:c.id,byStage:{}},bundle=buildGuideBundle(request,selection)
-  const session={request,comparison,selection,bundle,drafts:{},checks:{},activeStageId:bundle.steps[0].id}
-  const selected=renderToStaticMarkup(createElement(StageWorkspace,{session,onStage:noop,onDraft:noop,onCandidate:noop,onReviewed:noop,onCompare:noop,onEdit:noop,onNew:noop}))
-  assert.match(selected,/선택 후 이용 조건/);assert.match(selected,/유료 구독/)
+const {default:App}=await import('../src/App.tsx')
+const {default:Editor}=await import('../src/components/PromptEditor.tsx')
+const {default:Fields}=await import('../src/components/ConditionFields.tsx')
+const {default:Comparison}=await import('../src/components/CandidateComparison.tsx')
+const {default:Workspace}=await import('../src/components/StageWorkspace.tsx')
+const {compareCandidates,buildGuideBundle,DEMO_REQUEST}=await import('../src/lib/aiGuide.ts')
+const {recommendationSnapshot:snapshot}=await import('../src/data/recommendationSnapshot.ts')
+const render=(component,props={})=>renderToStaticMarkup(createElement(component,props))
+const noop=()=>{}
+function comparisonHtml(request,data=snapshot){const comparison=compareCandidates(request,data);return {comparison,html:render(Comparison,{comparison,request,selected:null,onSelect:noop,onEdit:noop})}}
+it('renders three flow steps, broad task input and exact brand without budget or route controls',()=>{
+  const html=render(App)
+  assert.match(html,/AI\.\.may I\.\.\?/);assert.match(html,/Ai\.\.\.Khu/)
+  assert.match(html,/요청 해석 확인/);assert.match(html,/<textarea[^>]+id="request-text"/)
+  assert.match(html,/작업 입력·해석/);assert.match(html,/모델 비교·선택/);assert.match(html,/프롬프트·활용/)
+  assert.doesNotMatch(html,/name="budget"|name="priority"|usage-route|원본 파일 업로드.*type="file"/)
 })
-it('starts with exact brand, task and analysis action without budget selection', () => {
-  const html = renderToStaticMarkup(createElement(App))
-  assert.match(html,/AI\.\.may I\.\.\?/); assert.match(html,/요청 분석하고 AI 비교하기/)
-  assert.match(html,/<textarea[^>]+id="request-text"/)
-  assert.doesNotMatch(html,/name="budget"|무료만 사용|무료 선호/); assert.match(html,/결과 품질 우선/)
-  assert.doesNotMatch(html,/Super Agent|progressbar|자동 실행 완료/)
+it('renders scoped algorithm ranks and ties before alternative web choices',()=>{
+  for(const tied of [false,true]){
+    const data=structuredClone(snapshot);if(tied)data.evaluations.find(e=>e.id==='east-qwen235-2507-lcb').rawScore=48.9
+    const {html}=comparisonHtml({text:'알고리즘 문제 풀이',overrides:{}},data)
+    const featured=html.slice(html.indexOf('id="recommended-options"'),html.indexOf('<details class="other-candidates"'))
+    assert.equal((featured.match(/<article /g)??[]).length,3)
+    assert.match(featured,/LiveCodeBench v6/);assert.match(featured,/48\.9/);assert.match(featured,/45\.2/)
+    if(tied)assert.equal((featured.match(/평가 집합 공동 1위/g)??[]).length,2)
+    else assert.match(featured,/51\.8/)
+    assert.match(html,/전체 모델의 절대 순위가 아니며/)
+    assert.match(html,/정확한 평가 버전의 웹 제공/)
+  }
 })
-it('renders preserved edits, stale-condition warning and previous draft recovery', () => {
-  const html = renderToStaticMarkup(createElement(Editor,{ template: { id: 'main', title: '기본 프롬프트', text: '새 조건 초안' }, draft: { text: '직접 작성한 내용', context: 'old', previous: { text: '이전', context: 'older' } }, context: 'new', onChange: noop, primary: true }))
-  assert.match(html,/직접 작성한 내용/); assert.match(html,/아직 반영되지/); assert.match(html,/이전 초안 복구/)
+it('renders a small unranked survey shortlist and keeps all other candidates and evidence in details',()=>{
+  const {html}=comparisonHtml({text:DEMO_REQUEST,overrides:{}})
+  const featured=html.slice(html.indexOf('id="recommended-options"'),html.indexOf('<details class="other-candidates"'))
+  assert.equal((featured.match(/<article /g)??[]).length,3)
+  assert.doesNotMatch(featured,/평가 집합.*위/)
+  assert.match(featured,/수학|추론/)
+  assert.match(html,/통계.*직접 비교/)
+  assert.match(html,/이름순이며 우열을 뜻하지 않습니다/)
+  assert.match(html,/전체 비교 범위·다른 평가·출처/)
+})
+it('never exposes API or installation candidate selection and keeps every DOM selection ID unique',()=>{
+  const {comparison,html}=comparisonHtml({text:'React 오류 수정',overrides:{}})
+  const ids=[...html.matchAll(/id="choose-([^"]+)"/g)].map(m=>decodeURIComponent(m[1]))
+  assert.equal(ids.length,new Set(ids).size)
+  assert.ok(ids.every(id=>comparison.recommendations.some(c=>c.id===id&&['chat','work'].includes(c.mapping.routeKind))))
+  assert.ok(!ids.some(id=>id.startsWith('configuration:')))
+  assert.match(html,/DeepSWE 1\.1/);assert.match(html,/CursorBench 4\.0/)
+  assert.match(html,/API·설치·에이전트 전용/)
+})
+it('keeps technical facts and complete evaluation provenance behind details after the selection button',()=>{
+  const {html}=comparisonHtml({text:'알고리즘 문제 풀이',overrides:{}})
+  const card=html.slice(html.indexOf('<article'),html.indexOf('</article>'))
+  assert.ok(card.indexOf('근거·상세 보기')>card.indexOf('class="button primary"'))
+  assert.ok(card.indexOf('모델 ID:')>card.indexOf('근거·상세 보기'))
+  assert.match(card,/평가 실행 조건·비교 한계·이용 조건/)
+  assert.match(card,/https:\/\/huggingface.co/)
+})
+it('renders preserved edits, regeneration choice and previous draft recovery',()=>{
+  const html=render(Editor,{template:{id:'main',title:'요청문',text:'새 조건 초안'},draft:{text:'직접 작성한 내용',context:'old',previous:{text:'이전',context:'older'}},context:'new',onChange:noop,primary:true})
+  assert.match(html,/직접 작성한 내용/);assert.match(html,/아직 반영되지/);assert.match(html,/이전 초안 복구/);assert.match(html,/새 조건으로 초안 만들기/)
   assert.doesNotMatch(html,/새 조건 초안<\/textarea>/)
 })
-it('disables copy for unresolved placeholders and offers explicit acknowledgment', () => {
-  const html = renderToStaticMarkup(createElement(Editor,{ template: { id: 'main', title: '기본 프롬프트', text: '[자료]' }, draft: { text: '[자료]', context: 'a', previous: null }, context: 'a', onChange: noop }))
-  assert.match(html,/직접 채울 부분 1개/); assert.match(html,/빈칸을 확인했어요/)
-  assert.match(html,/<button[^>]+id="copy-main"[^>]+disabled=""/)
+it('requires acknowledgment for unfilled placeholders while retaining visible editable text',()=>{
+  const html=render(Editor,{template:{id:'main',title:'요청문',text:'[자료]'},draft:{text:'[자료]',context:'a',previous:null},context:'a',onChange:noop})
+  assert.match(html,/직접 채울 부분 1개/);assert.match(html,/빈칸을 확인했어요/);assert.match(html,/<button[^>]+id="copy-main"[^>]+disabled=""/)
 })
-it('condition edits emit only the requested field rather than freezing all inference', () => {
+it('condition edits emit only the changed field rather than freezing all inference',()=>{
   let change
-  const request = { text: '대학생에게 5분 발표 대본', overrides: {} }
-  const tree = Fields({ request, fields: ['length'], onChange: (field,value) => { change = [field,value] } })
-  const label = tree.props.children[0]
-  const input = label.props.children[1]
-  input.props.onChange({ target: { value: '3분' } })
-  assert.deepEqual(change,['length','3분'])
-  assert.deepEqual(request.overrides,{})
+  const request={text:'대학생에게 5분 발표 대본',overrides:{}}
+  const tree=Fields({request,fields:['length'],onChange:(field,value)=>{change=[field,value]}})
+  tree.props.children[0].props.children[1].props.onChange({target:{value:'3분'}})
+  assert.deepEqual(change,['length','3분']);assert.deepEqual(request.overrides,{})
 })
-it('renders exact model facts, raw evidence, critical limits and unique selection IDs in the required order', () => {
-  const request={text:'Python 버그 수정',tasks:['coding'],overrides:{},usageRoute:'consumer'}
-  const comparison=compareCandidates(request)
-  const html=renderToStaticMarkup(createElement(Comparison,{comparison,request,selected:null,onSelect:noop,onEdit:noop}))
-  assert.match(html,/GPT-6\.1 Terra/);assert.match(html,/Terminal-Bench 4\.0/);assert.match(html,/50\.3%/)
-  assert.match(html,/선택한 medium 설정과 동일한 결과로 볼 수 없음/)
-  const start=html.lastIndexOf('<article',html.indexOf('모델 ID: gpt-6.1-terra'))
-  const card=html.slice(start,html.indexOf('</article>',start))
-  const markers=['모델 ID:','현재 작업에 맞는 이유','작업 관련 성능 근거','실제 이용 경로 확인','출처·확인일','class="button primary"']
-  for(let i=1;i<markers.length;i++)assert.ok(card.indexOf(markers[i])>card.indexOf(markers[i-1]),markers[i])
-  const ids=[...html.matchAll(/id="(choose-[^"]+)"/g)].map(m=>m[1])
-  assert.equal(ids.length,new Set(ids).size)
-  assert.ok(ids.every(id=>!/[\t\n\f\r ]/.test(id)),'selection DOM IDs must contain no ASCII whitespace even when an official model identifier does')
-  assert.match(html,/이번에 확인한 정확한 모델 25개 · 실제 평가 결과 107건/)
+it('puts the editable prompt, external link, critical availability and handoff on one workspace',()=>{
+  const request={text:DEMO_REQUEST,overrides:{}},comparison=compareCandidates(request),c=comparison.recommendations[0]
+  const selection={default:c.id,byStage:{}},bundle=buildGuideBundle(request,selection)
+  const session={request,comparison,selection,bundle,drafts:{},checks:{},activeStageId:'statistics'}
+  const html=render(Workspace,{session,onStage:noop,onDraft:noop,onCandidate:noop,onReviewed:noop,onCompare:noop,onEdit:noop,onNew:noop})
+  assert.match(html,/id="prompt-statistics"/);assert.match(html,/id="copy-statistics"/);assert.match(html,/id="open-service"/)
+  assert.match(html,/정확한 모델 버전의 웹 제공|엑셀.*지원|파일.*지원/)
+  assert.match(html,/다음 단계로 가져갈 내용/);assert.match(html,/학년별 만족도 차이/)
+  assert.match(html,/id="stage-review"/);assert.match(html,/원자료·요구사항과 직접 대조/)
 })
-it('renders API billing as metered tokens and preserves missing-score labels', async () => {
-  const request={text:'Python 버그 수정',tasks:['coding'],overrides:{},usageRoute:'api'}
-  const c=compareCandidates(request).recommendations.find(c=>c.model?.id==='gpt-6.1-terra')
-  assert.match(planPrice(c),/100만 토큰당/);assert.match(planPrice(c),/월 구독료 아님/)
-  assert.doesNotMatch(planPrice(c),/\/ 월/)
-  const { EvaluationFact }=await import('../src/components/CurrentModelEvidence.tsx')
-  const { recommendationSnapshot }=await import('../src/data/recommendationSnapshot.ts')
-  const html=renderToStaticMarkup(createElement(EvaluationFact,{result:{...recommendationSnapshot.evaluations[0],rawScore:null}}))
+it('keeps missing evaluation scores distinct from zero',async()=>{
+  const {EvaluationFact}=await import('../src/components/CurrentModelEvidence.tsx')
+  const html=render(EvaluationFact,{result:{...snapshot.evaluations[0],rawScore:null}})
   assert.match(html,/점수 미확인/);assert.doesNotMatch(html,/>0%/)
-})
-it('keeps model-plan entitlement warnings and model limits visible in the stage context', () => {
-  const request={text:'Python 버그 수정',tasks:['coding'],overrides:{},usageRoute:'consumer'}
-  const comparison=compareCandidates(request)
-  const candidate=comparison.recommendations.find(c=>c.plan.id==='claude-pro' && c.model?.id==='claude-opus-5-5')
-  const selection={default:candidate.id,byStage:{}}
-  const bundle=buildGuideBundle(request,selection)
-  const session={request,comparison,selection,bundle,drafts:{},checks:{},activeStageId:bundle.steps[0].id}
-  const html=renderToStaticMarkup(createElement(StageWorkspace,{session,onStage:noop,onDraft:noop,onCandidate:noop,onReviewed:noop,onCompare:noop,onEdit:noop,onNew:noop}))
-  const context=html.slice(html.indexOf('class="stage-context"'),html.indexOf('</section>',html.indexOf('class="stage-context"')))
-  assert.match(context,/정확한 평가 모델·버전·선택 모드와 플랜 연결 미확인/)
-  assert.match(context,/thinking 끄기 불가/)
-})
-it('does not describe unconfirmed exact-model selection as impossible', () => {
-  const request={text:'환영 이메일',tasks:['writing'],overrides:{},}
-  const comparison=compareCandidates(request)
-  const html=renderToStaticMarkup(createElement(Comparison,{comparison,request,selected:null,onSelect:noop,onEdit:noop}))
-  assert.doesNotMatch(html,/모델 선택 불가/)
-})
-it('renders provider coding cohorts as separate configuration comparisons with real selection handlers',async()=>{
-  const {default:Groups}=await import('../src/components/EvaluationComparisons.tsx')
-  const candidates=compareCandidates({text:'코드 오류 수정',tasks:['coding'],overrides:{}}).recommendations
-  const html=renderToStaticMarkup(createElement(Groups,{candidates,onSelect:noop}))
-  assert.match(html,/CursorBench 4\.0/);assert.match(html,/DeepSWE 1\.1/);assert.match(html,/Terminal-Bench 4\.0/)
-  assert.match(html,/제공사 발표이며 독립 평가가 아닙니다/)
-  assert.match(html,/Grok 4\.7 · high · 71%/)
-  let chosen=null
-  const tree=Groups({candidates,onSelect:id=>{chosen=id}})
-  const section=tree.props.children[0][0]
-  const rows=section.props.children.find(c=>c?.type==='ol').props.children
-  rows[0].props.children.find(c=>c?.type==='button').props.onClick()
-  assert.equal(chosen,'configuration:western-grok47-cursor')
-})
-it('shows exact checkpoint use without inventing a consumer plan or free API price',()=>{
-  const request={text:'코드 오류 수정',tasks:['coding'],overrides:{}}
-  const comparison=compareCandidates(request)
-  const c=comparison.recommendations.find(c=>c.model?.id==='deepseek-ai/DeepSeek-R1-0528'&&c.mapping.routeKind==='self-hosted'&&!c.configuration)
-  const selection={default:c.id,byStage:{}}
-  const bundle=buildGuideBundle(request,selection)
-  const html=renderToStaticMarkup(createElement(StageWorkspace,{session:{request,comparison,selection,bundle,drafts:{},checks:{}},onStage:noop,onDraft:noop,onCandidate:noop,onReviewed:noop,onCompare:noop,onEdit:noop,onNew:noop}))
-  assert.match(html,/소비자 구독 플랜 연결 미확인/);assert.match(html,/가중치 체크포인트/)
-  assert.match(html,/공식 가중치 · 직접 설치 필요/);assert.match(html,/가격·사용 한도 미확인/)
-  assert.doesNotMatch(html,/무료 플랜 · AI 구독료 없음/)
-})
-it('groups easier access separately from performance and retains installation and unknown paths',()=>{
-  const request={text:'코드 오류 수정',tasks:['coding'],overrides:{}}
-  const comparison=compareCandidates(request)
-  const html=renderToStaticMarkup(createElement(Comparison,{comparison,request,selected:null,onSelect:noop,onEdit:noop}))
-  const group=(start,end)=>html.slice(html.indexOf(start),html.indexOf(end,html.indexOf(start)))
-  assert.equal((group('web-candidates','API 설정 필요 ·').match(/class="candidate-card/g)??[]).length,4)
-  assert.equal((group('api-candidates','id="pending-options"').match(/class="candidate-card/g)??[]).length,18)
-  assert.match(html,/직접 설치 필요 · 15개 경로/)
-  assert.match(html,/정확 버전 이용 경로 미확인 · 1개/)
-  assert.match(html,/107건은 서로 다른 평가·버전·시점/)
-  assert.match(html,/과거 고정 체크포인트/);assert.match(html,/FP8/)
-  const ids=[...html.matchAll(/id="(choose-[^"]+)"/g)].map(m=>m[1])
-  assert.equal(ids.length,new Set(ids).size)
-})
-it('reports AA public integration separately from accessible originals and API authentication',async()=>{
-  const {default:AAStatus}=await import('../src/components/AAConnectionStatus.tsx')
-  const html=renderToStaticMarkup(createElement(AAStatus))
-  assert.match(html,/현재 앱 수치 연결 0건/)
-  assert.match(html,/실제 API 응답이 없어요/)
-  assert.match(html,/모델 Coding Index 필드와 에이전트 Coding Agent Index는 다르고/)
-  assert.match(html,/모든 공개 활용을 금지한다는 뜻은 아니에요/)
 })

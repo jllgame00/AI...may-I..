@@ -1,22 +1,26 @@
 # 문서 구분
 
-## 현재 제품
+현재 제품 기준은 2026-10-28~29 핵심 앱 재구성입니다. 아래 과거 문서의 당시 수량·정책·검증 결과를 현재 성과로 해석하지 않습니다.
 
-- [정확한 모델 추천 기준·실제 자료·갱신·이번 검증](model-recommendation-methodology.md): 기존 흐름을 유지한 모델 확장. 5개 모델·13건 실제 평가와 환경상 미실행 검증 구분.
-- [AI 비교·선택·단계별 활용 최종 기록](final-ai-guide-application.md): 마지막 지시의 현재 구현·복구·검증.
+## 현재 구현
 
-- [프롬프트 전용 전환 기록](prompt-workspace-application.md): 이후 취소된 방향의 당시 구현·검증 이력이며 현재 제품 명세가 아님.
-- 프로젝트 루트 [README](../README.md): 현재 기능과 실행 방법.
+- [핵심 앱 구조·추천·실수집·검증·남은 실행](core-implementation.md)
+- [설문 4단계와 코딩·홍보 글의 실제 프롬프트 전문](generated-prompt-examples.md)
+- [현재 코드로 계산한 추천 예시 전체](recommendation-examples.json)
+- [핵심 재구성 작업 계획과 검증 기록](superpowers/plans/2026-10-28-core-rebuild.md)
+- [프로젝트 README와 실행 명령](../README.md)
 
-## 과거 조사·설계·제작 증빙
+## 보존한 연구와 이전 구현 기록
 
-아래는 이전 제품 방향의 기록이며, 현재 기능·지원 모델·가격·성능 또는 이번 검증 결과로 사용하지 않는다. 원문과 실제 확인일을 보존한다.
+모델·평가·접근·출처 자료와 유효한 비교·수집·검증 코드는 현재 구현에 재사용합니다. 연구 기록의 시점과 현재 서비스 제공 여부는 구분합니다.
 
-- `AI_may_I_개발자료_조사비교_20261028.docx`, `AI_may_I_정보구조_UIUX_Codex설계명세.docx`: 사용자 제공 원본.
-- `chatkhu-design-application.md`, `chatkhu-contrast-check.json`: 이전 조사·카탈로그·작업 흐름 적용 기록과 당시 색상 계산.
-- `workflow-direction-application.md`: 중단된 단계별 모델 추천 방향의 진행 기록. 해당 계획은 폐기됐으며 구현 완료 증빙이 아니다.
-- `recommendation-methodology.md`, `recommendation-implementation-report.md`: 과거 추천 엔진 정책·구현·검증.
-- `benchmark-data-audit.md`, `arena-public-votes-methodology.md`: 과거 평가 자료·출처·방법론.
-- [이전 앱 보존본](../archive/README.md): 당시 README·소스·데이터·테스트.
+- [모델 카탈로그와 당시 평가 목록](model-catalog-snapshot.md), [모델 이용 경로 조사](model-access-review.md)
+- [AA 인증·권한 조사와 전용 도구](aa-data-integration.md)
+- [이전 근거 기반 순위 기록](evidence-ranking-report.md), [이전 웹 채팅 프롬프트 수정 기록](web-chat-prompt-usability.md)
+- [이전 카드 수정 기록](request-card-repair-report.md), [이전 모델 확장 방법론](model-recommendation-methodology.md)
+- [이전 최종 가이드 구현 기록](final-ai-guide-application.md), [취소된 프롬프트 전용 방향](prompt-workspace-application.md)
+- [이전 화면·README 보존본](../archive/2026-10-core-rebuild/README.md), [더 오래된 앱 보존본](../archive/README.md)
+- `chatkhu-design-application.md`, `chatkhu-contrast-check.json`, `workflow-direction-application.md`, `recommendation-methodology.md`, `recommendation-implementation-report.md`, `benchmark-data-audit.md`, `arena-public-votes-methodology.md`: 당시 기획·조사·구현·평가 기록
+- `AI_may_I_개발자료_조사비교_20261028.docx`, `AI_may_I_정보구조_UIUX_Codex설계명세.docx`: 사용자 제공 원본 보존
 
-Super Agent 비교 프로토콜은 새 제품 범위에서 제외되어 작성하지 않았다. 기존 공식 데이터·비교 엔진·과거 평가 참고 중 필요한 부분은 최종 지시에 따라 현재 실행 코드에 복구했다. 과거 평가는 현재 추천 계산에 반영하지 않는다.
+ChatKHU는 과거 기획·조사 도구, Codex는 현재 구현·검증 도구로 기록합니다. 제품에 ChatKHU 호출이나 자동 AI 실행을 구현한 것은 아닙니다. Super Agent 비교 실험이나 통계 오류 감소 효과 검증은 수행하지 않았습니다.

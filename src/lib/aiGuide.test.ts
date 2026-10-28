@@ -6,7 +6,7 @@ import { syncDrafts, editDraft } from './promptSession.ts'
 import { fixture } from './fixtures/recommendation.ts'
 import type { PromptRequest } from '../types'
 
-const demo: PromptRequest = { text: '설문 통계값으로 결과를 분석하고 A4 4장 보고서를 써야 해. 과제라 비용은 쓰고 싶지 않아.', overrides: {}, priority: 'quality' }
+const demo: PromptRequest = { text: '설문 통계값으로 결과를 분석하고 A4 4장 보고서를 써야 해. 과제라 비용은 쓰고 싶지 않아.', overrides: {} }
 it('detects analysis and writing, asks data form without assuming file upload', () => {
   const a = interpretTask(demo)
   assert.deepEqual(a.tasks,['analysis','writing']); assert.equal(a.needsInputMode,true)
@@ -14,13 +14,14 @@ it('detects analysis and writing, asks data form without assuming file upload', 
   assert.deepEqual(interpretTask({ ...demo,inputMode:'summary' }).requiredFeatures,[])
   assert.ok(interpretTask({ ...demo,inputMode:'file' }).requiredFeatures.includes('upload'))
 })
-it('compares task features without price-only holds or aggregate quality scores', () => {
+it('compares web task features without price-only holds or aggregate scores',()=>{
   const result=compareCandidates({...demo,inputMode:'summary'})
-  assert.equal(result.recommendations.filter(c=>!c.accessAlternative).length,30)
-  assert.ok(result.recommendations.every(c=>c.suitability==='조건 비교 가능' && c.score===null))
-  assert.equal(result.recommendations.filter(c=>c.model&&!c.accessAlternative).length,25)
-  assert.equal(compareCandidates(demo).recommendations.some(c=>c.suitability==='조건 비교 가능'),false)
+  assert.ok(result.recommendations.length>0)
+  assert.ok(result.recommendations.every(c=>['chat','work'].includes(c.mapping.routeKind!)&&c.score===null))
+  assert.ok(result.recommendations.some(c=>c.suitability==='조건 비교 가능'))
+  assert.ok(result.recommendations.filter(c=>c.accessStatus==='연결 미확인').every(c=>c.suitability==='확인 후 선택'))
 })
+
 it('keeps unsupported and unknown essential features separate with no forced choice', () => {
   const data = structuredClone(recommendationSnapshot)
   data.plans[0].features.upload = { status:'unsupported',note:'test',sources:data.plans[0].sources }
@@ -35,7 +36,7 @@ it('prepares four survey stages with explicit inputs, checks, handoff and no inv
   assert.deepEqual(bundle.steps.map(s => s.id),['statistics','interpretation','report','review'])
   for (const s of bundle.steps) {
     assert.ok(s.purpose && s.inputs.length && s.checks.length && s.handoff.length)
-    assert.match(s.text,/\[.*\]/); assert.ok(s.text.includes(c.service.name) && s.text.includes(c.plan.name))
+    assert.match(s.text,/\[.*\]/); assert.doesNotMatch(s.text,/선택한 AI|플랜|모델 ID/)
     assert.doesNotMatch(s.text,/표본\s*수\s*[:=]\s*\d|p\s*[=<]\s*0\./)
   }
   assert.match(bundle.steps[2].text,/A4\s*4장/)
@@ -48,8 +49,7 @@ it('uses a common selection until the user explicitly changes one stage', () => 
   assert.equal(stageCandidate(selection,'interpretation',cs)?.id,cs[1].id)
   assert.equal(stageCandidate(selection,'report',cs)?.id,cs[0].id)
   const b = buildGuideBundle(request,selection)
-  assert.ok(b.steps[1].text.includes(cs[1].service.name))
-  assert.ok(b.steps[2].text.includes(cs[0].service.name))
+  assert.match(b.steps[1].text,/관찰된 결과/);assert.match(b.steps[2].text,/보고서 초안/)
 })
 it('keeps edited drafts stale after changing AI rather than overwriting them', () => {
   const request = { ...demo,inputMode:'summary' as const }, cs = compareCandidates(request).recommendations
@@ -69,7 +69,7 @@ it('does not discard explicit PDF/file needs merely because the task is writing'
   const a=interpretTask({ ...demo,text:'PDF 파일 첨부해서 이메일을 작성하고 싶어요.' })
   assert.equal(a.inputMode,'file');assert.ok(a.needsInputMode)
   assert.ok(a.requiredFeatures.includes('upload'));assert.ok(a.requiredFeatures.includes('pdf'))
-  assert.ok(interpretTask({ ...demo,inputMode:'file',requiredFeatures:[] }).requiredFeatures.includes('upload'))
+  assert.deepEqual(interpretTask({ ...demo,inputMode:'file',requiredFeatures:[] }).requiredFeatures,[])
   assert.equal(interpretTask({ ...demo,text:'환영 이메일',inputMode:'file' }).needsInputMode,true)
 })
 it('branches file-mode survey inputs and honors explicit report overrides including unknown length', () => {
@@ -77,15 +77,16 @@ it('branches file-mode survey inputs and honors explicit report overrides includ
   const c=compareCandidates(request).recommendations[0]
   const b=buildGuideBundle(request,{default:c.id,byStage:{}})
   assert.match(b.steps[0].inputs.join(' '),/파일/)
-  assert.match(b.steps[0].text,/파일.*권한|권한.*파일/)
+  assert.match(b.steps[0].text,/분석을 수행/)
   assert.match(b.steps[2].text,/결과 형식: 표/)
-  assert.match(b.steps[2].text,/분량: 미정/)
-  assert.match(b.steps[2].text,/원래 요청보다 우선/)
+  assert.match(b.steps[2].text,/분량은 미정/)
+  assert.doesNotMatch(b.steps[2].text.split('원문의 조사 배경')[1],/A4 4장/)
+  assert.ok(b.steps[2].text.includes(request.text),'원문은 손상 없이 별도 맥락으로 유지')
 })
 it('gates cached comparison and review after request edits while preserving drafts and selections', () => {
   const request={ ...demo,inputMode:'summary' as const },comparison=compareCandidates(request)
   const s={request,bundle:null,drafts:{statistics:{text:'직접 편집',context:'old',previous:null}},checks:{},comparison,selection:{default:comparison.recommendations[0].id,byStage:{}},reviewed:{statistics:true}}
-  const changed=updateGuideRequest(s,{...request,usageRoute:'api'})
+  const changed=updateGuideRequest(s,{...request,overrides:{length:'2쪽'}})
   assert.equal(comparisonMatches(changed.request,comparison),false)
   assert.equal(changed.reviewed?.statistics,false)
   assert.equal(changed.drafts.statistics.text,'직접 편집')

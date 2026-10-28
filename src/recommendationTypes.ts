@@ -1,15 +1,14 @@
 export type ServiceId = 'chatgpt' | 'gemini' | 'claude' | 'catalog'
 export type CatalogServiceId = ServiceId | 'kimi' | 'grok' | 'deepseek' | 'qwen' | 'perplexity' | 'mistral' | 'copilot' | 'notebooklm' | 'firefly' | 'runway'
-export type Priority = 'quality' | 'ease' | 'speed'
 export type TaskKind = 'research' | 'summary' | 'writing' | 'coding' | 'image' | 'unknown'
 export type ScoringTask = 'analysis' | 'writing' | 'coding'
+export type CodingIntent = 'algorithm' | 'application' | 'repository' | 'unspecified'
 export type FeatureId = 'pdf' | 'web' | 'upload' | 'imageInput' | 'spreadsheet' | 'code' | 'imageGeneration'
-export type UsageRoute = 'consumer' | 'chat' | 'work' | 'api'
 export type StepKind = ScoringTask | 'outline' | 'image' | 'image-generation' | 'unknown'
 export type View = 'input' | 'conditions' | 'catalog' | 'results' | 'workflow' | 'prompts'
 export type ConditionField = 'tasks' | 'requiredFeatures' | 'pdfType' | 'volume' | 'duration' | 'output'
 export interface RequestInput {
-  text: string; priority: Priority
+  text: string
   tasks?: ScoringTask[]
   requiredFeatures?: FeatureId[]
   pdfType?: 'text' | 'scan' | 'unknown'
@@ -18,7 +17,6 @@ export interface RequestInput {
   output?: string
   experience?: 'detailed' | 'brief' | 'unknown'
   featureScope?: 'stage' | 'all'
-  usageRoute?: UsageRoute
   conditionSources?: Partial<Record<ConditionField,'user' | 'inferred' | 'unknown'>>
 }
 export interface Source { url: string; checkedAt: string; scope?: string; access?: string }
@@ -104,6 +102,41 @@ export interface Recommendation {
   accessStatus: '연결 근거 확인' | '연결 미확인'
 }
 export interface ExcludedCandidate { plan: ServicePlan; reasons: string[] }
+export interface TaskRecommendationEntry {
+  candidate: Recommendation
+  rank: number | null
+  tied: boolean
+  evaluation: ModelEvaluation | null
+  relevance: 'direct' | 'indirect' | 'features'
+  reason: string
+  relation: string
+  limitation: string
+  equal?: boolean
+}
+export interface EvidenceComparisonSet {
+  id:string; benchmark:string; version:string; period:string|null; publisher:string
+  modelCount:number; kind:'source-table'|'same-conditions'; entries:TaskRecommendationEntry[]
+  fit:number; selectionReason:string; limitation:string; evaluatedAt:string|null
+}
+export interface ModelCoverage {
+  modelId:string; modelName:string; category:'representative'|'alternative'|'insufficient'
+  reason:string; evaluations:ModelEvaluation[]
+}
+export interface TaskRecommendationDecision {
+  mode: 'ranked' | 'review'
+  basis: string
+  scope: string
+  entries: TaskRecommendationEntry[]
+  gaps: string[]
+  examinedCount: number
+  relevantCount: number
+  researchSources: Source[]
+  representative: EvidenceComparisonSet | null
+  groups: EvidenceComparisonSet[]
+  alternatives: TaskRecommendationEntry[]
+  coverage: ModelCoverage[]
+  codingIntent: CodingIntent | null
+}
 export interface WorkflowStep {
   id: string; title: string; description: string; output: string; kind: ScoringTask | 'image'
   serviceId: ServiceId | null; candidateId: string | null

@@ -1,159 +1,74 @@
-// Run against a current build: node tests/browser-check.mjs
-// Requires a preview at :4173 and an isolated Chromium debugging session at :9222.
-// No browser library or production dependency is installed by this check.
+// Manual integration runner. Requires preview :4173 and an isolated Chromium
+// debugging session :9222. Never targets a production service or sends prompts.
 import assert from 'node:assert/strict'
-import { mkdir, writeFile } from 'node:fs/promises'
-
-const base = 'http://127.0.0.1:4173/AI...may-I../'
-const target = await (await fetch('http://127.0.0.1:9222/json/new?'+encodeURIComponent(base),{ method: 'PUT' })).json()
-const ws = new WebSocket(target.webSocketDebuggerUrl)
-await new Promise((resolve,reject) => { ws.addEventListener('open',resolve,{ once: true }); ws.addEventListener('error',reject,{ once: true }) })
-const pending = new Map(); let sequence = 0
-const runtimeErrors = []
-ws.addEventListener('message',event => { const data = JSON.parse(event.data); if (data.method === 'Runtime.exceptionThrown') runtimeErrors.push(data.params.exceptionDetails.text); if (!data.id) return; const task = pending.get(data.id); pending.delete(data.id); if (data.error) task?.reject(new Error(JSON.stringify(data.error))); else task?.resolve(data.result) })
-function send(method,params={}) { const id = ++sequence; return new Promise((resolve,reject) => { pending.set(id,{ resolve,reject }); ws.send(JSON.stringify({ id,method,params })) }) }
-async function evaluate(expression) { const result = await send('Runtime.evaluate',{ expression, returnByValue: true, awaitPromise: true, userGesture: true }); if (result.exceptionDetails) throw new Error(result.exceptionDetails.exception?.description ?? result.exceptionDetails.text); return result.result.value }
-async function until(expression) { for (let i=0;i<100;i++) { if (await evaluate(expression)) return; await new Promise(resolve => setTimeout(resolve,50)) }; throw new Error('Browser condition timed out: '+expression) }
-async function click(selector) { await evaluate(`document.querySelector(${JSON.stringify(selector)}).click()`); await new Promise(resolve => setTimeout(resolve,90)) }
-async function input(selector,value) { await evaluate(`(() => { const element=document.querySelector(${JSON.stringify(selector)}); const prototype=element.tagName==='TEXTAREA'?HTMLTextAreaElement.prototype:HTMLInputElement.prototype; Object.getOwnPropertyDescriptor(prototype,'value').set.call(element,${JSON.stringify(value)}); element.dispatchEvent(new Event('input',{bubbles:true})); })()`); await new Promise(resolve => setTimeout(resolve,60)) }
-async function key(keyName,code,virtualKey) { await send('Input.dispatchKeyEvent',{ type: 'keyDown',key:keyName,code,windowsVirtualKeyCode:virtualKey,...(keyName==='Enter' ? { text: '\r', unmodifiedText: '\r' } : {}) }); await send('Input.dispatchKeyEvent',{ type:'keyUp',key:keyName,code,windowsVirtualKeyCode:virtualKey }); await new Promise(resolve => setTimeout(resolve,50)) }
-async function tabTo(id) { for (let i=0;i<160;i++) { if (await evaluate('document.activeElement.id') === id) return; await key('Tab','Tab',9) }; throw new Error('Keyboard target unreachable: '+id) }
-const results=[]
-try {
-  await send('Page.enable');await send('Runtime.enable');await send('Page.bringToFront')
+import { mkdir,writeFile } from 'node:fs/promises'
+const base=process.env.QA_BASE_URL??'http://127.0.0.1:4173/AI...may-I../'
+assert.equal(new URL(base).hostname,'127.0.0.1')
+const survey='전공 수업에서 대학생 120명의 설문 결과를 분석해서 A4 4장짜리 보고서를 써야 해. 데이터는 엑셀에 있고, 학년별 만족도 차이와 공부 시간·성적의 관계를 보고 싶어. 통계를 잘 몰라서 분석 방법과 결과 해석도 쉽게 설명받고 싶어.'
+const target=await(await fetch('http://127.0.0.1:9222/json/new?'+encodeURIComponent(base),{method:'PUT'})).json()
+const ws=new WebSocket(target.webSocketDebuggerUrl)
+await new Promise((resolve,reject)=>{ws.addEventListener('open',resolve,{once:true});ws.addEventListener('error',reject,{once:true})})
+const pending=new Map(),errors=[];let sequence=0
+ws.addEventListener('message',event=>{const d=JSON.parse(event.data);if(d.method==='Runtime.exceptionThrown')errors.push(d.params.exceptionDetails.text);if(d.id){const p=pending.get(d.id);pending.delete(d.id);d.error?p?.reject(new Error(JSON.stringify(d.error))):p?.resolve(d.result)}})
+function send(method,params={}){return new Promise((resolve,reject)=>{const id=++sequence;pending.set(id,{resolve,reject});ws.send(JSON.stringify({id,method,params}))})}
+async function evaluate(expression){const r=await send('Runtime.evaluate',{expression,returnByValue:true,awaitPromise:true,userGesture:true});if(r.exceptionDetails)throw new Error(r.exceptionDetails.exception?.description??r.exceptionDetails.text);return r.result.value}
+async function until(expression){for(let i=0;i<100;i++){if(await evaluate(expression))return;await new Promise(r=>setTimeout(r,50))}throw new Error('Timed out: '+expression)}
+async function click(selector){await evaluate(`document.querySelector(${JSON.stringify(selector)}).click()`);await new Promise(r=>setTimeout(r,80))}
+async function input(selector,text){await evaluate(`(()=>{let e=document.querySelector(${JSON.stringify(selector)});Object.getOwnPropertyDescriptor(e.tagName==='TEXTAREA'?HTMLTextAreaElement.prototype:HTMLInputElement.prototype,'value').set.call(e,${JSON.stringify(text)});e.dispatchEvent(new Event('input',{bubbles:true}));})()`);await new Promise(r=>setTimeout(r,50))}
+async function key(name,code,vk){await send('Input.dispatchKeyEvent',{type:'keyDown',key:name,code,windowsVirtualKeyCode:vk,...(name==='Enter'?{text:'\r'}:{})});await send('Input.dispatchKeyEvent',{type:'keyUp',key:name,code,windowsVirtualKeyCode:vk})}
+async function tabTo(id){for(let i=0;i<100;i++){if(await evaluate('document.activeElement.id')===id)return;await key('Tab','Tab',9)}throw new Error('Keyboard target unreachable: '+id)}
+async function screenshot(name,width){await send('Emulation.setDeviceMetricsOverride',{width,height:900,deviceScaleFactor:1,mobile:width===320});assert.equal(await evaluate('document.documentElement.scrollWidth<=document.documentElement.clientWidth'),true);await writeFile(`.qa/${name}-${width}.png`,Buffer.from((await send('Page.captureScreenshot',{format:'png',captureBeyondViewport:true})).data,'base64'))}
+async function start(text){await input('#request-text',text);await click('#create-prompt');await until(`!!document.getElementById('finish-conditions')`);assert.equal(await evaluate(`document.getElementById('request-text').value`),text);await click('#finish-conditions');await until(`!!document.getElementById('recommended-options')`)}
+async function choose(){await click('#recommended-options .candidate-card button');await until(`!!document.querySelector('.primary-editor textarea')`)}
+async function copyCurrent(){const text=await evaluate(`document.querySelector('.primary-editor textarea').value`);if(await evaluate(`!!document.querySelector('.primary-editor .missing-fields input')`))await click('.primary-editor .missing-fields input');await click('.primary-editor .editor-heading button');await until(`document.querySelector('.copy-feedback').innerText.includes('클립보드에 복사')`);assert.equal((await evaluate('navigator.clipboard.readText()')).replaceAll('\r\n','\n'),text);return text}
+const results=[],prompts={}
+try{
+  await send('Page.enable');await send('Runtime.enable');await send('Page.bringToFront');await mkdir('.qa',{recursive:true})
   await until(`!!document.getElementById('request-text')`)
   await click('#create-prompt');assert.equal(await evaluate('document.activeElement.id'),'request-text')
-  await click('#example-0');assert.equal(await evaluate('location.hash'),'')
-  assert.equal(await evaluate(`!!document.querySelector('input[name=budget]')`),false)
-  assert.match(await evaluate(`document.querySelector('input[name=priority]:checked').parentElement.innerText`),/결과 품질/)
-  await click('#create-prompt');await until(`location.hash==='#questions'`)
-  assert.equal(await evaluate(`document.getElementById('mode-unknown').checked`),true)
-  assert.equal(await evaluate(`document.querySelector('.analysis-panel').innerText.includes('자료 분석')`),true)
-  await click('#mode-summary');await click('#finish-conditions');await until(`location.hash==='#compare'`)
-  assert.equal(await evaluate(`document.querySelectorAll('.model-candidates .candidate-card').length`),22)
-  assert.equal(await evaluate(`Array.from(document.querySelectorAll('.model-candidates .candidate-card .candidate-status')).every(x=>x.innerText.includes('조건 비교 가능'))`),true)
-  results.push('Task analysis asks data form; summary input exposes 22 easier-access model cards with advanced installation alternatives with separate task/access status and no budget input.')
-  await click('#choose-chatgpt-plus-gpt-6.1-terra-work-medium');await until(`!!document.getElementById('prompt-statistics')`)
-  assert.equal(await evaluate(`document.querySelectorAll('.stage-list li').length`),4)
-  for(const text of ['통계 분석','결과 해석','보고서 초안','검토'])assert.equal(await evaluate(`document.querySelector('.stage-list').innerText.includes(${JSON.stringify(text)})`),true)
-  assert.match(await evaluate(`document.getElementById('prompt-statistics').value`),/ChatGPT · Plus.*gpt-6\.1-terra/)
-  assert.equal(await evaluate(`document.getElementById('open-service').href`),'https://chatgpt.com/')
-  assert.equal(await evaluate(`document.getElementById('copy-statistics').disabled`),true)
-  assert.equal(await evaluate(`document.getElementById('next-stage').disabled`),true)
-  await click('.primary-editor .missing-fields input')
+  assert.equal(await evaluate(`!!document.querySelector('input[name=priority],input[name=budget],#usage-route,input[type=file]')`),false)
+  await screenshot('input',1440);await screenshot('input',320)
+  await start(survey)
+  await screenshot('survey-comparison',1440);await screenshot('survey-comparison',320)
+  const cards=await evaluate(`Array.from(document.querySelectorAll('#recommended-options .candidate-card')).map(c=>({height:c.getBoundingClientRect().height,font:getComputedStyle(c.querySelector('.candidate-limit')).fontSize,open:c.querySelector('details').open}))`)
+  assert.equal(cards.length,3);assert.ok(cards.every(c=>!c.open&&parseFloat(c.font)>=16&&c.height<800))
+  await choose();assert.equal(await evaluate(`document.querySelectorAll('.stage-list li').length`),4)
   await send('Browser.grantPermissions',{origin:new URL(base).origin,permissions:['clipboardReadWrite','clipboardSanitizedWrite']})
-  await click('#copy-statistics');await until(`document.querySelector('.primary-editor .copy-feedback').innerText.includes('클립보드에 복사')`)
-  assert.equal((await evaluate('navigator.clipboard.readText()')).replaceAll('\r\n','\n'),await evaluate(`document.getElementById('prompt-statistics').value`))
-  assert.equal(await evaluate(`document.getElementById('review-stage').checked`),false)
-  results.push('Four survey stages, matching exact Terra Work path, placeholder guard and real browser clipboard read/write work; copying never checks review.')
-  await input('#prompt-statistics','사용자가 편집한 통계 단계 초안')
-  await send('Browser.resetPermissions');await send('Browser.setPermission',{origin:new URL(base).origin,permission:{name:'clipboard-write'},setting:'denied'})
-  await click('#copy-statistics');await until(`document.querySelector('.primary-editor .copy-feedback').innerText.includes('자동 복사가 되지')`)
-  assert.equal(await evaluate('document.activeElement.id'),'prompt-statistics')
-  assert.equal(await evaluate(`document.getElementById('prompt-statistics').selectionStart`),0)
-  await click('#review-stage');await click('#next-stage');await until(`!!document.getElementById('prompt-interpretation')`)
-  await click('.stage-context details:first-of-type summary')
-  await evaluate(`(()=>{const s=document.getElementById('stage-candidate');s.value='claude-pro-claude-opus-5-5-chat-medium';s.dispatchEvent(new Event('change',{bubbles:true}));})()`)
-  await until(`document.querySelector('.selected-ai').innerText.includes('Claude')`)
-  await click('.primary-editor .draft-notice button:last-child')
-  assert.match(await evaluate(`document.getElementById('prompt-interpretation').value`),/Claude · Pro.*claude-opus-5-5/)
-  await click('#stage-statistics');assert.match(await evaluate(`document.querySelector('.selected-ai').innerText`),/ChatGPT/)
-  assert.equal(await evaluate(`document.getElementById('prompt-statistics').value`),'사용자가 편집한 통계 단계 초안')
-  assert.equal(await evaluate(`document.getElementById('review-stage').checked`),true)
-  await click('#stage-report');assert.match(await evaluate(`document.querySelector('.selected-ai').innerText`),/ChatGPT/)
-  assert.match(await evaluate(`document.getElementById('prompt-report').value`),/A4 4장/)
-  assert.match(await evaluate(`document.querySelector('.stage-list').innerText`),/다시 확인 필요/)
-  results.push('Actual clipboard permission denial gives manual copy; local stage AI change preserves earlier ChatGPT selection/edit/review and marks dependent stages for recheck.')
-  await click('#stage-statistics');await click('#change-ai');await until(`location.hash==='#compare'`)
-  await evaluate('history.back()');await until(`!!document.getElementById('prompt-statistics')`)
-  assert.equal(await evaluate(`document.getElementById('prompt-statistics').value`),'사용자가 편집한 통계 단계 초안')
-  await click('#change-request');await until(`!!document.getElementById('request-text')`)
-  await evaluate(`(()=>{const s=document.getElementById('usage-route');s.value='api';s.dispatchEvent(new Event('change',{bubbles:true}));})()`)
-  await click('#resume-comparison');await until(`location.hash==='#questions'`)
-  assert.equal(await evaluate(`!!document.querySelector('.candidate-card')`),false)
-  await click('#finish-conditions');await until(`location.hash==='#compare'`)
-  await click('#choose-openai-api-gpt-6.1-terra-api-medium');await until(`!!document.getElementById('prompt-statistics')`)
-  assert.equal(await evaluate(`document.getElementById('prompt-statistics').value`),'사용자가 편집한 통계 단계 초안')
-  assert.equal(await evaluate(`!!document.querySelector('.primary-editor .draft-notice')`),true)
-  assert.equal(await evaluate(`document.getElementById('review-stage').checked`),false)
-  await click('.primary-editor .draft-notice button:last-child')
-  await evaluate(`Array.from(document.querySelectorAll('.primary-editor button')).find(x=>x.innerText.includes('이전 초안 복구')).click()`)
-  assert.equal(await evaluate(`document.getElementById('prompt-statistics').value`),'사용자가 편집한 통계 단계 초안')
-  results.push('Browser back preserves stage edits; route edits gate stale cached comparisons, require recomparison and clear review without overwriting drafts; regenerate/recover works.')
-  await mkdir('.qa',{recursive:true})
-  for(const [name,width,height,scale]of[['desktop',1440,1000,1],['mobile',320,900,1],['zoom-equivalent',720,500,2]]){
-    await send('Emulation.setDeviceMetricsOverride',{width,height,deviceScaleFactor:scale,mobile:false})
-    await evaluate('scrollTo(0,0)')
-    assert.equal(await evaluate('document.documentElement.scrollWidth<=document.documentElement.clientWidth'),true,name+' workflow overflow')
-    const shot=await send('Page.captureScreenshot',{format:'png',captureBeyondViewport:false})
-    await writeFile(`.qa/ai-guide-${name}.png`,Buffer.from(shot.data,'base64'))
+  for(const id of ['statistics','interpretation','report','review']){
+    await click('#stage-'+id);prompts[id]=await copyCurrent()
+    assert.match(prompts[id],/대학생 120명/);assert.match(prompts[id],/학년별 만족도 차이/);assert.match(prompts[id],/공부 시간과 성적의 관계/)
+    assert.doesNotMatch(prompts[id],/모델 ID|플랜|크레딧|https:/)
   }
-  await click('#change-ai');await until(`location.hash==='#compare'`)
-  assert.equal(await evaluate('document.documentElement.scrollWidth<=document.documentElement.clientWidth'),true)
-  await send('Emulation.setDeviceMetricsOverride',{width:320,height:900,deviceScaleFactor:1,mobile:false})
-  assert.equal(await evaluate('document.documentElement.scrollWidth<=document.documentElement.clientWidth'),true,'mobile comparison overflow')
-  results.push('Workflow and candidate comparison fit 320px; workflow also fits 720px equivalent desktop reflow at 200%. Screenshots captured; native zoom UI not asserted.')
-  await click('#home');await until(`!!document.getElementById('request-text')`)
-  await evaluate(`(()=>{const s=document.getElementById('usage-route');s.value='consumer';s.dispatchEvent(new Event('change',{bubbles:true}));})()`)
-  await click('#create-prompt');await until(`location.hash==='#questions'`)
-  await click('#mode-file');await click('#finish-conditions');await until(`location.hash==='#compare'`)
-  assert.equal(await evaluate(`document.querySelector('.comparison-page').innerText.includes('필수 기능 확인 필요')`),true)
-  await evaluate(`document.getElementById('pending-options').open=true`)
-  assert.equal(await evaluate(`document.querySelectorAll('#pending-options .candidate-card').length>0`),true)
-  results.push('File mode keeps unconfirmed route upload permissions pending without inventing model access.')
-  await send('Emulation.setDeviceMetricsOverride',{width:1440,height:1000,deviceScaleFactor:1,mobile:false})
-  await click('#home');await until(`!!document.getElementById('request-text')`)
-  await input('#request-text','고객에게 정중한 환영 이메일을 3문장으로 써줘')
-  await evaluate(`document.getElementById('request-text').focus()`)
-  await tabTo('create-prompt');await key('Enter','Enter',13);await until(`location.hash==='#questions'`)
-  await tabTo('mode-file');await key('ArrowLeft','ArrowLeft',37)
-  assert.equal(await evaluate(`document.getElementById('mode-summary').checked`),true)
-  await tabTo('finish-conditions');await key('Enter','Enter',13);await until(`location.hash==='#compare'`)
-  await tabTo('choose-chatgpt-plus-gpt-6.1-terra-work-medium');await key('Enter','Enter',13);await until(`!!document.querySelector('.primary-editor textarea')`)
-  assert.deepEqual(runtimeErrors,[])
-  assert.equal(await evaluate('localStorage.length+sessionStorage.length'),0)
-  results.push('Keyboard Tab/Enter reaches analysis, comparison, selection and stage preparation; no uncaught page errors or browser-storage source text.')
-  await send('Page.reload',{ignoreCache:true});await until(`!!document.getElementById('request-text')`)
-  await input('#request-text','새 작업')
-  assert.equal(await evaluate(`!!document.getElementById('request-text')`),true)
-  results.push('Cold result-hash refresh safely returns to input and stays usable on typing; URLs contain no request text.')
-  await input('#request-text','Python 코드의 버그를 수정하고 테스트 방법을 알려줘')
-  await evaluate(`(()=>{const s=document.getElementById('usage-route');s.value='api';s.dispatchEvent(new Event('change',{bubbles:true}));})()`)
-  await click('#create-prompt');await until(`location.hash==='#questions'`)
-  await click('#finish-conditions');await until(`location.hash==='#compare'`)
-  await evaluate(`Array.from(document.querySelectorAll('button')).find(x=>x.innerText==='동등한 후보 더 보기')?.click()`)
-  assert.doesNotMatch(await evaluate(`document.querySelector('.comparison-page').innerText`),/100만 토큰당/)
-  assert.match(await evaluate(`document.querySelector('.comparison-page').innerText`),/50\.3%/)
-  const chooseIds=await evaluate(`Array.from(document.querySelectorAll('button[id^="choose-"]')).map(x=>x.id)`)
-  assert.equal(chooseIds.length,new Set(chooseIds).size)
-  await click('#choose-openai-api-gpt-6.1-terra-api-medium')
-  await until(`!!document.querySelector('.primary-editor textarea')`)
-  assert.match(await evaluate(`document.querySelector('.primary-editor textarea').value`),/gpt-6\.1-terra/)
-  assert.equal(await evaluate(`document.getElementById('open-service').href`),'https://platform.openai.com/')
-  assert.match(await evaluate(`document.querySelector('.selected-usage').innerText`),/유료 API.*100만 토큰당/)
-  const modelEditor=await evaluate(`document.querySelector('.primary-editor textarea').id`)
-  await input('#'+modelEditor,'모델 변경 전 직접 편집한 초안')
-  await click('.stage-context details:first-of-type summary')
-  await evaluate(`(()=>{const s=document.getElementById('stage-candidate');s.value='openai-api-gpt-6.1-sol-api-medium';s.dispatchEvent(new Event('change',{bubbles:true}));})()`)
-  await until(`document.querySelector('.selected-ai').innerText.includes('gpt-6.1-sol')`)
-  assert.equal(await evaluate(`document.querySelector('.primary-editor textarea').value`),'모델 변경 전 직접 편집한 초안')
-  assert.equal(await evaluate(`!!document.querySelector('.primary-editor .draft-notice')`),true)
-  await evaluate(`(()=>{const s=document.getElementById('stage-candidate');s.value='anthropic-api-claude-opus-5-5-api-medium';s.dispatchEvent(new Event('change',{bubbles:true}));})()`)
-  await until(`document.querySelector('.selected-ai').innerText.includes('claude-opus-5-5')`)
-  assert.equal(await evaluate(`document.getElementById('open-service').href`),'https://platform.claude.com/')
-  assert.equal(await evaluate(`document.querySelector('.primary-editor textarea').value`),'모델 변경 전 직접 편집한 초안')
-  await click('.primary-editor .draft-notice button:last-child')
-  assert.match(await evaluate(`document.querySelector('.primary-editor textarea').value`),/claude-opus-5-5/)
-  assert.match(await evaluate(`document.querySelector('.primary-editor textarea').value`),/사용량 과금/)
-  const promptBlanks=await evaluate(`Array.from(document.querySelectorAll('.primary-editor .missing-fields p')).map(x=>x.innerText).join(' ')`)
-  assert.doesNotMatch(promptBlanks,/\[gpt-|\[claude-/)
-  await send('Emulation.setDeviceMetricsOverride',{width:320,height:900,deviceScaleFactor:1,mobile:false})
-  assert.equal(await evaluate('document.documentElement.scrollWidth<=document.documentElement.clientWidth'),true,'exact-model workflow overflow')
-  assert.deepEqual(runtimeErrors,[])
-  results.push('Exact API models expose coding facts before selection and metered prices only after selection; Terra → Sol → Opus changes preserve drafts, regeneration reflects the chosen ID/path, no model IDs become placeholders, and mobile fits.')
-  await writeFile('.qa/ai-guide-browser-results.json',JSON.stringify({base,results},null,2))
-  results.forEach(result=>process.stdout.write('PASS '+result+'\n'))
-}finally{
-  await new Promise(resolve=>{if(ws.readyState===WebSocket.CLOSED)return resolve();ws.addEventListener('close',resolve,{once:true});ws.close()})
-  await fetch(`http://127.0.0.1:9222/json/close/${target.id}`)
-}
+  assert.match(prompts.statistics,/최종 보고서 분량을 강제하지/);assert.match(prompts.report,/최종 분량은 A4 4장/)
+  await screenshot('survey-workspace',1440);await screenshot('survey-workspace',320)
+  await click('#stage-statistics')
+  const edited='직접 편집한 통계 분석 요청\n  공백과 줄바꿈 유지'
+  await input('#prompt-statistics',edited);await copyCurrent()
+  await click('#change-ai');await evaluate('history.back()');await until(`!!document.getElementById('prompt-statistics')`)
+  assert.equal(await evaluate(`document.getElementById('prompt-statistics').value`),edited)
+  await click('#change-ai');await click('#recommended-options .candidate-card:nth-child(2) button');await until(`!!document.getElementById('prompt-statistics')`)
+  assert.equal(await evaluate(`document.getElementById('prompt-statistics').value`),edited)
+  assert.equal(await evaluate(`!!document.querySelector('.draft-notice')`),true)
+  await click('#change-request');await click('.extra-conditions summary');await input('#condition-length','2쪽');await click('#finish-conditions');await choose();await click('#stage-report')
+  assert.equal(await evaluate(`!!document.querySelector('.draft-notice')`),true)
+  await click('.draft-notice button:last-child');assert.match(await evaluate(`document.getElementById('prompt-report').value`),/2쪽/)
+  await click('.editor-actions button:first-child');assert.match(await evaluate(`document.getElementById('prompt-report').value`),/최종 분량은 A4 4장/)
+  await click('#stage-statistics');assert.equal(await evaluate(`document.getElementById('prompt-statistics').value`),edited)
+  await send('Browser.resetPermissions');await send('Browser.setPermission',{origin:new URL(base).origin,permission:{name:'clipboard-write'},setting:'denied'})
+  await click('#copy-statistics');await until(`document.querySelector('.copy-feedback').innerText.includes('자동 복사가 되지')`);assert.equal(await evaluate('document.activeElement.id'),'prompt-statistics')
+  await send('Browser.resetPermissions');await send('Browser.grantPermissions',{origin:new URL(base).origin,permissions:['clipboardReadWrite','clipboardSanitizedWrite']})
+  assert.ok(!(await evaluate('location.href')).includes(encodeURIComponent(survey)))
+  results.push('Survey: all four prompts; exact edited clipboard; denied-copy feedback; model/condition/back draft preservation; regeneration and recovery; 1440/320 overflow checks.')
+  for(const [text,stages,name] of [
+    ['React 장바구니의 수량 변경 버그를 수정하고 테스트 방법을 알려줘',['diagnose','implement','test'],'coding'],
+    ['신입생 대상 독서 동아리 모집 홍보 글을 친근하게 500자로 작성해줘',['outline','compose','polish'],'writing'],
+  ]){
+    await click('#new-task');await start(text);await choose()
+    for(const id of stages){await click('#stage-'+id);assert.ok((await copyCurrent()).length>150)}
+    await screenshot(name+'-workspace',1440);await screenshot(name+'-workspace',320)
+    results.push(`${name}: input, interpretation, web selection, every stage and edited-text clipboard.`)
+  }
+  await click('#new-task');await send('Emulation.setDeviceMetricsOverride',{width:320,height:900,deviceScaleFactor:1,mobile:true});await tabTo('request-text');await tabTo('example-0');await key('Enter','Enter',13);assert.equal(await evaluate(`document.getElementById('request-text').value`),survey)
+  assert.deepEqual(errors,[])
+  await writeFile('.qa/survey-prompts-browser.json',JSON.stringify(prompts,null,2));await writeFile('.qa/browser-results.json',JSON.stringify({results,runtimeErrors:errors},null,2));console.log(results.join('\n'))
+}finally{await send('Page.close').catch(()=>{});ws.close()}

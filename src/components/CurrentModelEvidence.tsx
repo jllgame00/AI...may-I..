@@ -1,7 +1,5 @@
-import { recommendationSnapshot } from '../data/recommendationSnapshot'
-import { compareEvaluationResults, evidenceForModel, mappingLabel } from '../lib/currentEvidence'
-import type { ModelEvaluation, Recommendation } from '../recommendationTypes'
-import { accessOptions } from '../lib/modelAccess'
+import { compareEvaluationResults } from '../lib/currentEvidence'
+import type { ModelEvaluation } from '../recommendationTypes'
 
 const kindLabels = {provider:'제공사 발표',independent:'독립 평가 · 운영기관 직접 발표','independent-reported':'독립 평가 · 제공사 재인용'}
 export function EvaluationFact({ result:e,selectedMode,peers=[] }: { result:ModelEvaluation;selectedMode?:string|null;peers?:ModelEvaluation[] }) {
@@ -12,26 +10,10 @@ export function EvaluationFact({ result:e,selectedMode,peers=[] }: { result:Mode
     <p className="evidence-limit">{e.limitations}</p>
     <p className="minor-note">자료 시점: 발표 {e.publishedAt??'미공개'} · 평가 {e.evaluatedAt??'미공개'} · 확인 {e.source.checkedAt}. 이 고정 모델·평가 버전의 기록이며 현재 서비스의 실시간 순위가 아니에요.</p>
     {e.index&&<p>출처의 공식 종합지수 {e.index.name} {e.index.version} · 구성: {e.index.components.join(' / ')} · 범위: {e.index.scope}. 자체 100점이나 구성 평가와의 합산이 아니에요.</p>}
-    <p><a href={e.source.url} target="_blank" rel="noreferrer">{e.publisher} 원문 (새 창)</a> · 확인 {e.source.checkedAt}</p>
+    <p><a href={e.source.url} target="_blank" rel="noreferrer">{e.publisher} · {e.benchmark} 평가 원문 (새 창)</a> · 확인 {e.source.checkedAt}</p>
     <details><summary>평가 실행 조건·비교 한계·이용 조건</summary>
       <dl className="evidence-conditions"><dt>정확한 평가 모델</dt><dd>{e.modelId} · v{e.modelVersion}</dd><dt>도구</dt><dd>{e.tools ?? '미확인'}</dd><dt>에이전트·하네스</dt><dd>{e.harness ?? '미확인'}</dd><dt>환경</dt><dd>{e.environment ?? '미확인'}</dd><dt>시도 횟수</dt><dd>{e.trials ?? '미확인'}</dd><dt>대체 모델 실행</dt><dd>{e.fallbacks ?? '미확인 (없음으로 간주하지 않음)'}</dd><dt>평가 / 발표 주체</dt><dd>{e.evaluator} / {e.publisher}</dd><dt>발표 / 평가일</dt><dd>{e.publishedAt ?? '미기재'} / {e.evaluatedAt ?? '미기재'}</dd></dl>
       <p>에이전트 이름 / 버전: {e.agentName??'미공개'} / {e.agentVersion??'미공개'}</p><p>{e.terms}</p>{comparisons.length?comparisons.map(({p,comparison})=><p key={p.id}>{p.modelId} ({p.effort ?? '설정 미확인'})와 동일 조건 비교: {comparison.comparable?`원점수 차이 ${comparison.delta} ${e.unit==='%'?'%p':e.unit}. `:'우열 판단 보류 · '}{comparison.reason}</p>):<p>동일 평가의 다른 모델 비교 자료가 이 화면에 없어요. 단독 원점수로 우열을 정하지 않아요.</p>}
     </details>
   </div>
-}
-export function CandidateEvidence({ candidate,peers }: { candidate:Recommendation;peers:Recommendation[] }) {
-  const evidence=candidate.evidence ?? []
-  const results=[...new Map(peers.flatMap(c=>c.evidence ?? []).map(e=>[e.id,e])).values()]
-  return <section className="candidate-evidence"><h3>{evidence.length?'작업 관련 성능 근거':'조건 기반 후보 · 성능 근거 부족'}</h3><p>{candidate.evidenceNote}</p>{evidence.some(e=>e.domain==='writing')&&<p className="evidence-limit">원문 Writing 항목의 참고 수치예요. 평가 언어·judge·루브릭이 미확인이므로 한국어 문장 품질이나 이 요청의 성공률로 해석하지 않아요.</p>}{evidence.slice(0,2).map(e=><EvaluationFact key={e.id} result={e} selectedMode={candidate.mapping.mode} peers={results}/>)}{evidence.length>2&&<details><summary>관련 평가 {evidence.length-2}건 더 보기</summary>{evidence.slice(2).map(e=><EvaluationFact key={e.id} result={e} selectedMode={candidate.mapping.mode} peers={results}/>)}</details>}</section>
-}
-export default function CurrentModelCatalog() {
-  const data=recommendationSnapshot
-  return <details className="extras current-catalog" id="current-model-catalog"><summary>이번에 확인한 정확한 모델 {data.models.length}개 · 실제 평가 결과 {data.evaluations?.length ?? 0}건</summary>
-    <p>2026-10-28 수동 확인 자료입니다. 현재 작업에 맞는 근거만 후보 카드에 연결해요. 아래 자료 전체가 현재 작업의 점수라는 뜻은 아니에요. 비교 조건이 부족하면 동등한 조건 후보 또는 비교 근거 부족으로 남겨요.</p>
-    {data.models.map(model=><article className="catalog-model" key={model.id}><h3>{model.provider} · {model.name}</h3><p>{model.id} · v{model.version} · 지원 설정: {model.modes?.length?model.modes.join(' / '):'선택 가능한 모드 미확인'}</p><p>최초 카탈로그의 경로 조사 기록: {model.availability}</p><p>{model.capabilities?.join(' · ')}</p><p>중요 제한: {model.limits?.join(' ')}</p><p>속도: {model.speed}</p><p>설정 부담: {model.setup}</p>
-      <details><summary>플랜·이용 경로와 출처</summary>{accessOptions(model).map(r=><p key={r.id}><a href={r.url} target="_blank" rel="noreferrer">{r.label} (새 창)</a> · {r.exactVersion==='confirmed'?'정확 버전 경로 확인':r.exactVersion==='retired'?'해당 API 은퇴':'정확 버전 미확인'}<br/>{r.note}</p>)}{model.route&&<p>{model.route.kind==='self-hosted'?'공식 가중치 · 자체 호스팅':model.route.kind==='api'?'공식 API 문서':'실행 경로 미확인'} · {model.route.note} 소비자 구독 플랜 연결 미확인.</p>}{data.mappings.filter(m=>m.modelId===model.id).map(m=><p key={m.id}>{data.plans.find(p=>p.id===m.planId)?.name} · {mappingLabel(m)} · {m.mode} · {m.status==='confirmed'?'연결 확인':'플랜 연결 미확인'}<br />{m.note}</p>)}{model.sources?.map(s=><p key={s.url}><a href={s.url} target="_blank" rel="noreferrer">공식 모델 근거 (새 창)</a> · {s.checkedAt} · {s.scope}</p>)}</details>
-      <details><summary>이 모델의 실제 평가 원점수 · {evidenceForModel(model,data).length}건</summary>{evidenceForModel(model,data).map(e=><EvaluationFact key={e.id} result={e}/>)}</details>
-    </article>)}
-    <p>Sonnet 5.5 시스템 카드는 응답 크기 제한으로 한 번 접근에 실패했어요. 발표 페이지에서 확인한 점수만 수록했고 숨겨진 설정은 미확인으로 유지했어요.</p>
-  </details>
 }

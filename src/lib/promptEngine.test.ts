@@ -71,3 +71,7 @@ it('keeps stage outputs distinct from the final deliverable format', () => {
 it('recognizes an announcement as writing and asks about its missing reader', () => {
   assert.deepEqual(questionsFor({ text: '안내문을 작성해줘', overrides: { length: '1문장' } }),['audience','format'])
 })
+it('does not invent a report reader from the surveyed population',()=>{
+  assert.equal(extractConditions('대학생 만족도 설문을 분석해서 보고서를 써줘').audience,'')
+  assert.equal(extractConditions('교수에게 대학생 만족도 설문 보고서를 정중하게 작성해줘').audience,'교수')
+})

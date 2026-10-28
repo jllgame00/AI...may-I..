@@ -29,6 +29,7 @@ export function compareEvaluationResults(a: ModelEvaluation, b: ModelEvaluation)
   if(a.modelId===b.modelId && a.modelVersion!==b.modelVersion)return {comparable:false,delta:null,reason:'동일 ID의 모델 릴리스 버전 다름'}
   if (a.rawScore === null || b.rawScore === null || !Number.isFinite(a.rawScore) || !Number.isFinite(b.rawScore)) return {comparable:false,delta:null,reason:'원점수 미확인'}
   if(a.evaluationType!==b.evaluationType)return {comparable:false,delta:null,reason:'모델 평가와 에이전트 구성 평가의 대상 다름'}
+  if(JSON.stringify(a.index??null)!==JSON.stringify(b.index??null))return {comparable:false,delta:null,reason:'공식 지수의 이름·버전·구성·범위 다름'}
   if(a.evaluationType==='agent' && (!a.agentName || !b.agentName || !a.agentVersion || !b.agentVersion || a.agentName!==b.agentName || a.agentVersion!==b.agentVersion))return {comparable:false,delta:null,reason:'에이전트 이름·버전 미확인 또는 다름'}
   const fields = ['benchmark','benchmarkVersion','subset','unit','higherIsBetter','effort','tools','harness','environment','trials','fallbacks','evaluator'] as const
   for (const key of fields) {

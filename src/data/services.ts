@@ -1,7 +1,6 @@
-import type { Priority, Service, ServiceId, TaskKind } from '../recommendationTypes'
+import type { Service, ServiceId, TaskKind } from '../recommendationTypes'
 export const DATA_LABEL = '2026-10-21 확인 스냅샷'
 export const DEFAULT_REQUEST = '연구 자료를 분석하고 발표 대본을 작성해 줘.'
-export const priorityLabels: Record<Priority, string> = { quality: '결과 품질', ease: '쉬운 사용법', speed: '빠른 완성' }
 export const taskLabels: Record<TaskKind, string> = { research: '자료 분석·발표', summary: '자료 요약', writing: '글쓰기', coding: '코딩', image: '이미지 기획', unknown: '작업 확인 필요' }
 export const examples: { kind: Exclude<TaskKind, 'unknown'>; text: string }[] = [
   { kind: 'research', text: DEFAULT_REQUEST },

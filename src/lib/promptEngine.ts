@@ -20,7 +20,7 @@ export function extractConditions(text: string): Conditions {
   const format = explicitOutputs.at(-1)?.[1] ?? (mentioned.length === 1 ? mentioned[0] : mentioned.find(f => text.match(new RegExp(`${f}(?:을|를)?\\s*(?:작성|만들|써|출력)`,'i'))) ?? '')
   return {
     purpose: explicit('목적') || text.match(/수업\s*발표(?:용)?|고객\s*안내용|업무\s*공유용|면접\s*준비용/)?.[0] || '',
-    audience: explicit('대상(?: 독자)?') || text.match(/초등학생|중학생|고등학생|대학생|초보자|비전공자|전문가|신입사원|고객|교수|동료|팀원|어린이|학부모|투자자|면접관/)?.[0] || '',
+    audience: explicit('대상(?: 독자)?') || text.match(/(초등학생|중학생|고등학생|대학생|초보자|비전공자|전문가|신입사원|고객|교수|동료|팀원|어린이|학부모|투자자|면접관)(?=\s*(?:에게|대상|용|을\s*위한|를\s*위한|도\s*이해))|(?<=대상\s)(초등학생|중학생|고등학생|대학생|초보자|비전공자|전문가|고객|교수)/)?.[0] || '',
     format: explicit('형식') || format,
     length: explicit('분량') || text.match(/A4\s*\d+\s*장|\d+\s*(?:[~–-]\s*\d+\s*)?(?:분|자|문장|줄|단어|페이지|쪽|장|개\s*항목|개\s*문단)/)?.[0] || '',
     tone: explicit('말투') || text.match(/친근(?:하게|한)?|정중(?:하게|한)?|공손(?:하게|한)?|격식\s*있게|간결(?:하게|한)?|전문적(?:으로|인)?|차분(?:하게|한)?|쉽게|쉬운\s*말로/)?.[0] || '',
@@ -33,8 +33,8 @@ export function resolveConditions(request: PromptRequest): ResolvedConditions {
 }
 export function questionsFor(request: PromptRequest): ConditionField[] {
   const kind = taskKind(request.text), conditions = resolveConditions(request)
-  const priority: ConditionField[] = kind === 'general' ? ['purpose','format','length'] : kind === 'writing' || /발표|대본/.test(request.text) ? ['audience','format','length'] : kind === 'summary' ? ['format','length'] : kind === 'research' ? ['format'] : []
-  return priority.filter(field => !conditions[field].value && request.overrides[field] === undefined).slice(0,3)
+  const questionOrder: ConditionField[] = kind === 'general' ? ['purpose','format','length'] : kind === 'writing' || /발표|대본/.test(request.text) ? ['audience','format','length'] : kind === 'summary' ? ['format','length'] : kind === 'research' ? ['format'] : []
+  return questionOrder.filter(field => !conditions[field].value && request.overrides[field] === undefined).slice(0,3)
 }
 export function skipQuestions(request: PromptRequest, questions: ConditionField[]): PromptRequest {
   const overrides = { ...request.overrides }
@@ -56,7 +56,7 @@ export function buildPromptBundle(request: PromptRequest): PromptBundle {
   const kind = taskKind(text), conditions = resolveConditions(request)
   const value = (field: ConditionField) => conditions[field].value
   const material = ['summary','research','coding'].includes(kind) || /첨부|원문|자료|원고|기존\s*글/.test(text)
-  const sections = [`목표\n${text}`]
+  const sections = [text]
   if (value('purpose') || kind === 'general') sections.push(`사용 맥락\n${value('purpose') || '[사용 목적을 입력하세요]'}`)
   const presentation = fields.filter(f => f !== 'purpose' && f !== 'constraints' && value(f)).map(f => `- ${fieldLabels[f]}: ${value(f)}`)
   const edited = fields.filter(f => request.overrides[f] !== undefined)
@@ -65,7 +65,9 @@ export function buildPromptBundle(request: PromptRequest): PromptBundle {
   if (presentation.length) sections.push(`작성 조건\n${presentation.join('\n')}`)
   if (!value('format') && kind === 'general') sections.push('결과 형식\n[원하는 결과 형식을 입력하세요]')
   if (material) sections.push(`입력 자료\n${kind === 'coding' ? '[관련 코드와 오류 메시지를 붙여넣으세요]' : '[분석할 자료 또는 직접 확인한 요약을 붙여넣으세요]'}\n자료가 없으면 내용을 추측하지 말고 필요한 자료를 물어봐 주세요.`)
-  const constraints = [value('constraints'), ...(material ? ['제공한 자료에 없는 사실·수치·인용을 만들지 마세요. 확인할 수 없는 내용은 구분해 주세요.'] : [])].filter(Boolean)
+  if(kind==='coding')sections.push('수행 순서\n1. 코드와 오류·기대 동작을 대조하고 버그의 재현 조건을 확인해 주세요.\n2. 원인을 설명하고 기존 기능을 유지하는 최소 수정안을 작성해 주세요.\n3. 재현 테스트와 회귀 테스트를 작성하고 실행 방법을 알려 주세요.\n\n산출물은 변경 코드 또는 패치, 수정 이유, 테스트 방법과 실제 실행 결과입니다. 코드를 실행할 수 없으면 그 한계와 직접 검증할 절차를 적어 주세요.')
+  if(kind==='writing'&&/홍보|모집|광고|캠페인/.test(text))sections.push('핵심 매력과 참여 방법이 드러나는 완성 글을 작성해 주세요. 동아리·행사 이름, 모집 대상·일정, 신청 방법 등 꼭 필요한 정보가 없으면 먼저 물어봐 주세요. 확인되지 않은 혜택이나 실적은 만들지 마세요.')
+  const constraints = [value('constraints'), ...(material && kind!=='coding' ? ['제공한 자료에 없는 사실·수치·인용을 만들지 마세요. 확인할 수 없는 내용은 구분해 주세요.'] : [])].filter(Boolean)
   if (constraints.length) sections.push(`지킬 조건\n${constraints.join('\n')}`)
   sections.push(`답변 전 확인\n${kind === 'coding' ? '수정 이유와 직접 실행할 테스트 방법을 포함해 주세요. 실행하지 않은 테스트를 통과했다고 말하지 마세요.' : '요청한 목적·형식·분량을 지켰는지 확인하고, 정보가 부족한 부분은 임의로 채우지 마세요.'}`)
   const main: PromptTemplate = { id: 'main', title: '기본 프롬프트', text: sections.join('\n\n') }

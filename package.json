@@ -9,7 +9,12 @@
     "build": "tsc -b && vite build",
     "preview": "vite preview --host 127.0.0.1",
     "typecheck": "tsc -b --pretty",
-    "test": "node --test --test-isolation=none src/lib/*.test.ts tests/*.test.mjs"
+    "test": "node --test --test-isolation=none src/lib/*.test.ts tests/*.test.mjs",
+    "data:refresh": "node scripts/refresh-data.mts",
+    "data:validate": "node scripts/refresh-data.mts --validate",
+    "data:restore": "node scripts/refresh-data.mts --restore",
+    "test:browser": "node tests/browser-check.mjs",
+    "qa:preview": "node tests/preview.mjs"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.1.0",

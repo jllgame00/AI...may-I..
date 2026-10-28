@@ -4,6 +4,8 @@ on:
   push:
     branches: [main]
   workflow_dispatch:
+  schedule:
+    - cron: '20 21 * * *' # 매일 06:20 KST
 
 permissions: {}
 
@@ -33,6 +35,19 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Restore last validated data
+        uses: actions/cache/restore@v4
+        with:
+          path: .refresh-cache
+          key: model-data-v1-${{ github.run_id }}-${{ github.run_attempt }}
+          restore-keys: model-data-v1-
+
+      - name: Collect official sources independently
+        run: npm run data:refresh
+
+      - name: Validate normalized snapshot
+        run: npm run data:validate
+
       - name: Type check
         run: npm run typecheck
 
@@ -41,6 +56,12 @@ jobs:
 
       - name: Build
         run: npm run build
+
+      - name: Persist last validated data for the next run
+        uses: actions/cache/save@v4
+        with:
+          path: .refresh-cache
+          key: model-data-v1-${{ github.run_id }}-${{ github.run_attempt }}
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v4

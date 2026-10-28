@@ -1,0 +1,180 @@
+{
+  "schemaVersion": 1,
+  "sources": {
+    "qwen30": {
+      "updates": [
+        {
+          "id": "east-qwen30-2507-mmlu",
+          "rawScore": 78.4
+        },
+        {
+          "id": "east-qwen30-2507-gpqa",
+          "rawScore": 70.4
+        },
+        {
+          "id": "east-qwen30-2507-aime",
+          "rawScore": 61.3
+        },
+        {
+          "id": "east-qwen30-2507-lcb",
+          "rawScore": 43.2
+        },
+        {
+          "id": "east-qwen30-2507-creative",
+          "rawScore": 86
+        },
+        {
+          "id": "east-qwen30-2507-writing",
+          "rawScore": 85.5
+        }
+      ],
+      "checkedAt": "2026-10-28T15:16:09.178Z",
+      "changedAt": "2026-10-28T15:10:26.082Z",
+      "hash": "13fabbd072547161834e4b5d87b500cec717a9b8fc15e4db00e8c9d13f38955c",
+      "state": "ok"
+    },
+    "qwen-discovery": {
+      "updates": [],
+      "models": [
+        {
+          "id": "Qwen/Qwen-AgentWorld-35B-A3B",
+          "version": "60d2b0434a53d2e62a7c00a489586815d94ebffb",
+          "name": "Qwen-AgentWorld-35B-A3B",
+          "provider": "Qwen",
+          "reasoning": "미확인",
+          "evaluationMode": "미확인",
+          "modes": [],
+          "capabilities": [],
+          "limits": [
+            "자동 발견한 공식 저장소 식별 정보입니다. 기능·평가·웹 제공·플랜은 미검증입니다."
+          ],
+          "sources": [
+            {
+              "url": "https://huggingface.co/Qwen/Qwen-AgentWorld-35B-A3B",
+              "checkedAt": "2026-10-28T15:16:09.178Z",
+              "scope": "공식 API의 저장소 ID·commit 60d2b0434a53d2e62a7c00a489586815d94ebffb·Apache-2.0 메타데이터"
+            }
+          ],
+          "route": {
+            "kind": "self-hosted",
+            "url": "https://huggingface.co/Qwen/Qwen-AgentWorld-35B-A3B",
+            "status": "confirmed",
+            "note": "공식 가중치 저장소. 설치 환경·기능은 별도 검증 필요."
+          }
+        },
+        {
+          "id": "Qwen/WebWorld-14B",
+          "version": "0212f4ed8a4bcd3e299d902f0dbf48b2255611d4",
+          "name": "WebWorld-14B",
+          "provider": "Qwen",
+          "reasoning": "미확인",
+          "evaluationMode": "미확인",
+          "modes": [],
+          "capabilities": [],
+          "limits": [
+            "자동 발견한 공식 저장소 식별 정보입니다. 기능·평가·웹 제공·플랜은 미검증입니다."
+          ],
+          "sources": [
+            {
+              "url": "https://huggingface.co/Qwen/WebWorld-14B",
+              "checkedAt": "2026-10-28T15:16:09.178Z",
+              "scope": "공식 API의 저장소 ID·commit 0212f4ed8a4bcd3e299d902f0dbf48b2255611d4·Apache-2.0 메타데이터"
+            }
+          ],
+          "route": {
+            "kind": "self-hosted",
+            "url": "https://huggingface.co/Qwen/WebWorld-14B",
+            "status": "confirmed",
+            "note": "공식 가중치 저장소. 설치 환경·기능은 별도 검증 필요."
+          }
+        },
+        {
+          "id": "Qwen/WebWorld-32B",
+          "version": "e7fceedc8713450842f9bc9b122c1759c40bcc5b",
+          "name": "WebWorld-32B",
+          "provider": "Qwen",
+          "reasoning": "미확인",
+          "evaluationMode": "미확인",
+          "modes": [],
+          "capabilities": [],
+          "limits": [
+            "자동 발견한 공식 저장소 식별 정보입니다. 기능·평가·웹 제공·플랜은 미검증입니다."
+          ],
+          "sources": [
+            {
+              "url": "https://huggingface.co/Qwen/WebWorld-32B",
+              "checkedAt": "2026-10-28T15:16:09.178Z",
+              "scope": "공식 API의 저장소 ID·commit e7fceedc8713450842f9bc9b122c1759c40bcc5b·Apache-2.0 메타데이터"
+            }
+          ],
+          "route": {
+            "kind": "self-hosted",
+            "url": "https://huggingface.co/Qwen/WebWorld-32B",
+            "status": "confirmed",
+            "note": "공식 가중치 저장소. 설치 환경·기능은 별도 검증 필요."
+          }
+        }
+      ],
+      "checkedAt": "2026-10-28T15:16:09.178Z",
+      "changedAt": "2026-10-28T14:57:20.087Z",
+      "hash": "aeeedc91b4589846c7b9c0386204fcec431fd368ddf177c9ad278d0d962fa49a",
+      "state": "ok"
+    },
+    "qwen235": {
+      "updates": [
+        {
+          "id": "east-qwen235-2507-mmlu",
+          "rawScore": 83
+        },
+        {
+          "id": "east-qwen235-2507-gpqa",
+          "rawScore": 77.5
+        },
+        {
+          "id": "east-qwen235-2507-aime",
+          "rawScore": 70.3
+        },
+        {
+          "id": "east-qwen235-2507-lcb",
+          "rawScore": 51.8
+        },
+        {
+          "id": "east-qwen235-2507-creative",
+          "rawScore": 87.5
+        },
+        {
+          "id": "east-qwen235-2507-writing",
+          "rawScore": 85.2
+        },
+        {
+          "id": "qwen-table-kimi-lcb-v6",
+          "rawScore": 48.9
+        },
+        {
+          "id": "qwen-table-deepseek-lcb-v6",
+          "rawScore": 45.2
+        },
+        {
+          "id": "qwen-table-kimi-creative-v3",
+          "rawScore": 88.1
+        },
+        {
+          "id": "qwen-table-deepseek-creative-v3",
+          "rawScore": 81.6
+        }
+      ],
+      "checkedAt": "2026-10-28T15:16:09.178Z",
+      "changedAt": "2026-10-28T15:10:26.082Z",
+      "hash": "b7d40ea1e352ce426dd0a41ef85795b89792b3036d64be1b3a8444ffce8ef32b",
+      "state": "ok"
+    },
+    "aa": {
+      "checkedAt": "2026-10-28T15:16:09.178Z",
+      "changedAt": null,
+      "hash": null,
+      "state": "disabled",
+      "reason": "인증 키·공개 이용 허가 미확인. 기존 AA 전용 검증 도구로 별도 연결.",
+      "updates": []
+    }
+  }
+}

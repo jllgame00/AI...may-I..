@@ -3,11 +3,11 @@ import assert from 'node:assert/strict'
 import { DEFAULT_REQUEST, services } from '../data/services.ts'
 import { analyzeRequest, classifyTask, selectCandidate } from './recommend.ts'
 import { buildPrompt } from './prompts.ts'
-import type { Priority, TaskKind } from '../recommendationTypes'
+import type { TaskKind } from '../recommendationTypes'
 // Original MVP contracts retained; fictional rankings are superseded by evidence.test.ts.
 describe('existing MVP regression', () => {
   it('keeps the default request and three-stage workflow', () => {
-    const result = analyzeRequest({ text: DEFAULT_REQUEST, priority: 'quality' })
+    const result = analyzeRequest({ text: DEFAULT_REQUEST })
     assert.equal(result.request.text, DEFAULT_REQUEST)
     assert.deepEqual(result.workflow.map(step => step.kind), ['analysis', 'writing', 'writing'])
   })
@@ -17,36 +17,29 @@ describe('existing MVP regression', () => {
   ]
   for (const [text, kind] of cases) it(`classifies ${text}`, () => assert.equal(classifyTask(text), kind))
   it('includes all task-compatible plans without price or tier filtering', () => {
-    const result=analyzeRequest({text:'소개 이메일',priority:'speed'})
+    const result=analyzeRequest({text:'소개 이메일'})
     assert.ok(result.recommendations.some(c=>c.plan.tier==='paid'))
     assert.ok(result.recommendations.every(c=>c.score===null))
   })
-  it('supports quality, ease and speed preferences without fabricated rankings', () => {
-    for(const priority of ['quality','ease','speed'] as Priority[]) {
-      const result=analyzeRequest({text:DEFAULT_REQUEST,priority})
-      assert.equal(new Set(result.recommendations.filter(c=>c.service.id!=='catalog').map(c=>c.service.id)).size,3)
-      assert.ok(result.recommendations.every(c=>c.score===null))
-    }
-  })
-  it('reflects each service, request, plan and manual assignment in copied prompts', () => {
-    const result = analyzeRequest({ text: 'Python 코드 작성', priority: 'ease' })
-    const prompts = services.map(service => {
-      const candidate = result.workflow[0].recommendations.find(r => r.service.id === service.id&&!r.accessAlternative)!
-      const workflow = selectCandidate(result.workflow, result.workflow[0].id, candidate.id)
-      const prompt = buildPrompt(result, service.id, workflow)
-      for (const value of [result.request.text, '쉬운 사용법', `${service.name} · ${candidate.plan.name}`, '[입력 자료]', '[원하는 결과 형식]', '[주의사항]']) assert.ok(prompt.includes(value))
+  it('keeps manual assignments outside task-only copied prompts',()=>{
+    const result=analyzeRequest({text:'Python 코드 작성'})
+    const prompts=services.map(service=>{
+      const candidate=result.workflow[0].recommendations.find(c=>c.service.id===service.id)!
+      const workflow=selectCandidate(result.workflow,result.workflow[0].id,candidate.id)
+      const prompt=buildPrompt(result,service.id,workflow)
+      assert.match(prompt,/Python 코드 작성/);assert.doesNotMatch(prompt,/플랜|쉬운 사용법|모델 ID/)
       return prompt
     })
-    assert.equal(new Set(prompts).size, 3)
+    assert.equal(new Set(prompts).size,1)
   })
   it('preserves image planning without claiming generation', () => {
-    const result = analyzeRequest({ text: '이미지 제작', priority: 'quality' })
+    const result = analyzeRequest({ text: '이미지 제작' })
     assert.ok(result.recommendations.every(r => r.score === null))
     assert.match(buildPrompt(result, 'claude', result.workflow), /이미지가 생성되었다고 말하지 마세요/)
   })
   it('rejects blank requests and preserves user input as text', () => {
-    assert.throws(() => analyzeRequest({ text: ' ', priority: 'quality' }))
+    assert.throws(() => analyzeRequest({ text: ' ' }))
     const text = '<script>alert(1)</script>' + '가'.repeat(2900)
-    assert.equal(analyzeRequest({ text, priority: 'quality' }).request.text, text)
+    assert.equal(analyzeRequest({ text }).request.text, text)
   })
 })

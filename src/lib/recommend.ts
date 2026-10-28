@@ -39,14 +39,11 @@ export function featureSupport(plan: ServicePlan, feature: FeatureId): FeatureSu
 function unknownMapping(plan: ServicePlan): PlanModelMapping {
   return {id:`${plan.id}-unconfirmed`,planId:plan.id,modelId:null,status:'unknown',selectable:false,mode:null,note:'정확한 모델·모드 연결 미확인',sources:[]}
 }
-export function recommendForTask(task: ScoringTask | 'image', request: RequestInput, required: FeatureId[], data: RecommendationSnapshot) {
+export function referenceCandidatesForTask(task: ScoringTask | 'image', request: RequestInput, required: FeatureId[], data: RecommendationSnapshot) {
   const excluded:WorkflowStep['excluded']=[], recommendations:Recommendation[]=[]
-  const route=request.usageRoute ?? 'consumer'
   for(const plan of data.plans) {
-    if((route==='api')!==(plan.billingKind==='usage'))continue
     const mappings=data.mappings.filter(m=>m.planId===plan.id)
     for(const mapping of mappings.length?mappings:[unknownMapping(plan)]) {
-      if(route!=='consumer' && (mapping.routeKind ?? 'chat')!==route)continue
       const model=data.models.find(m=>m.id===mapping.modelId) ?? null
       const linked=mapping.status==='confirmed' && mapping.selectable && mapping.selection!=='automatic' && !!model && !!mapping.mode && (model.modes ?? [model.reasoning]).includes(mapping.mode) && mapping.modelVersion===model.version && mapping.sources.some(s=>s.url && s.checkedAt)
       const supportForPath=(f:FeatureId):FeatureSupport=>mapping.routeKind==='api' && model?.nativeFeatures?.[f] ? model.nativeFeatures[f]! : mapping.routeKind==='work' ? {status:'unknown',note:'Work 경로 권한 별도 확인',sources:[]} : featureSupport(plan,f)
@@ -75,17 +72,27 @@ export function recommendForTask(task: ScoringTask | 'image', request: RequestIn
       })
     }
   }
-  if(route==='consumer'){
-    const api= recommendForTask(task,{...request,usageRoute:'api'},required,data).recommendations.filter(c=>c.model&&!c.plan.unassigned&&!c.configuration)
-    recommendations.push(...api.map(c=>({...c,accessAlternative:true})))
-  }
   recommendations.push(...catalogCandidates(task,request,required,data))
   recommendations.sort((a,b)=>Number(a.suitability!=='조건 비교 가능')-Number(b.suitability!=='조건 비교 가능') || Number(!a.model)-Number(!b.model) || a.service.name.localeCompare(b.service.name,'en') || (a.model?.id ?? '').localeCompare(b.model?.id ?? '', 'en') || a.plan.name.localeCompare(b.plan.name,'en') || a.id.localeCompare(b.id,'en'))
   recommendations.push(...configurationCandidates(recommendations))
   return {recommendations,excluded}
 }
 
+// Consumer flow: retain API/installation evidence in the reference catalog,
+// while exposing only real web routes. Native API features are never web proof.
+export function recommendForTask(task:ScoringTask|'image', request:RequestInput, required:FeatureId[], data:RecommendationSnapshot) {
+  const result=referenceCandidatesForTask(task,request,required,data)
+  result.recommendations=result.recommendations.filter(c=>!c.configuration && (c.mapping.routeKind==='chat'||c.mapping.routeKind==='work')).map(c=>{
+    const exact=c.accessStatus==='연결 근거 확인'
+    return exact?c:{...c,suitability:'확인 후 선택' as const,eligibility:'conditional' as const}
+  })
+  result.excluded=result.excluded.filter(c=>c.plan.billingKind!=='usage')
+  return result
+}
+
 export function analyzeRequest(input: RequestInput, data: RecommendationSnapshot = recommendationSnapshot): Analysis {
+  const {priority:_priority,usageRoute:_route,...current}=input as RequestInput & {priority?:unknown;usageRoute?:unknown}
+  input=current
   const text = input.text.trim()
   if (!text) throw new Error('어떤 작업을 하고 싶은지 입력해 주세요.')
   const interpreted = interpretRequest(text)

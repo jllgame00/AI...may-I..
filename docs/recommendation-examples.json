@@ -1,0 +1,431 @@
+{
+  "models": 28,
+  "evaluations": 111,
+  "examples": [
+    {
+      "request": "알고리즘 문제 풀이",
+      "mode": "ranked",
+      "basis": "LiveCodeBench v6 · 알고리즘 코드 생성·문제 정답 검증과 직접 관련",
+      "scope": "확보한 비교 집합 안의 결과입니다. 전체 모델의 절대 순위가 아니며 가격·무료 여부는 순위에 반영하지 않습니다.",
+      "groups": [
+        {
+          "benchmark": "LiveCodeBench",
+          "version": "v6",
+          "publisher": "Qwen",
+          "period": "2025.02~2025.05",
+          "count": 3
+        },
+        {
+          "benchmark": "CursorBench",
+          "version": "4.0",
+          "publisher": "SpaceXSI (xAI)",
+          "period": null,
+          "count": 2
+        },
+        {
+          "benchmark": "DeepSWE",
+          "version": "1.1",
+          "publisher": "SpaceXSI (xAI)",
+          "period": null,
+          "count": 2
+        },
+        {
+          "benchmark": "Terminal-Bench",
+          "version": "4.0",
+          "publisher": "SpaceXSI (xAI)",
+          "period": null,
+          "count": 2
+        }
+      ],
+      "entries": [
+        {
+          "model": "Qwen3 235B A22B Instruct 2507",
+          "rank": 1,
+          "tied": false,
+          "benchmark": "LiveCodeBench",
+          "version": "v6",
+          "score": 51.8,
+          "reason": "LiveCodeBench v6 비교 집합 내부 1위입니다.",
+          "relation": "문제 풀이 코드 생성 평가 → 알고리즘 정답 검증과 관련된 근거입니다. 실제 작업 성공률을 보장하지 않습니다."
+        },
+        {
+          "model": "Kimi K2 Instruct",
+          "rank": 2,
+          "tied": false,
+          "benchmark": "LiveCodeBench",
+          "version": "v6",
+          "score": 48.9,
+          "reason": "LiveCodeBench v6 비교 집합 내부 2위입니다.",
+          "relation": "문제 풀이 코드 생성 평가 → 알고리즘 정답 검증과 관련된 근거입니다. 실제 작업 성공률을 보장하지 않습니다."
+        },
+        {
+          "model": "DeepSeek V3 0324",
+          "rank": 3,
+          "tied": false,
+          "benchmark": "LiveCodeBench",
+          "version": "v6",
+          "score": 45.2,
+          "reason": "LiveCodeBench v6 비교 집합 내부 3위입니다.",
+          "relation": "문제 풀이 코드 생성 평가 → 알고리즘 정답 검증과 관련된 근거입니다. 실제 작업 성공률을 보장하지 않습니다."
+        }
+      ],
+      "coverage": 28
+    },
+    {
+      "request": "React 장바구니 기능 구현",
+      "mode": "ranked",
+      "basis": "CursorBench 4.0 · 코딩 편집기에서 개발 작업을 수행하는 구성 평가로 앱 구현에 관련",
+      "scope": "확보한 비교 집합 안의 결과입니다. 전체 모델의 절대 순위가 아니며 가격·무료 여부는 순위에 반영하지 않습니다.",
+      "groups": [
+        {
+          "benchmark": "CursorBench",
+          "version": "4.0",
+          "publisher": "SpaceXSI (xAI)",
+          "period": null,
+          "count": 2
+        },
+        {
+          "benchmark": "DeepSWE",
+          "version": "1.1",
+          "publisher": "SpaceXSI (xAI)",
+          "period": null,
+          "count": 2
+        },
+        {
+          "benchmark": "LiveCodeBench",
+          "version": "v6",
+          "publisher": "Qwen",
+          "period": "2025.02~2025.05",
+          "count": 3
+        },
+        {
+          "benchmark": "Terminal-Bench",
+          "version": "4.0",
+          "publisher": "SpaceXSI (xAI)",
+          "period": null,
+          "count": 2
+        }
+      ],
+      "entries": [
+        {
+          "model": "Grok 4.7",
+          "rank": 1,
+          "tied": false,
+          "benchmark": "CursorBench",
+          "version": "4.0",
+          "score": 46.3,
+          "reason": "CursorBench 4.0 비교 집합 내부 1위입니다.",
+          "relation": "에이전트·도구 실행 구성 평가 → 현재 개발 작업에 적용하는 것은 추론입니다. 일반 웹 채팅의 직접 측정값이 아닙니다."
+        },
+        {
+          "model": "Grok 4.6",
+          "rank": 2,
+          "tied": false,
+          "benchmark": "CursorBench",
+          "version": "4.0",
+          "score": 40.4,
+          "reason": "CursorBench 4.0 비교 집합 내부 2위입니다.",
+          "relation": "에이전트·도구 실행 구성 평가 → 현재 개발 작업에 적용하는 것은 추론입니다. 일반 웹 채팅의 직접 측정값이 아닙니다."
+        }
+      ],
+      "coverage": 28
+    },
+    {
+      "request": "React 장바구니 오류 수정",
+      "mode": "ranked",
+      "basis": "DeepSWE 1.1 · 기존 저장소의 코드 수정·문제 해결을 평가하므로 오류 수정과 관련",
+      "scope": "확보한 비교 집합 안의 결과입니다. 전체 모델의 절대 순위가 아니며 가격·무료 여부는 순위에 반영하지 않습니다.",
+      "groups": [
+        {
+          "benchmark": "DeepSWE",
+          "version": "1.1",
+          "publisher": "SpaceXSI (xAI)",
+          "period": null,
+          "count": 2
+        },
+        {
+          "benchmark": "CursorBench",
+          "version": "4.0",
+          "publisher": "SpaceXSI (xAI)",
+          "period": null,
+          "count": 2
+        },
+        {
+          "benchmark": "LiveCodeBench",
+          "version": "v6",
+          "publisher": "Qwen",
+          "period": "2025.02~2025.05",
+          "count": 3
+        },
+        {
+          "benchmark": "Terminal-Bench",
+          "version": "4.0",
+          "publisher": "SpaceXSI (xAI)",
+          "period": null,
+          "count": 2
+        }
+      ],
+      "entries": [
+        {
+          "model": "Grok 4.7",
+          "rank": 1,
+          "tied": false,
+          "benchmark": "DeepSWE",
+          "version": "1.1",
+          "score": 71,
+          "reason": "DeepSWE 1.1 비교 집합 내부 1위입니다.",
+          "relation": "에이전트·도구 실행 구성 평가 → 현재 개발 작업에 적용하는 것은 추론입니다. 일반 웹 채팅의 직접 측정값이 아닙니다."
+        },
+        {
+          "model": "Grok 4.6",
+          "rank": 2,
+          "tied": false,
+          "benchmark": "DeepSWE",
+          "version": "1.1",
+          "score": 65.2,
+          "reason": "DeepSWE 1.1 비교 집합 내부 2위입니다.",
+          "relation": "에이전트·도구 실행 구성 평가 → 현재 개발 작업에 적용하는 것은 추론입니다. 일반 웹 채팅의 직접 측정값이 아닙니다."
+        }
+      ],
+      "coverage": 28
+    },
+    {
+      "request": "전공 수업에서 대학생 120명의 설문 결과를 분석해서 A4 4장짜리 보고서를 써야 해. 데이터는 엑셀에 있고, 학년별 만족도 차이와 공부 시간·성적의 관계를 보고 싶어. 통계를 잘 몰라서 분석 방법과 결과 해석도 쉽게 설명받고 싶어.",
+      "mode": "review",
+      "basis": "동등한 우선 검토 후보 · 순서를 정할 직접 비교 근거가 부족합니다.",
+      "scope": "확보한 비교 집합 안의 결과입니다. 전체 모델의 절대 순위가 아니며 가격·무료 여부는 순위에 반영하지 않습니다.",
+      "groups": [],
+      "entries": [
+        {
+          "model": "DeepSeek R1",
+          "rank": null,
+          "tied": false,
+          "benchmark": "AIME",
+          "version": "2024",
+          "score": 79.8,
+          "reason": "AIME 2024에서 79.8% pass@1가 기록된 추론·문제 해결 근거가 있습니다.",
+          "relation": "수학·일반 추론 근거 → 통계 방법과 해석을 검토할 후보라는 추론입니다. 설문 통계의 직접 정확성 평가는 아닙니다."
+        },
+        {
+          "model": "DeepSeek R1 0528",
+          "rank": null,
+          "tied": false,
+          "benchmark": "Humanity’s Last Exam",
+          "version": "미공개",
+          "score": 17.7,
+          "reason": "Humanity’s Last Exam 미공개에서 17.7% pass@1가 기록된 추론·문제 해결 근거가 있습니다.",
+          "relation": "수학·일반 추론 근거 → 통계 방법과 해석을 검토할 후보라는 추론입니다. 설문 통계의 직접 정확성 평가는 아닙니다."
+        },
+        {
+          "model": "DeepSeek V3 0324",
+          "rank": null,
+          "tied": false,
+          "benchmark": "AIME",
+          "version": "미공개",
+          "score": 59.4,
+          "reason": "AIME 미공개에서 59.4원문 수치 (단위 미공개)가 기록된 추론·문제 해결 근거가 있습니다.",
+          "relation": "수학·일반 추론 근거 → 통계 방법과 해석을 검토할 후보라는 추론입니다. 설문 통계의 직접 정확성 평가는 아닙니다."
+        },
+        {
+          "model": "Gemini 3 Flash Preview",
+          "rank": null,
+          "tied": false,
+          "benchmark": "Humanity's Last Exam",
+          "version": "미공개",
+          "score": 33.7,
+          "reason": "Humanity's Last Exam 미공개에서 33.7%가 기록된 추론·문제 해결 근거가 있습니다.",
+          "relation": "수학·일반 추론 근거 → 통계 방법과 해석을 검토할 후보라는 추론입니다. 설문 통계의 직접 정확성 평가는 아닙니다."
+        },
+        {
+          "model": "Gemini 3.1 Pro Preview",
+          "rank": null,
+          "tied": false,
+          "benchmark": "Humanity's Last Exam",
+          "version": "미공개",
+          "score": 44.4,
+          "reason": "Humanity's Last Exam 미공개에서 44.4%가 기록된 추론·문제 해결 근거가 있습니다.",
+          "relation": "수학·일반 추론 근거 → 통계 방법과 해석을 검토할 후보라는 추론입니다. 설문 통계의 직접 정확성 평가는 아닙니다."
+        },
+        {
+          "model": "GLM 4.6",
+          "rank": null,
+          "tied": false,
+          "benchmark": "AIME",
+          "version": "2025",
+          "score": 93.9,
+          "reason": "AIME 2025에서 93.9원문 표 점수가 기록된 추론·문제 해결 근거가 있습니다.",
+          "relation": "수학·일반 추론 근거 → 통계 방법과 해석을 검토할 후보라는 추론입니다. 설문 통계의 직접 정확성 평가는 아닙니다."
+        },
+        {
+          "model": "GLM 4.7",
+          "rank": null,
+          "tied": false,
+          "benchmark": "Humanity’s Last Exam",
+          "version": "미공개",
+          "score": 24.8,
+          "reason": "Humanity’s Last Exam 미공개에서 24.8원문 표 점수가 기록된 추론·문제 해결 근거가 있습니다.",
+          "relation": "수학·일반 추론 근거 → 통계 방법과 해석을 검토할 후보라는 추론입니다. 설문 통계의 직접 정확성 평가는 아닙니다."
+        },
+        {
+          "model": "GPT-6.1 Sol",
+          "rank": null,
+          "tied": false,
+          "benchmark": "오류 유발 대화 사실성 평가",
+          "version": "미공개",
+          "score": 7.7,
+          "reason": "오류 유발 대화 사실성 평가 미공개에서 7.7%가 기록된 추론·문제 해결 근거가 있습니다.",
+          "relation": "수학·일반 추론 근거 → 통계 방법과 해석을 검토할 후보라는 추론입니다. 설문 통계의 직접 정확성 평가는 아닙니다."
+        },
+        {
+          "model": "GPT-6.1 Terra",
+          "rank": null,
+          "tied": false,
+          "benchmark": "오류 유발 프롬프트 사실성 평가",
+          "version": "미공개",
+          "score": 16.7,
+          "reason": "오류 유발 프롬프트 사실성 평가 미공개에서 16.7%가 기록된 추론·문제 해결 근거가 있습니다.",
+          "relation": "수학·일반 추론 근거 → 통계 방법과 해석을 검토할 후보라는 추론입니다. 설문 통계의 직접 정확성 평가는 아닙니다."
+        },
+        {
+          "model": "Kimi K2 Instruct",
+          "rank": null,
+          "tied": false,
+          "benchmark": "ZebraLogic",
+          "version": "미공개",
+          "score": 89,
+          "reason": "ZebraLogic 미공개에서 89% accuracy가 기록된 추론·문제 해결 근거가 있습니다.",
+          "relation": "수학·일반 추론 근거 → 통계 방법과 해석을 검토할 후보라는 추론입니다. 설문 통계의 직접 정확성 평가는 아닙니다."
+        },
+        {
+          "model": "Kimi K2 Thinking",
+          "rank": null,
+          "tied": false,
+          "benchmark": "Humanity’s Last Exam",
+          "version": "미공개",
+          "score": 23.9,
+          "reason": "Humanity’s Last Exam 미공개에서 23.9원문 표 점수가 기록된 추론·문제 해결 근거가 있습니다.",
+          "relation": "수학·일반 추론 근거 → 통계 방법과 해석을 검토할 후보라는 추론입니다. 설문 통계의 직접 정확성 평가는 아닙니다."
+        },
+        {
+          "model": "Magistral Small 2506",
+          "rank": null,
+          "tied": false,
+          "benchmark": "AIME",
+          "version": "2024",
+          "score": 70.68,
+          "reason": "AIME 2024에서 70.68%가 기록된 추론·문제 해결 근거가 있습니다.",
+          "relation": "수학·일반 추론 근거 → 통계 방법과 해석을 검토할 후보라는 추론입니다. 설문 통계의 직접 정확성 평가는 아닙니다."
+        },
+        {
+          "model": "Mistral Small 3.1 24B Instruct 2503",
+          "rank": null,
+          "tied": false,
+          "benchmark": "MATH",
+          "version": "미공개",
+          "score": 69.3,
+          "reason": "MATH 미공개에서 69.3%가 기록된 추론·문제 해결 근거가 있습니다.",
+          "relation": "수학·일반 추론 근거 → 통계 방법과 해석을 검토할 후보라는 추론입니다. 설문 통계의 직접 정확성 평가는 아닙니다."
+        },
+        {
+          "model": "Mistral Small 3.2 24B Instruct 2506",
+          "rank": null,
+          "tied": false,
+          "benchmark": "MATH",
+          "version": "미공개",
+          "score": 69.42,
+          "reason": "MATH 미공개에서 69.42%가 기록된 추론·문제 해결 근거가 있습니다.",
+          "relation": "수학·일반 추론 근거 → 통계 방법과 해석을 검토할 후보라는 추론입니다. 설문 통계의 직접 정확성 평가는 아닙니다."
+        },
+        {
+          "model": "Qwen3 30B A3B Instruct 2507",
+          "rank": null,
+          "tied": false,
+          "benchmark": "AIME",
+          "version": "2025",
+          "score": 61.3,
+          "reason": "AIME 2025에서 61.3원문 표 점수 (세부 metric 미공개)가 기록된 추론·문제 해결 근거가 있습니다.",
+          "relation": "수학·일반 추론 근거 → 통계 방법과 해석을 검토할 후보라는 추론입니다. 설문 통계의 직접 정확성 평가는 아닙니다."
+        },
+        {
+          "model": "Qwen3 235B A22B Instruct 2507",
+          "rank": null,
+          "tied": false,
+          "benchmark": "AIME",
+          "version": "2025",
+          "score": 70.3,
+          "reason": "AIME 2025에서 70.3원문 표 점수 (세부 metric 미공개)가 기록된 추론·문제 해결 근거가 있습니다.",
+          "relation": "수학·일반 추론 근거 → 통계 방법과 해석을 검토할 후보라는 추론입니다. 설문 통계의 직접 정확성 평가는 아닙니다."
+        }
+      ],
+      "coverage": 28
+    },
+    {
+      "request": "한국어 동아리 모집 홍보 글 500자 작성",
+      "mode": "review",
+      "basis": "동등한 우선 검토 후보 · 순서를 정할 직접 비교 근거가 부족합니다.",
+      "scope": "확보한 비교 집합 안의 결과입니다. 전체 모델의 절대 순위가 아니며 가격·무료 여부는 순위에 반영하지 않습니다.",
+      "groups": [
+        {
+          "benchmark": "Creative Writing",
+          "version": "v3",
+          "publisher": "Qwen",
+          "period": null,
+          "count": 3
+        }
+      ],
+      "entries": [
+        {
+          "model": "DeepSeek V3 0324",
+          "rank": null,
+          "tied": false,
+          "benchmark": "Creative Writing",
+          "version": "v3",
+          "score": 81.6,
+          "reason": "Creative Writing v3에서 81.6원문 표 점수 (세부 metric 미공개)가 기록된 글 생성 근거가 있습니다.",
+          "relation": "글 생성 평가 → 한국어·요청 장르의 품질로 확장하는 것은 추론입니다. 언어·judge·작업 조건의 동일성은 미확인입니다."
+        },
+        {
+          "model": "Kimi K2 Instruct",
+          "rank": null,
+          "tied": false,
+          "benchmark": "Creative Writing",
+          "version": "v3",
+          "score": 88.1,
+          "reason": "Creative Writing v3에서 88.1원문 표 점수 (세부 metric 미공개)가 기록된 글 생성 근거가 있습니다.",
+          "relation": "글 생성 평가 → 한국어·요청 장르의 품질로 확장하는 것은 추론입니다. 언어·judge·작업 조건의 동일성은 미확인입니다."
+        },
+        {
+          "model": "Kimi K2 Thinking",
+          "rank": null,
+          "tied": false,
+          "benchmark": "Longform Writing",
+          "version": "미공개",
+          "score": 73.8,
+          "reason": "Longform Writing 미공개에서 73.8원문 표 점수가 기록된 글 생성 근거가 있습니다.",
+          "relation": "글 생성 평가 → 한국어·요청 장르의 품질로 확장하는 것은 추론입니다. 언어·judge·작업 조건의 동일성은 미확인입니다."
+        },
+        {
+          "model": "Qwen3 30B A3B Instruct 2507",
+          "rank": null,
+          "tied": false,
+          "benchmark": "Creative Writing",
+          "version": "v3",
+          "score": 86,
+          "reason": "Creative Writing v3에서 86원문 표 점수 (세부 metric 미공개)가 기록된 글 생성 근거가 있습니다.",
+          "relation": "글 생성 평가 → 한국어·요청 장르의 품질로 확장하는 것은 추론입니다. 언어·judge·작업 조건의 동일성은 미확인입니다."
+        },
+        {
+          "model": "Qwen3 235B A22B Instruct 2507",
+          "rank": null,
+          "tied": false,
+          "benchmark": "Creative Writing",
+          "version": "v3",
+          "score": 87.5,
+          "reason": "Creative Writing v3에서 87.5원문 표 점수 (세부 metric 미공개)가 기록된 글 생성 근거가 있습니다.",
+          "relation": "글 생성 평가 → 한국어·요청 장르의 품질로 확장하는 것은 추론입니다. 언어·judge·작업 조건의 동일성은 미확인입니다."
+        }
+      ],
+      "coverage": 28
+    }
+  ]
+}

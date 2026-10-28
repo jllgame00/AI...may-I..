@@ -25,9 +25,9 @@ export function accessCategory(c:Recommendation):AccessCategory {
 export function accessOrder(c:Recommendation):number {return ['web','api','install','unknown'].indexOf(accessCategory(c))}
 export function primaryAccessCandidates(candidates:Recommendation[]):Recommendation[] {
   const models=new Map<string,Recommendation>()
-  for(const c of [...candidates].filter(c=>c.model&&!c.configuration).sort((a,b)=>Number(a.suitability!=='조건 비교 가능')-Number(b.suitability!=='조건 비교 가능')||accessOrder(a)-accessOrder(b))){
+  for(const c of [...candidates].filter(c=>c.model&&!c.configuration).sort((a,b)=>Number(a.suitability!=='조건 비교 가능')-Number(b.suitability!=='조건 비교 가능')||accessOrder(a)-accessOrder(b)||a.id.localeCompare(b.id,'en'))){
     const key=`${c.model!.id}@${c.model!.version}`
     if(!models.has(key))models.set(key,c)
   }
-  return [...models.values()]
+  return [...models.values()].sort((a,b)=>(a.model!.name??a.model!.id).localeCompare(b.model!.name??b.model!.id,'en',{numeric:true})||a.id.localeCompare(b.id,'en'))
 }

@@ -1,18 +1,19 @@
 export type ConditionField = 'purpose' | 'audience' | 'format' | 'length' | 'tone' | 'constraints'
 export type TaskKind = 'writing' | 'summary' | 'research' | 'coding' | 'image' | 'general'
-import type { FeatureId, Priority, Recommendation, ExcludedCandidate, ScoringTask, UsageRoute } from './recommendationTypes'
+import type { FeatureId, Recommendation, ExcludedCandidate, ScoringTask, TaskRecommendationDecision, CodingIntent } from './recommendationTypes'
 export type InputMode = 'summary' | 'file' | 'unknown'
 export interface PromptRequest {
-  text: string; overrides: Partial<Record<ConditionField,string>>
-  priority?: Priority; inputMode?: InputMode; requiredFeatures?: FeatureId[]; tasks?: ScoringTask[]
-  usageRoute?: UsageRoute
+  readonly text: string; overrides: Partial<Record<ConditionField,string>>
+  inputMode?: InputMode; requiredFeatures?: FeatureId[]; tasks?: ScoringTask[]
+  codingIntent?: CodingIntent
+  details?: Partial<Record<'task'|'material'|'researchQuestions'|'explanation',string>>
 }
 export type Conditions = Record<ConditionField,string>
 export type ResolvedConditions = Record<ConditionField,{ value: string; source: 'input' | 'user' | 'unknown' }>
 export interface PromptTemplate { id: string; title: string; text: string }
 export interface GuideStage extends PromptTemplate { purpose: string; inputs: string[]; output: string; checks: string[]; handoff: string[] }
-export interface TaskAnalysis { tasks: ScoringTask[]; requiredFeatures: FeatureId[]; inputMode: InputMode; needsInputMode: boolean; survey: boolean; notes: string[] }
-export interface Comparison { recommendations: Recommendation[]; excluded: ExcludedCandidate[]; analysis: TaskAnalysis; context:string }
+export interface TaskAnalysis { tasks: ScoringTask[]; requiredFeatures: FeatureId[]; inputMode: InputMode; needsInputMode: boolean; survey: boolean; notes: string[]; codingIntent:CodingIntent|null }
+export interface Comparison { decision?: TaskRecommendationDecision; references?: Recommendation[]; recommendations: Recommendation[]; excluded: ExcludedCandidate[]; analysis: TaskAnalysis; context:string }
 export interface StageSelection { default: string | null; byStage: Record<string,string> }
 export interface PromptBundle {
   context: string; kind: TaskKind; conditions: ResolvedConditions

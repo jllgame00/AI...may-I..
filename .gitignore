@@ -9,6 +9,7 @@ dist/
 !.env.example
 .arena-cache/
 .aa-cache/
+.refresh-cache/
 .venv-arena/
 __pycache__/
 *.pyc

@@ -47,20 +47,18 @@ it('never turns the currently incomplete evaluation conditions into definite pai
   }
 })
 it('keeps task and access states independent of subscription prices across routes and tasks', () => {
-  for(const usageRoute of ['consumer','chat','work','api'] as const)for(const task of ['analysis','writing','coding'] as const) {
-    const request:PromptRequest={text:task==='analysis'?'설문 통계 보고서':task==='coding'?'Python 코드 수정':'환영 이메일',overrides:{},tasks:[task],inputMode:'summary',usageRoute}
+  for(const task of ['analysis','writing','coding'] as const) {
+    const request:PromptRequest={text:task==='analysis'?'설문 통계 보고서':task==='coding'?'Python 코드 수정':'환영 이메일',overrides:{},tasks:[task],inputMode:'summary'}
     const result=compareCandidates(request)
     assert.ok(result.recommendations.length)
     for(const c of result.recommendations) {
       assert.equal(c.score,null)
-      assert.equal(c.suitability,'조건 비교 가능')
+      assert.equal(c.suitability,c.accessStatus==='연결 미확인'?'확인 후 선택':'조건 비교 가능')
       if(c.plan.id==='claude-pro'){
         assert.equal(c.mapping.status,'unknown');assert.equal(c.accessStatus,'연결 미확인')
         assert.equal(c.mapping.selectable,false)
       }
       if(task!=='coding')assert.ok(c.evidence?.every(e=>e.domain==='writing'&&task==='writing'))
     }
-    if(usageRoute==='consumer')assert.equal(result.recommendations.filter(c=>c.model&&!c.configuration&&!c.accessAlternative).length,25)
-    if(usageRoute==='api')assert.equal(result.recommendations.filter(c=>!c.plan.unassigned&&!c.configuration).length,5)
   }
 })
