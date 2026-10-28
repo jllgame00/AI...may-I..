@@ -1,9 +1,9 @@
-﻿import { describe, it } from 'node:test'
+import { describe, it } from 'node:test'
 import assert from 'node:assert/strict'
 import { DEFAULT_REQUEST, services } from '../data/services.ts'
 import { analyzeRequest, classifyTask, selectCandidate } from './recommend.ts'
 import { buildPrompt } from './prompts.ts'
-import type { Budget, Priority, TaskKind } from '../types'
+import type { Budget, Priority, TaskKind } from '../recommendationTypes'
 // Original MVP contracts retained; fictional rankings are superseded by evidence.test.ts.
 describe('existing MVP regression', () => {
   it('keeps the default request and three-stage workflow', () => {
@@ -33,7 +33,7 @@ describe('existing MVP regression', () => {
       const candidate = result.workflow[0].recommendations.find(r => r.service.id === service.id)!
       const workflow = selectCandidate(result.workflow, result.workflow[0].id, candidate.id)
       const prompt = buildPrompt(result, service.id, workflow)
-      for (const value of [result.request.text, '무료만 사용', '쉬운 사용법', `${service.name} · Free`, '[입력 자료]', '[원하는 결과 형식]', '[주의사항]']) assert.ok(prompt.includes(value))
+      for (const value of [result.request.text, '무료만 사용', '쉬운 사용법', `${service.name} · ${candidate.plan.name}`, '[입력 자료]', '[원하는 결과 형식]', '[주의사항]']) assert.ok(prompt.includes(value))
       return prompt
     })
     assert.equal(new Set(prompts).size, 3)

@@ -1,4 +1,5 @@
-import type { FeatureSupport, RecommendationSnapshot, ServicePlan, Source } from '../types'
+import type { FeatureSupport, RecommendationSnapshot, ServicePlan, Source } from '../recommendationTypes'
+import { applyResearch } from './researchOverlay.ts'
 const checkedAt = '2026-10-21'
 const source = (url: string): Source => ({ url, checkedAt })
 const chat = source('https://chatgpt.com/pricing/')
@@ -52,7 +53,7 @@ const plans: ServicePlan[] = [
 
 // Public, manually reviewed snapshot. No leaderboard rows or API prices are bundled.
 export const recommendationSnapshot: RecommendationSnapshot = {
-  version: 'official-2026-10-21-audit-1', checkedAt, plans, models: [], observations: [], cohorts: [],
+  version: 'official-2026-10-21+supplied-research-2026-10-28', checkedAt, plans: applyResearch(plans), models: [], observations: [], cohorts: [],
   mappings: plans.map(plan => ({
     id: `${plan.id}-unconfirmed`, planId: plan.id, modelId: null, status: 'unknown', selectable: false, mode: null,
     note: mappingEvidence[plan.serviceId].note, sources: [plan.sources[0], mappingEvidence[plan.serviceId].source],

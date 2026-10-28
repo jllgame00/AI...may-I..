@@ -1,5 +1,5 @@
 // Synthetic test data. Never import from application code.
-import type { RecommendationSnapshot } from '../../types.ts'
+import type { RecommendationSnapshot } from '../../recommendationTypes.ts'
 export function fixture(): RecommendationSnapshot {
   const source = { url: 'https://example.test/fixture', checkedAt: '2026-01-01' }
   const modelIds = ['test-a', 'test-b', 'test-c']

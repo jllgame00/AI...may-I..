@@ -1,0 +1,32 @@
+[
+  {
+    "role": "body",
+    "foreground": "#18213b",
+    "background": "#f7f8fc",
+    "ratio": 15.0
+  },
+  {
+    "role": "secondary text",
+    "foreground": "#526078",
+    "background": "#f7f8fc",
+    "ratio": 5.99
+  },
+  {
+    "role": "primary button",
+    "foreground": "#ffffff",
+    "background": "#5b3fc4",
+    "ratio": 7.11
+  },
+  {
+    "role": "input border",
+    "foreground": "#8290aa",
+    "background": "#ffffff",
+    "ratio": 3.22
+  },
+  {
+    "role": "focus",
+    "foreground": "#5b3fc4",
+    "background": "#f7f8fc",
+    "ratio": 6.7
+  }
+]

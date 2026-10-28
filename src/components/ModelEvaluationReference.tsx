@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { evidenceForCandidate, loadModelEvidence } from '../lib/modelEvidence'
 import type { EvaluatedModel, ModelEvidenceSnapshot } from '../lib/modelEvidence'
-import type { Recommendation } from '../types'
+import type { Recommendation } from '../recommendationTypes'
 
 const statusLabels = {
   scored: '집단 내 상대 점수',

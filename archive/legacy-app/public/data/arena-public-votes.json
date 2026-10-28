@@ -1,0 +1,794 @@
+{
+  "components": [
+    {
+      "connected": true,
+      "id": "component-1",
+      "modelIds": [
+        "amazon-nova-experimental-chat-05-14",
+        "amazon.nova-pro-v1:0",
+        "chatgpt-4o-latest-20250326",
+        "claude-3-5-haiku-20241022",
+        "claude-3-5-sonnet-20241022",
+        "claude-3-7-sonnet-20250219",
+        "claude-3-7-sonnet-20250219-thinking-32k",
+        "claude-opus-4-20250514",
+        "claude-opus-4-20250514-thinking-16k",
+        "claude-sonnet-4-20250514",
+        "claude-sonnet-4-20250514-thinking-32k",
+        "command-a-03-2025",
+        "deepseek-r1-0528",
+        "deepseek-v3-0324",
+        "gemini-2.0-flash-001",
+        "gemini-2.0-flash-thinking-exp-01-21",
+        "gemini-2.5-flash",
+        "gemini-2.5-flash-lite-preview-06-17-thinking",
+        "gemini-2.5-flash-preview-04-17",
+        "gemini-2.5-pro",
+        "gemini-2.5-pro-preview-03-25",
+        "gemini-2.5-pro-preview-05-06",
+        "gemma-3-27b-it",
+        "gemma-3n-e4b-it",
+        "gpt-4.1-2025-04-14",
+        "gpt-4.1-mini-2025-04-14",
+        "gpt-4o-2024-11-20",
+        "gpt-4o-mini-2024-07-18",
+        "grok-3-mini-beta",
+        "grok-3-mini-high",
+        "grok-3-preview-02-24",
+        "grok-4-0709",
+        "hunyuan-turbos-20250416",
+        "kimi-k2-0711-preview",
+        "llama-3.3-70b-instruct",
+        "llama-4-maverick-03-26-experimental",
+        "llama-4-maverick-17b-128e-instruct",
+        "llama-4-scout-17b-16e-instruct",
+        "magistral-medium-2506",
+        "minimax-m1",
+        "mistral-medium-2505",
+        "mistral-small-2506",
+        "mistral-small-3.1-24b-instruct-2503",
+        "o3-2025-04-16",
+        "o3-mini",
+        "o4-mini-2025-04-16",
+        "qwen-max-2025-01-25",
+        "qwen3-235b-a22b",
+        "qwen3-235b-a22b-instruct-2507",
+        "qwen3-235b-a22b-no-thinking",
+        "qwen3-30b-a3b",
+        "qwq-32b"
+      ],
+      "models": [
+        {
+          "ci95": [
+            947.005756,
+            968.680849
+          ],
+          "id": "amazon-nova-experimental-chat-05-14",
+          "opponents": 47,
+          "rating": 957.843302,
+          "samples": 2817,
+          "settings": null,
+          "status": "scored"
+        },
+        {
+          "ci95": [
+            902.012449,
+            918.10203
+          ],
+          "id": "amazon.nova-pro-v1:0",
+          "opponents": 47,
+          "rating": 910.05724,
+          "samples": 5439,
+          "settings": null,
+          "status": "scored"
+        },
+        {
+          "ci95": [
+            1070.287786,
+            1085.083313
+          ],
+          "id": "chatgpt-4o-latest-20250326",
+          "opponents": 51,
+          "rating": 1077.68555,
+          "samples": 6461,
+          "settings": null,
+          "status": "scored"
+        },
+        {
+          "ci95": [
+            885.03029,
+            901.265429
+          ],
+          "id": "claude-3-5-haiku-20241022",
+          "opponents": 51,
+          "rating": 893.14786,
+          "samples": 5439,
+          "settings": null,
+          "status": "scored"
+        },
+        {
+          "ci95": [
+            916.244352,
+            931.874326
+          ],
+          "id": "claude-3-5-sonnet-20241022",
+          "opponents": 51,
+          "rating": 924.059339,
+          "samples": 5808,
+          "settings": null,
+          "status": "scored"
+        },
+        {
+          "ci95": [
+            914.275576,
+            930.166944
+          ],
+          "id": "claude-3-7-sonnet-20250219",
+          "opponents": 51,
+          "rating": 922.22126,
+          "samples": 5813,
+          "settings": null,
+          "status": "scored"
+        },
+        {
+          "ci95": [
+            920.683535,
+            936.283649
+          ],
+          "id": "claude-3-7-sonnet-20250219-thinking-32k",
+          "opponents": 47,
+          "rating": 928.483592,
+          "samples": 6128,
+          "settings": null,
+          "status": "scored"
+        },
+        {
+          "ci95": [
+            994.166099,
+            1006.785879
+          ],
+          "id": "claude-opus-4-20250514",
+          "opponents": 47,
+          "rating": 1000.475989,
+          "samples": 8673,
+          "settings": null,
+          "status": "scored"
+        },
+        {
+          "ci95": [
+            994.423959,
+            1010.584214
+          ],
+          "id": "claude-opus-4-20250514-thinking-16k",
+          "opponents": 47,
+          "rating": 1002.504087,
+          "samples": 5352,
+          "settings": null,
+          "status": "scored"
+        },
+        {
+          "ci95": [
+            959.922342,
+            973.991964
+          ],
+          "id": "claude-sonnet-4-20250514",
+          "opponents": 47,
+          "rating": 966.957153,
+          "samples": 7103,
+          "settings": null,
+          "status": "scored"
+        },
+        {
+          "ci95": [
+            972.21159,
+            989.060739
+          ],
+          "id": "claude-sonnet-4-20250514-thinking-32k",
+          "opponents": 47,
+          "rating": 980.636165,
+          "samples": 4863,
+          "settings": null,
+          "status": "scored"
+        },
+        {
+          "ci95": [
+            966.209094,
+            981.161698
+          ],
+          "id": "command-a-03-2025",
+          "opponents": 47,
+          "rating": 973.685396,
+          "samples": 5873,
+          "settings": null,
+          "status": "scored"
+        },
+        {
+          "ci95": [
+            1072.893075,
+            1088.868689
+          ],
+          "id": "deepseek-r1-0528",
+          "opponents": 47,
+          "rating": 1080.880882,
+          "samples": 5548,
+          "settings": null,
+          "status": "scored"
+        },
+        {
+          "ci95": [
+            1020.417867,
+            1036.371233
+          ],
+          "id": "deepseek-v3-0324",
+          "opponents": 48,
+          "rating": 1028.39455,
+          "samples": 5207,
+          "settings": null,
+          "status": "scored"
+        },
+        {
+          "ci95": [
+            984.066167,
+            1000.077188
+          ],
+          "id": "gemini-2.0-flash-001",
+          "opponents": 51,
+          "rating": 992.071677,
+          "samples": 5079,
+          "settings": null,
+          "status": "scored"
+        },
+        {
+          "ci95": [
+            990.17546,
+            1057.214382
+          ],
+          "id": "gemini-2.0-flash-thinking-exp-01-21",
+          "opponents": 20,
+          "rating": 1023.694921,
+          "samples": 309,
+          "settings": null,
+          "status": "scored"
+        },
+        {
+          "ci95": [
+            1059.700275,
+            1072.651453
+          ],
+          "id": "gemini-2.5-flash",
+          "opponents": 47,
+          "rating": 1066.175864,
+          "samples": 8266,
+          "settings": null,
+          "status": "scored"
+        },
+        {
+          "ci95": [
+            1017.454531,
+            1034.67723
+          ],
+          "id": "gemini-2.5-flash-lite-preview-06-17-thinking",
+          "opponents": 47,
+          "rating": 1026.06588,
+          "samples": 4518,
+          "settings": null,
+          "status": "scored"
+        },
+        {
+          "ci95": [
+            1032.495966,
+            1050.562321
+          ],
+          "id": "gemini-2.5-flash-preview-04-17",
+          "opponents": 50,
+          "rating": 1041.529144,
+          "samples": 4193,
+          "settings": null,
+          "status": "scored"
+        },
+        {
+          "ci95": [
+            1124.850589,
+            1138.96095
+          ],
+          "id": "gemini-2.5-pro",
+          "opponents": 47,
+          "rating": 1131.905769,
+          "samples": 7913,
+          "settings": null,
+          "status": "scored"
+        },
+        {
+          "ci95": [
+            1083.004112,
+            1118.462023
+          ],
+          "id": "gemini-2.5-pro-preview-03-25",
+          "opponents": 25,
+          "rating": 1100.733067,
+          "samples": 1132,
+          "settings": null,
+          "status": "scored"
+        },
+        {
+          "ci95": [
+            1073.305104,
+            1095.952734
+          ],
+          "id": "gemini-2.5-pro-preview-05-06",
+          "opponents": 42,
+          "rating": 1084.628919,
+          "samples": 2722,
+          "settings": null,
+          "status": "scored"
+        },
+        {
+          "ci95": [
+            1007.921557,
+            1022.577246
+          ],
+          "id": "gemma-3-27b-it",
+          "opponents": 51,
+          "rating": 1015.249401,
+          "samples": 6208,
+          "settings": null,
+          "status": "scored"
+        },
+        {
+          "ci95": [
+            949.207774,
+            973.431963
+          ],
+          "id": "gemma-3n-e4b-it",
+          "opponents": 47,
+          "rating": 961.319868,
+          "samples": 2260,
+          "settings": null,
+          "status": "scored"
+        },
+        {
+          "ci95": [
+            1023.429813,
+            1039.045855
+          ],
+          "id": "gpt-4.1-2025-04-14",
+          "opponents": 51,
+          "rating": 1031.237834,
+          "samples": 5472,
+          "settings": null,
+          "status": "scored"
+        },
+        {
+          "ci95": [
+            975.591057,
+            991.558469
+          ],
+          "id": "gpt-4.1-mini-2025-04-14",
+          "opponents": 48,
+          "rating": 983.574763,
+          "samples": 5208,
+          "settings": null,
+          "status": "scored"
+        },
+        {
+          "ci95": [
+            958.575464,
+            1011.831235
+          ],
+          "id": "gpt-4o-2024-11-20",
+          "opponents": 20,
+          "rating": 985.20335,
+          "samples": 468,
+          "settings": null,
+          "status": "scored"
+        },
+        {
+          "ci95": [
+            851.217161,
+            905.691745
+          ],
+          "id": "gpt-4o-mini-2024-07-18",
+          "opponents": 20,
+          "rating": 878.454453,
+          "samples": 473,
+          "settings": null,
+          "status": "scored"
+        },
+        {
+          "ci95": [
+            1001.373872,
+            1017.594039
+          ],
+          "id": "grok-3-mini-beta",
+          "opponents": 51,
+          "rating": 1009.483956,
+          "samples": 5075,
+          "settings": null,
+          "status": "scored"
+        },
+        {
+          "ci95": [
+            992.142456,
+            1015.507107
+          ],
+          "id": "grok-3-mini-high",
+          "opponents": 46,
+          "rating": 1003.824782,
+          "samples": 2400,
+          "settings": null,
+          "status": "scored"
+        },
+        {
+          "ci95": [
+            1064.769649,
+            1081.402506
+          ],
+          "id": "grok-3-preview-02-24",
+          "opponents": 51,
+          "rating": 1073.086077,
+          "samples": 5056,
+          "settings": null,
+          "status": "scored"
+        },
+        {
+          "ci95": [
+            1079.474598,
+            1111.266318
+          ],
+          "id": "grok-4-0709",
+          "opponents": 46,
+          "rating": 1095.370458,
+          "samples": 1393,
+          "settings": null,
+          "status": "scored"
+        },
+        {
+          "ci95": [
+            1015.713455,
+            1046.141568
+          ],
+          "id": "hunyuan-turbos-20250416",
+          "opponents": 47,
+          "rating": 1030.927512,
+          "samples": 1368,
+          "settings": null,
+          "status": "scored"
+        },
+        {
+          "ci95": [
+            1020.369435,
+            1044.493551
+          ],
+          "id": "kimi-k2-0711-preview",
+          "opponents": 46,
+          "rating": 1032.431493,
+          "samples": 2366,
+          "settings": null,
+          "status": "scored"
+        },
+        {
+          "ci95": [
+            897.409137,
+            915.908422
+          ],
+          "id": "llama-3.3-70b-instruct",
+          "opponents": 51,
+          "rating": 906.658779,
+          "samples": 4168,
+          "settings": null,
+          "status": "scored"
+        },
+        {
+          "ci95": [
+            1055.705662,
+            1072.724614
+          ],
+          "id": "llama-4-maverick-03-26-experimental",
+          "opponents": 48,
+          "rating": 1064.215138,
+          "samples": 4927,
+          "settings": null,
+          "status": "scored"
+        },
+        {
+          "ci95": [
+            924.71944,
+            942.211505
+          ],
+          "id": "llama-4-maverick-17b-128e-instruct",
+          "opponents": 51,
+          "rating": 933.465472,
+          "samples": 4541,
+          "settings": null,
+          "status": "scored"
+        },
+        {
+          "ci95": [
+            918.265308,
+            942.174694
+          ],
+          "id": "llama-4-scout-17b-16e-instruct",
+          "opponents": 47,
+          "rating": 930.220001,
+          "samples": 2414,
+          "settings": null,
+          "status": "scored"
+        },
+        {
+          "ci95": [
+            870.214823,
+            897.019843
+          ],
+          "id": "magistral-medium-2506",
+          "opponents": 47,
+          "rating": 883.617333,
+          "samples": 2144,
+          "settings": null,
+          "status": "scored"
+        },
+        {
+          "ci95": [
+            1003.890402,
+            1021.173718
+          ],
+          "id": "minimax-m1",
+          "opponents": 47,
+          "rating": 1012.53206,
+          "samples": 4589,
+          "settings": null,
+          "status": "scored"
+        },
+        {
+          "ci95": [
+            1014.173894,
+            1027.258669
+          ],
+          "id": "mistral-medium-2505",
+          "opponents": 47,
+          "rating": 1020.716282,
+          "samples": 7807,
+          "settings": null,
+          "status": "scored"
+        },
+        {
+          "ci95": [
+            971.409664,
+            996.780302
+          ],
+          "id": "mistral-small-2506",
+          "opponents": 46,
+          "rating": 984.094983,
+          "samples": 2018,
+          "settings": null,
+          "status": "scored"
+        },
+        {
+          "ci95": [
+            893.286863,
+            915.464254
+          ],
+          "id": "mistral-small-3.1-24b-instruct-2503",
+          "opponents": 47,
+          "rating": 904.375559,
+          "samples": 2823,
+          "settings": null,
+          "status": "scored"
+        },
+        {
+          "ci95": [
+            1077.596789,
+            1091.810762
+          ],
+          "id": "o3-2025-04-16",
+          "opponents": 51,
+          "rating": 1084.703776,
+          "samples": 7252,
+          "settings": null,
+          "status": "scored"
+        },
+        {
+          "ci95": [
+            954.664821,
+            970.242537
+          ],
+          "id": "o3-mini",
+          "opponents": 51,
+          "rating": 962.453679,
+          "samples": 5571,
+          "settings": null,
+          "status": "scored"
+        },
+        {
+          "ci95": [
+            1021.730063,
+            1037.431598
+          ],
+          "id": "o4-mini-2025-04-16",
+          "opponents": 51,
+          "rating": 1029.580831,
+          "samples": 5506,
+          "settings": null,
+          "status": "scored"
+        },
+        {
+          "ci95": [
+            1012.838168,
+            1031.555393
+          ],
+          "id": "qwen-max-2025-01-25",
+          "opponents": 51,
+          "rating": 1022.196781,
+          "samples": 3671,
+          "settings": null,
+          "status": "scored"
+        },
+        {
+          "ci95": [
+            1017.264561,
+            1034.631333
+          ],
+          "id": "qwen3-235b-a22b",
+          "opponents": 48,
+          "rating": 1025.947947,
+          "samples": 4312,
+          "settings": null,
+          "status": "scored"
+        },
+        {
+          "ci95": [
+            988.325644,
+            1036.733224
+          ],
+          "id": "qwen3-235b-a22b-instruct-2507",
+          "opponents": 45,
+          "rating": 1012.529434,
+          "samples": 557,
+          "settings": null,
+          "status": "scored"
+        },
+        {
+          "ci95": [
+            1034.117919,
+            1047.309473
+          ],
+          "id": "qwen3-235b-a22b-no-thinking",
+          "opponents": 47,
+          "rating": 1040.713696,
+          "samples": 7838,
+          "settings": null,
+          "status": "scored"
+        },
+        {
+          "ci95": [
+            970.370298,
+            987.144466
+          ],
+          "id": "qwen3-30b-a3b",
+          "opponents": 48,
+          "rating": 978.757382,
+          "samples": 4665,
+          "settings": null,
+          "status": "scored"
+        },
+        {
+          "ci95": [
+            979.532564,
+            998.906066
+          ],
+          "id": "qwq-32b",
+          "opponents": 51,
+          "rating": 989.219315,
+          "samples": 3516,
+          "settings": null,
+          "status": "scored"
+        }
+      ],
+      "status": "scored",
+      "stronglyConnected": true,
+      "votes": 115361
+    }
+  ],
+  "counts": {
+    "bothBad": 13417,
+    "duplicateRows": 0,
+    "filteredRows": 2,
+    "fittingRows": 115361,
+    "inputRows": 135634,
+    "invalidRows": 10,
+    "repeatedSessionRows": 20261,
+    "retainedRows": 115363,
+    "scoredRows": 115361,
+    "ties": 17877,
+    "uniqueSessions": 115363
+  },
+  "excludedModels": [
+    {
+      "ci95": null,
+      "id": "qwen3-coder-480b-a35b-instruct",
+      "opponents": 2,
+      "rating": null,
+      "samples": 2,
+      "settings": null,
+      "status": "insufficient-samples"
+    }
+  ],
+  "method": {
+    "changes": "공개 투표를 독립 재분석. 반복 세션 제거·최소 표본 필터·연결 집단별 합계 0 제약. 스타일/인기 보정 없음.",
+    "ciLevel": 0.95,
+    "computeSha256": "6626baf2017490dee9ccdefd8483af5c54587e7b04b8a6b2f3b11a645e03040e",
+    "minVotes": 100,
+    "name": "Bradley–Terry · 세션당 첫 표 · 집단별 sandwich 95% CI",
+    "packages": {
+      "numpy": "2.2.5",
+      "pyarrow": "19.0.1",
+      "python": "3.13.1",
+      "scipy": "1.15.3"
+    },
+    "reference": "https://arena.ai/blog/arena-rank",
+    "scriptSha256": "a8205058ccb1b9ae05790e7c8fa68d84ff7f4eb8e66d63daff6746ab15968f3c",
+    "settings": {
+      "base": 10,
+      "bothBad": 0.5,
+      "category": "overall",
+      "center": 1000,
+      "ftol": 1e-12,
+      "gtol": 1e-08,
+      "hessianRegularization": 0,
+      "inferenceSettings": null,
+      "maxiter": 2000,
+      "optimizer": "L-BFGS-B",
+      "scale": 400,
+      "sessions": "first-valid-order-timestamp-id",
+      "tie": 0.5
+    },
+    "version": "public-votes-bt-v1"
+  },
+  "modelCount": 53,
+  "period": {
+    "end": "2025-07-24T23:59:41.255781Z",
+    "start": "2025-04-17T00:20:51.563409Z"
+  },
+  "schemaVersion": 1,
+  "source": {
+    "attribution": "Arena / LMArena — arena-human-preference-140k",
+    "datasetId": "lmarena-ai/arena-human-preference-140k",
+    "files": [
+      {
+        "path": "data/train-00000-of-00007.parquet",
+        "sha256": "7b871a964dc9b238fe0d59f817dbe1a7a56934e23ec4d989f86e6891e5a891cf"
+      },
+      {
+        "path": "data/train-00001-of-00007.parquet",
+        "sha256": "0cd29a6e3261159f41a69b28cd7f08c0bbbc1ef08ba18438d386a1b0c144af8a"
+      },
+      {
+        "path": "data/train-00002-of-00007.parquet",
+        "sha256": "c633264fe8f0fa26cc9aa49961a75dc428791f70c7a476cbed766963b88bee24"
+      },
+      {
+        "path": "data/train-00003-of-00007.parquet",
+        "sha256": "5bcf04c9f4488006a4a7ee944d886ee123e118b7f7d2db04b4ff6dbd8125e6b0"
+      },
+      {
+        "path": "data/train-00004-of-00007.parquet",
+        "sha256": "2c50b4b3f6a5c02d660f5a70d5006332ddc00f5eb21f8e4d92bde3856647969b"
+      },
+      {
+        "path": "data/train-00005-of-00007.parquet",
+        "sha256": "de59f74dce7477beaec55936b31a88537b93c5cbb4b483cfc6879a6862ce5e3b"
+      },
+      {
+        "path": "data/train-00006-of-00007.parquet",
+        "sha256": "1a32a1c6934ebcaa3019643a08fb57563ee0a9be282d3222def3c572a49e9f4c"
+      }
+    ],
+    "license": "CC-BY-4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+    "revision": "6322995ab34d7c2693e3f47dd13fa5caa0789a74",
+    "url": "https://huggingface.co/datasets/lmarena-ai/arena-human-preference-140k/tree/6322995ab34d7c2693e3f47dd13fa5caa0789a74"
+  },
+  "usedPeriod": {
+    "end": "2025-07-24T23:59:41.255781Z",
+    "start": "2025-04-17T00:20:51.563409Z"
+  }
+}

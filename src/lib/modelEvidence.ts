@@ -1,4 +1,4 @@
-import type { Recommendation } from '../types'
+import type { Recommendation } from '../recommendationTypes'
 
 export type EvidenceStatus = 'scored' | 'insufficient-samples' | 'unidentifiable' | 'numerical-failure'
 export interface EvaluatedModel {

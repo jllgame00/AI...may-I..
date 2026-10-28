@@ -4,7 +4,7 @@ import { DEFAULT_REQUEST } from '../data/services.ts'
 import * as engine from './recommend.ts'
 import { buildPrompt } from './prompts.ts'
 import { fixture } from './fixtures/recommendation.ts'
-import type { RequestInput, RecommendationSnapshot } from '../types.ts'
+import type { RequestInput, RecommendationSnapshot } from '../recommendationTypes.ts'
 const input: RequestInput = { text: '자료 분석', budget: 'paid', priority: 'quality', tasks: ['analysis'], requiredFeatures: ['pdf'] }
 const run = (data = fixture(), overrides: Partial<RequestInput> = {}) => engine.analyzeRequest({ ...input, ...overrides }, data)
 describe('evidence recommendation engine', () => {
@@ -153,11 +153,11 @@ describe('evidence recommendation engine', () => {
         assert.equal(item.mapping.status, 'unknown')
         assert.equal(item.scores.benchmark, null)
         assert.equal(item.score, null)
-        assert.equal(item.scores.features, item.service.id === 'chatgpt' ? 100 : null)
-        assert.equal(item.scores.cost, item.plan.id === 'chatgpt-plus' ? null : 100)
+        assert.equal(item.scores.features, item.plan.id === 'gemini-pro' ? 100 : null)
+        assert.equal(item.scores.cost, ['chatgpt-plus','claude-pro'].includes(item.plan.id) ? null : 100)
       }
       const webOnly = engine.analyzeRequest({ ...input, tasks: [task], requiredFeatures: ['web'] })
-      assert.ok(webOnly.recommendations.every(item => item.scores.features === 100))
+      assert.ok(webOnly.recommendations.every(item => item.scores.features === (item.plan.id === 'gemini-free' ? null : 100)))
     }
   })
   it('keeps manual selection, plan, stage and prompt consistent; reanalysis resets', () => {

@@ -17,6 +17,16 @@ it('retains model evidence with unknown plan mapping without changing recommenda
   assert.equal(item.score, null)
   assert.deepEqual(item, before)
 })
+it('does not change current choices, ordering or ties after historical rating changes (T11)', () => {
+  const input = { text: '자료 분석 발표 대본', budget: 'free' as const, priority: 'quality' as const }
+  const result = analyzeRequest(input)
+  const before = structuredClone(result)
+  const historical = modelEvidenceFixture()
+  historical.components[0].models.forEach((model,i) => { model.rating = i % 2 ? 10000 : -10000 })
+  result.workflow.flatMap(step => step.recommendations).forEach(item => evidenceForCandidate(item,historical))
+  assert.deepEqual(result,before)
+  assert.deepEqual(analyzeRequest(input),before)
+})
 it('requires exact model ID and never inherits historical ratings by similar name', () => {
   const item = candidate()
   item.mapping.modelId = 'test-a-new'

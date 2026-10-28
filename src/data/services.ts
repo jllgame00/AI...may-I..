@@ -1,7 +1,7 @@
-﻿import type { Budget, Priority, Service, ServiceId, TaskKind } from '../types'
+import type { Budget, Priority, Service, ServiceId, TaskKind } from '../recommendationTypes'
 export const DATA_LABEL = '2026-10-21 확인 스냅샷'
 export const DEFAULT_REQUEST = '연구 자료를 분석하고 발표 대본을 작성해 줘. 과제라 비용은 가능한 쓰고 싶지 않아.'
-export const budgetLabels: Record<Budget, string> = { free: '무료만 사용', 'prefer-free': '무료 우선', paid: '유료도 가능' }
+export const budgetLabels: Record<Budget, string> = { free: '무료만 사용', 'prefer-free': '무료 선호', paid: '유료도 가능', unknown: '잘 모르겠어요 · 미정' }
 export const priorityLabels: Record<Priority, string> = { quality: '결과 품질', cost: '비용 절약', ease: '쉬운 사용법', speed: '빠른 완성' }
 export const taskLabels: Record<TaskKind, string> = { research: '자료 분석·발표', summary: '자료 요약', writing: '글쓰기', coding: '코딩', image: '이미지 기획', unknown: '작업 확인 필요' }
 export const examples: { kind: Exclude<TaskKind, 'unknown'>; text: string }[] = [
@@ -17,4 +17,3 @@ export const services: Service[] = [
   { id: 'claude', name: 'Claude', subtitle: '공식 플랜과 필요한 기능 확인', letter: 'A' },
 ]
 export const serviceById = Object.fromEntries(services.map(s => [s.id, s])) as Record<ServiceId, Service>
-export const analysisStages = ['작업 목적 파악', '필요한 기능 정리', '비용 조건 확인', 'AI 서비스 비교', '맞춤 활용법 생성']
