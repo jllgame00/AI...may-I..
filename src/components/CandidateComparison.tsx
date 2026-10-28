@@ -6,7 +6,7 @@ import { recommendationDisplay } from '../lib/recommendationDisplay'
 import type { Comparison, PromptRequest } from '../types'
 import type { Recommendation, TaskRecommendationEntry } from '../recommendationTypes'
 
-export default function CandidateComparison({comparison,request,selected,onSelect,onEdit}:{comparison:Comparison;request:PromptRequest;selected:string|null;onSelect:(id:string)=>void;onEdit:()=>void}){
+export default function CandidateComparison({comparison,request,selected,onSelect,onEdit,needsCheckOpen=false,onNeedsCheckToggle}:{comparison:Comparison;request:PromptRequest;selected:string|null;onSelect:(id:string)=>void;onEdit:()=>void;needsCheckOpen?:boolean;onNeedsCheckToggle?:(open:boolean)=>void}){
   const d=comparison.decision
   const models=primaryAccessCandidates(comparison.recommendations,comparison.analysis.requiredFeatures,selected)
   const entryFor=(c:Recommendation)=>c.model?[...(d?.entries??[]),...(d?.alternatives??[])].find(e=>e.candidate.model?.id===c.model?.id):undefined
@@ -45,7 +45,8 @@ export default function CandidateComparison({comparison,request,selected,onSelec
       const candidates=group==='ready'?featured:ordered.filter(c=>candidateGroup(c,comparison.analysis.requiredFeatures)===group)
       if(!candidates.length)return null
       const reasons=[...new Set(candidates.map(c=>candidateSummary(c,comparison.analysis.requiredFeatures).reason))].filter(reason=>group==='ready'||sharedReasons.has(reason)&&reason!==readyReason)
-      const section=<section className="candidate-section" data-group={group}><h2>{title} ({candidates.length})</h2><p>{note}</p>{reasons.map(reason=><p key={reason}>{reason}</p>)}<div className="candidate-grid">{candidates.map(card)}</div></section>
+      const section=<section className="candidate-section" data-group={group} id={group==='needs-check'?'needs-check-options':undefined}><h2>{title} ({candidates.length})</h2><p>{note}</p>{reasons.map(reason=><p key={reason}>{reason}</p>)}<div className="candidate-grid">{candidates.map(card)}</div></section>
+      if(group==='needs-check')return <details className="other-services" id="needs-check-candidates" key={group} open={needsCheckOpen} onToggle={e=>onNeedsCheckToggle?.(e.currentTarget.open)}><summary id="needs-check-summary" aria-expanded={needsCheckOpen} aria-controls="needs-check-options">추가 확인이 필요한 후보 보기 ({candidates.length})</summary>{section}</details>
       return group==='model-check'?<details className="other-services" key={group} open={candidates.some(c=>c.id===selected)||undefined}><summary id="other-services">다른 서비스에서 시작하기 ({candidates.length})</summary>{section}</details>:<div className="candidate-group" key={group}>{section}{group==='ready'&&!!rest.length&&<details className="remaining-models" open={rest.some(c=>c.id===selected)||undefined}><summary>나머지 모델 후보 ({rest.length}) · 공동 순위 포함</summary><p>상단에는 최대 3개만 표시합니다. 같은 추천 순위 안의 표시 순서는 우열을 뜻하지 않습니다.</p><div className="candidate-grid">{rest.map(card)}</div></details>}</div>
     })}</div>}
     {!!ordered.length&&!recommendations.length&&<p>필수 기능과 정확한 웹 경로를 모두 확인한 모델이 없어 추천 등수를 정하지 않았습니다.</p>}

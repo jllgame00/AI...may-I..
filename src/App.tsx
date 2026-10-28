@@ -17,6 +17,7 @@ export default function App(){
   const [session,setSession]=useState<Session>(emptySession)
   const [screen,setScreen]=useState<Screen>(readScreen)
   const [error,setError]=useState('')
+  const [needsCheckDisclosure,setNeedsCheckDisclosure]=useState<{context:string;open:boolean}|null>(null)
   const request=session.request,comparison=session.comparison
   const stale=!!comparison&&!comparisonMatches(request,comparison)
   const view:Screen=screen==='result'&&(!session.bundle||stale)?request.text?'questions':'start':screen==='compare'&&(!comparison||stale)?request.text?'questions':'start':screen==='questions'&&!request.text?'start':screen
@@ -52,8 +53,8 @@ export default function App(){
         {error&&<p className="error" role="alert">{error}</p>}
         {!!comparison&&<button id="resume-comparison" className="text-button" disabled={stale} onClick={()=>navigate('compare')}>기존 비교로 돌아가기</button>}
       </section>}
-      {view==='compare'&&comparison&&<CandidateComparison comparison={comparison} request={request} selected={session.selection?.default??null} onSelect={id=>prepare({default:id,byStage:{}})} onEdit={()=>navigate('questions')}/>}
-      {view==='result'&&session.bundle&&<StageWorkspace session={session} onStage={id=>setSession(s=>({...s,activeStageId:id}))} onDraft={changeDraft} onCandidate={(stage,id)=>prepare(selectForStages(session.selection??{default:null,byStage:{}},stage,id),stage)} onReviewed={(id,value)=>setSession(s=>({...s,reviewed:{...s.reviewed,[id]:value}}))} onCompare={()=>navigate('compare')} onEdit={()=>navigate('questions')} onNew={()=>{setSession(emptySession());navigate('start')}}/>}
+      {view==='compare'&&comparison&&<CandidateComparison comparison={comparison} request={request} selected={session.selection?.default??null} onSelect={id=>prepare({default:id,byStage:{}})} onEdit={()=>navigate('questions')} needsCheckOpen={needsCheckDisclosure?.context===comparison.context&&needsCheckDisclosure.open} onNeedsCheckToggle={open=>setNeedsCheckDisclosure({context:comparison.context,open})}/>}
+      {view==='result'&&session.bundle&&<StageWorkspace session={session} onStage={id=>setSession(s=>({...s,activeStageId:id}))} onDraft={changeDraft} onCandidate={(stage,id)=>prepare(selectForStages(session.selection??{default:null,byStage:{}},stage,id),stage)} onReviewed={(id,value)=>setSession(s=>({...s,reviewed:{...s.reviewed,[id]:value}}))} onCompare={()=>navigate('compare')} onEdit={()=>navigate('questions')} onNew={()=>{setSession(emptySession());setNeedsCheckDisclosure(null);navigate('start')}}/>}
     </main>
     <footer><span>AI..may I..? · Ai...Khu</span><span>데이터 변경: {last?new Date(last).toLocaleString('ko-KR'):recommendationSnapshot.checkedAt}{usingStale?' · 이전 정상 데이터 사용 중':''}</span><details><summary>처리 범위·데이터 상태</summary><p>입력·선택·편집은 현재 세션 메모리에만 보존해요. 새로고침하면 초기화됩니다. 외부 AI 호출·자동 실행·로그인·결제·원본 파일 업로드는 제공하지 않아요.</p><p>가격·무료 여부는 추천 순위에 반영하지 않습니다. 외부 서비스의 모델 선택·필수 기능은 직접 확인하세요.</p>{Object.entries(refresh.sources).map(([id,s])=><p key={id}>{id}: {s.state} · 확인 {s.checkedAt} · 변경 {s.changedAt??'없음'}</p>)}</details></footer>
   </div>

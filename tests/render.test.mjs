@@ -24,6 +24,32 @@ const {recommendationSnapshot:snapshot}=await import('../src/data/recommendation
 const render=(component,props={})=>renderToStaticMarkup(createElement(component,props))
 const noop=()=>{}
 function comparisonHtml(request,data=snapshot){const comparison=compareCandidates(request,data);return {comparison,html:render(Comparison,{comparison,request,selected:null,onSelect:noop,onEdit:noop})}}
+it('collapses review candidates with their actual count and exposes the restored expansion state',()=>{
+  const request={text:DEMO_REQUEST,overrides:{}},comparison=compareCandidates(request)
+  for(const needsCheckOpen of [false,true]){
+    const html=render(Comparison,{comparison,request,selected:null,onSelect:noop,onEdit:noop,needsCheckOpen})
+    const disclosure=html.match(/<details[^>]*id="needs-check-candidates"[^>]*>/)?.[0]
+    assert.ok(disclosure,'review candidates must be inside a disclosure')
+    assert.equal(disclosure.includes('open=""'),needsCheckOpen)
+    const section=html.match(/<section[^>]*data-group="needs-check"[^>]*>[\s\S]*?<\/section>/)[0]
+    const count=(section.match(/<article /g)??[]).length
+    assert.ok(count>0)
+    assert.ok(html.includes(`aria-expanded="${needsCheckOpen}"`))
+    assert.match(html,/aria-controls="needs-check-options"/)
+    assert.ok(html.includes(`추가 확인이 필요한 후보 보기 (${count})</summary>`))
+    assert.match(section,/id="needs-check-options"/)
+    assert.match(section,/FP8 제공으로 평가 실행 조건과 차이/)
+    assert.match(section,/<button[^>]*id="choose-/)
+  }
+})
+it('omits the review disclosure when there are no review candidates',()=>{
+  const request={text:DEMO_REQUEST,overrides:{}},comparison=compareCandidates(request)
+  comparison.recommendations=comparison.recommendations.filter(c=>c.assessment.start!=='needs-check')
+  const html=render(Comparison,{comparison,request,selected:null,onSelect:noop,onEdit:noop,needsCheckOpen:true})
+  assert.doesNotMatch(html,/needs-check-candidates|추가 확인이 필요한 후보 보기/)
+  assert.match(html,/작업을 시작할 후보/)
+  assert.match(html,/다른 서비스에서 시작하기/)
+})
 it('shows two tied survey recommendations, shares repeated guidance and collapses four unspecified services',()=>{
   const {html}=comparisonHtml({text:DEMO_REQUEST,overrides:{}})
   assert.match(html,/<h1[^>]*>이 작업에 사용할 모델<\/h1>/)
