@@ -44,7 +44,8 @@ it('keeps survey and general writing unranked while supplying task-specific func
   assert.ok(survey.decision?.gaps.length)
   const writing=compareCandidates({text:'동아리 모집 글을 한국어 500자로 작성해줘',overrides:{}})
   assert.equal(writing.decision?.mode,'review')
-  assert.ok(writing.decision?.entries.every(e=>e.rank===null && e.evaluation?.domain==='writing'))
+  assert.ok(writing.decision?.entries.every(e=>e.rank===null && (!e.evaluation||e.evaluation.domain==='writing')))
+  assert.ok(writing.decision?.entries.some(e=>!e.evaluation&&e.relevance==='features'))
   const data=structuredClone(snapshot)
   for(const e of data.evaluations!)if(e.domain==='coding')e.rawScore=999
   assert.deepEqual(ids(compareCandidates({text:'설문 통계값으로 집단 평균 차이를 분석해줘',inputMode:'summary',overrides:{}},data)),ids(survey))
@@ -53,7 +54,7 @@ it('uses creative-writing evidence only for creative work and explains indirect 
   const result=compareCandidates({text:'한국어 창작 단편 소설을 써줘',tasks:['writing'],overrides:{}})
   assert.equal(result.decision?.mode,'review')
   assert.deepEqual(result.decision?.groups.find(g=>g.benchmark==='Creative Writing')?.entries.map(e=>e.evaluation?.rawScore),[88.1,87.5,81.6])
-  assert.ok(result.decision?.entries.every(e=>e.relevance==='indirect' && /추론/.test(e.relation)))
+  assert.ok(result.decision?.entries.every(e=>e.evaluation?e.relevance==='indirect'&&/추론/.test(e.relation):e.relevance==='features'))
 })
 it('preserves model selection and edited stage prompts after applying recommendation rankings',()=>{
   const result=compareCandidates(coding),c=result.recommendations.find(c=>c.model?.id===result.decision!.entries[0].candidate.model?.id)!

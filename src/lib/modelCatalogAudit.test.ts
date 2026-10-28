@@ -55,8 +55,10 @@ it('keeps task and access states independent of subscription prices across route
       assert.equal(c.score,null)
       assert.equal(c.suitability,c.accessStatus==='연결 미확인'?'확인 후 선택':'조건 비교 가능')
       if(c.plan.id==='claude-pro'){
-        assert.equal(c.mapping.status,'unknown');assert.equal(c.accessStatus,'연결 미확인')
-        assert.equal(c.mapping.selectable,false)
+        assert.equal(c.mapping.status,'confirmed');assert.equal(c.accessStatus,'연결 근거 확인')
+        assert.equal(c.mapping.selectable,true)
+        assert.ok(c.mapping.sources.some(s=>s.url.includes('academy.claude.com')))
+        assert.equal(c.assessment?.account.status,'unchecked')
       }
       if(task!=='coding')assert.ok(c.evidence?.every(e=>e.domain==='writing'&&task==='writing'))
     }

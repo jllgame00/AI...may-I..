@@ -31,6 +31,7 @@ export interface Model {
   nativeFeatures?: Partial<Record<FeatureId,FeatureSupport>>
   route?: { kind:'api'|'self-hosted'|'unknown'; url:string; status:'confirmed'|'unknown'; note:string }
   apiPrice?: { input: number; output: number; cachedInput: number; currency: 'USD'; perTokens: 1000000; source: Source }
+  webReview?: { checkedAt:string; status:'confirmed'|'unknown'; note:string; sources:Source[] }
 }
 export interface ModelEvaluation {
   id: string; modelId: string; modelVersion: string; benchmark: string; benchmarkVersion: string
@@ -65,6 +66,8 @@ export interface ServicePlan {
   route?: string
   billingKind?: 'subscription' | 'usage'
   billing?: { annualTotal: number | null; monthlyEquivalent: number | null; currencySymbol: string | null; tax: string; note: string }
+  webAccess?: { status:'confirmed'|'unknown'; url:string; routeKind:'chat'|'work'; sources:Source[] }
+  accountChecks?: string[]
 }
 export interface PlanModelMapping {
   id: string; planId: string; modelId: string | null; status: 'confirmed' | 'unknown'
@@ -73,6 +76,8 @@ export interface PlanModelMapping {
   modelReference?: boolean
   selection?: 'manual' | 'automatic' | 'unknown'; toolsNote?: string
   hostedModelId?:string|null; accessRouteId?:string
+  features?: Partial<Record<FeatureId,FeatureSupport>>
+  accountChecks?: string[]
 }
 export interface ResearchSource extends Source { name: string; status: string; note: string }
 export interface RecommendationSnapshot {
@@ -100,6 +105,17 @@ export interface Recommendation {
   configuration?: ModelEvaluation
   accessAlternative?:boolean
   accessStatus: '연결 근거 확인' | '연결 미확인'
+  assessment?: CandidateAssessment
+  inputStatus?:'confirmed'|'unknown'
+}
+export interface CandidateAssessment {
+  input:{ status:'confirmed'|'unknown' }
+  features:{ status:'confirmed'|'needs-check'|'unsupported'; supported:FeatureId[]; pending:FeatureId[] }
+  model:{ status:'confirmed'|'unknown'; mode:'confirmed'|'unknown' }
+  route:{ status:'confirmed'|'unknown'; scope:'model'|'service' }
+  performance:{ status:'comparable'|'unconfirmed'; rank:number|null }
+  account:{ status:'unchecked'; checks:string[] }
+  start:'ready'|'model-check'|'needs-check'
 }
 export interface ExcludedCandidate { plan: ServicePlan; reasons: string[] }
 export interface TaskRecommendationEntry {

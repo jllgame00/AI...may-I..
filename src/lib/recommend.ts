@@ -3,6 +3,7 @@ import { recommendationSnapshot } from '../data/recommendationSnapshot.ts'
 import { featureLabels, POLICY_VERSION, scoringTaskLabels } from '../data/recommendationPolicy.ts'
 import { mappingLabel, relevantEvidence } from './currentEvidence.ts'
 import { catalogCandidates, configurationCandidates } from './catalogCandidates.ts'
+import { hasSupportSource } from './taskReadiness.ts'
 import type { Analysis, FeatureId, FeatureSupport, PlanModelMapping, Recommendation, RecommendationSnapshot, RequestInput, ScoringTask, ServicePlan, TaskKind, WorkflowStep } from '../recommendationTypes'
 
 export function classifyTask(text: string): TaskKind {
@@ -45,9 +46,9 @@ export function referenceCandidatesForTask(task: ScoringTask | 'image', request:
     const mappings=data.mappings.filter(m=>m.planId===plan.id)
     for(const mapping of mappings.length?mappings:[unknownMapping(plan)]) {
       const model=data.models.find(m=>m.id===mapping.modelId) ?? null
-      const linked=mapping.status==='confirmed' && mapping.selectable && mapping.selection!=='automatic' && !!model && !!mapping.mode && (model.modes ?? [model.reasoning]).includes(mapping.mode) && mapping.modelVersion===model.version && mapping.sources.some(s=>s.url && s.checkedAt)
-      const supportForPath=(f:FeatureId):FeatureSupport=>mapping.routeKind==='api' && model?.nativeFeatures?.[f] ? model.nativeFeatures[f]! : mapping.routeKind==='work' ? {status:'unknown',note:'Work 경로 권한 별도 확인',sources:[]} : featureSupport(plan,f)
-      const unsupported=required.filter(f=>supportForPath(f).status==='unsupported')
+      const linked=mapping.status==='confirmed' && mapping.selectable && mapping.selection!=='automatic' && !!model && mapping.modelVersion===model.version && mapping.sources.some(s=>s.url && s.checkedAt)
+      const supportForPath=(f:FeatureId):FeatureSupport=>mapping.features?.[f]??(mapping.routeKind==='api' && model?.nativeFeatures?.[f] ? model.nativeFeatures[f]! : mapping.routeKind==='work' ? {status:'unknown',note:'Work 경로 권한 별도 확인',sources:[]} : featureSupport(plan,f))
+      const unsupported=required.filter(f=>supportForPath(f).status==='unsupported'&&hasSupportSource(supportForPath(f)))
       if(unsupported.length){
         const reasons=unsupported.map(f=>`${mappingLabel(mapping)} · ${featureLabels[f]} 공식 미지원`)
         const existing=excluded.find(e=>e.plan.id===plan.id)
@@ -61,7 +62,7 @@ export function referenceCandidatesForTask(task: ScoringTask | 'image', request:
       const evidence=relevantEvidence(task,request.text,required,model,mapping,data)
       if(!evidence.length)holds.push('현재 작업에 직접 연결할 성능 근거 부족')
       const suitability=missingFeatures.length?'확인 후 선택':'조건 비교 가능'
-      const candidatePlan:ServicePlan=mapping.routeKind==='api'?{...plan,features:{...plan.features,...model?.nativeFeatures}}:mapping.routeKind==='work'?{...plan,route:'ChatGPT Work (웹)',features:{pdf:{status:'unknown',note:'Work 파일 권한 별도 확인',sources:[]},web:{status:'unknown',note:'Work 도구 권한 별도 확인',sources:[]}},freeScope:'Plus의 Work 제공 근거로 연결한 경로입니다. 무료 이용을 보장하지 않습니다.',limits:['계정별 모델·추론 옵션, 사용량·크레딧·도구 권한 확인 필요. 일반 Chat 한도를 Work에 그대로 적용하지 않음.'],upgrade:'선택한 Plus 경로의 이용권한·크레딧을 직접 확인하세요. API 과금은 별도입니다.'}:plan
+      const candidatePlan:ServicePlan=mapping.routeKind==='api'?{...plan,features:{...plan.features,...model?.nativeFeatures}}:mapping.routeKind==='work'?{...plan,route:'ChatGPT Work (웹)',webAccess:undefined,accountChecks:mapping.accountChecks,features:{pdf:{status:'unknown',note:'Work 파일 권한 별도 확인',sources:[]},web:{status:'unknown',note:'Work 도구 권한 별도 확인',sources:[]},...mapping.features},freeScope:'Plus의 Work 제공 근거로 연결한 경로입니다. 무료 이용을 보장하지 않습니다.',limits:['계정별 모델·추론 옵션, 사용량·크레딧·도구 권한 확인 필요. 일반 Chat 한도를 Work에 그대로 적용하지 않음.'],upgrade:'선택한 Plus 경로의 이용권한·크레딧을 직접 확인하세요. API 과금은 별도입니다.'}:plan
       const label=task==='image'?'이미지 콘셉트·프롬프트 설계':scoringTaskLabels[task]
       recommendations.push({
         id:mapping.id,service:mapping.routeKind==='api'?{...serviceById[plan.serviceId],name:plan.name,subtitle:'개발자 API · 별도 사용량 과금'}:serviceById[plan.serviceId],plan:candidatePlan,mapping,model,

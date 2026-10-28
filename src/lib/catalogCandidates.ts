@@ -2,6 +2,7 @@ import type { FeatureId, FeatureSupport, Model, Recommendation, RecommendationSn
 import { relevantEvidence } from './currentEvidence.ts'
 import { featureLabels } from '../data/recommendationPolicy.ts'
 import { accessOptions, accessOrder } from './modelAccess.ts'
+import { hasSupportSource } from './taskReadiness.ts'
 
 function accessDescriptor(model:Model):ServicePlan {
   const unknown:FeatureSupport={status:'unknown',note:'실행 경로의 기능·도구 권한 미확인',sources:[]}
@@ -19,7 +20,7 @@ export function catalogCandidates(task:ScoringTask|'image',request:RequestInput,
     const plan=accessDescriptor(model)
     if(selected?.kind==='web'){const unknown:FeatureSupport={status:'unknown',note:'이 웹 채팅 경로의 기능 근거 미확보',sources:[]};plan.features={pdf:unknown,web:unknown}}
     if(selected?.exactVersion==='confirmed')plan.limits=['정확한 버전의 경로 근거를 확인했으나 계정별 권한·요금·사용 한도·실제 실행은 별도 확인 대상입니다.',selected.note]
-    if(required.some(f=>plan.features[f]?.status==='unsupported'))return null
+    if(required.some(f=>plan.features[f]?.status==='unsupported'&&hasSupportSource(plan.features[f])))return null
     const missing=required.filter(f=>plan.features[f]?.status!=='supported'||!plan.features[f]?.sources.some(s=>s.url&&s.checkedAt))
     const mapping={id:index?`model:${model.id}:access:${selected!.id}`:`model:${model.id}`,planId:plan.id,modelId:model.id,modelVersion:model.version,modelReference:true,status:selected?.exactVersion==='confirmed'?'confirmed' as const:'unknown' as const,selectable:selected?.exactVersion==='confirmed',selection:selected?'manual' as const:'unknown' as const,
       hostedModelId:selected?.hostedModelId,accessRouteId:selected?.id,

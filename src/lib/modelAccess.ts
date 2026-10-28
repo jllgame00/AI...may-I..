@@ -1,6 +1,7 @@
 import eastern from '../data/research/eastern-access.json' with {type:'json'}
 import western from '../data/research/western-access.json' with {type:'json'}
-import type { Model, ModelAccessRoute, Recommendation } from '../recommendationTypes'
+import type { FeatureId, Model, ModelAccessRoute, Recommendation } from '../recommendationTypes'
+import { taskReady } from './taskReadiness.ts'
 
 const reviews=[...eastern.entries,...western.entries]
 export function accessOptions(model:Model):ModelAccessRoute[] {
@@ -23,11 +24,11 @@ export function accessCategory(c:Recommendation):AccessCategory {
   return 'unknown'
 }
 export function accessOrder(c:Recommendation):number {return ['web','api','install','unknown'].indexOf(accessCategory(c))}
-export function primaryAccessCandidates(candidates:Recommendation[]):Recommendation[] {
+export function primaryAccessCandidates(candidates:Recommendation[],required:FeatureId[]=[],preferredId:string|null=null):Recommendation[] {
   const models=new Map<string,Recommendation>()
-  for(const c of [...candidates].filter(c=>c.model&&!c.configuration).sort((a,b)=>Number(a.suitability!=='조건 비교 가능')-Number(b.suitability!=='조건 비교 가능')||accessOrder(a)-accessOrder(b)||a.id.localeCompare(b.id,'en'))){
-    const key=`${c.model!.id}@${c.model!.version}`
+  for(const c of [...candidates].filter(c=>!c.configuration&&(c.model||['chat','work'].includes(c.mapping.routeKind??''))).sort((a,b)=>Number(taskReady(b,required))-Number(taskReady(a,required))||Number(b.id===preferredId)-Number(a.id===preferredId)||Number(a.suitability!=='조건 비교 가능')-Number(b.suitability!=='조건 비교 가능')||accessOrder(a)-accessOrder(b)||a.id.localeCompare(b.id,'en'))){
+    const key=c.model?`${c.model.id}@${c.model.version}`:`service:${c.plan.id}:${c.mapping.routeKind}`
     if(!models.has(key))models.set(key,c)
   }
-  return [...models.values()].sort((a,b)=>(a.model!.name??a.model!.id).localeCompare(b.model!.name??b.model!.id,'en',{numeric:true})||a.id.localeCompare(b.id,'en'))
+  return [...models.values()].sort((a,b)=>(a.model?.name??a.model?.id??`${a.service.name} ${a.plan.name}`).localeCompare(b.model?.name??b.model?.id??`${b.service.name} ${b.plan.name}`,'en',{numeric:true})||a.id.localeCompare(b.id,'en'))
 }

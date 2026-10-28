@@ -16,11 +16,12 @@ it('makes recommendation identity, order, task fit and access independent of pri
   assert.deepEqual(project(compareCandidates(request,changed)),project(before))
   assert.ok(before.recommendations.filter(c=>c.mapping.routeKind==='work').every(c=>c.suitability==='조건 비교 가능'))
 })
-it('shows exact model task evidence separately from unconfirmed consumer subscription entitlement', () => {
+it('keeps task evidence and account checks separate after official subscription entitlement is confirmed', () => {
   const comparison=compareCandidates(request)
   const c=comparison.recommendations.find(c=>c.plan.id==='claude-pro' && c.model?.id==='claude-sonnet-5-5')!
-  assert.equal(c.suitability,'확인 후 선택');assert.equal(c.accessStatus,'연결 미확인')
-  assert.equal(c.evidence!.length,3);assert.equal(c.mapping.status,'unknown')
+  assert.equal(c.suitability,'조건 비교 가능');assert.equal(c.accessStatus,'연결 근거 확인')
+  assert.equal(c.evidence!.length,3);assert.equal(c.mapping.status,'confirmed')
+  assert.equal(c.assessment?.account.status,'unchecked');assert.equal(c.score,null)
   assert.doesNotMatch(buildGuideBundle(request,{default:c.id,byStage:{}}).steps[0].text,/정확한 모델 제공|플랜/)
 })
 it('has no weighted price or synthetic aggregate scoring even for former legacy fixtures', () => {

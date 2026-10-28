@@ -31,7 +31,10 @@ try{
   await start(survey)
   await screenshot('survey-comparison',1440);await screenshot('survey-comparison',320)
   const cards=await evaluate(`Array.from(document.querySelectorAll('#recommended-options .candidate-card')).map(c=>({height:c.getBoundingClientRect().height,font:getComputedStyle(c.querySelector('.candidate-limit')).fontSize,open:c.querySelector('details').open}))`)
-  assert.equal(cards.length,3);assert.ok(cards.every(c=>!c.open&&parseFloat(c.font)>=16&&c.height<800))
+  assert.ok(cards.length>20);assert.ok(cards.every(c=>!c.open&&parseFloat(c.font)>=16))
+  assert.equal(await evaluate(`!!document.querySelector('.other-candidates')`),false)
+  assert.ok(await evaluate(`document.querySelectorAll('[data-candidate-kind="ready"]').length>0`))
+  assert.ok(await evaluate(`document.querySelectorAll('[data-candidate-kind="model-check"]').length>0`))
   await choose();assert.equal(await evaluate(`document.querySelectorAll('.stage-list li').length`),4)
   await send('Browser.grantPermissions',{origin:new URL(base).origin,permissions:['clipboardReadWrite','clipboardSanitizedWrite']})
   for(const id of ['statistics','interpretation','report','review']){

@@ -24,6 +24,50 @@ const {recommendationSnapshot:snapshot}=await import('../src/data/recommendation
 const render=(component,props={})=>renderToStaticMarkup(createElement(component,props))
 const noop=()=>{}
 function comparisonHtml(request,data=snapshot){const comparison=compareCandidates(request,data);return {comparison,html:render(Comparison,{comparison,request,selected:null,onSelect:noop,onEdit:noop})}}
+it('separates ready models, unspecified-model services, performance evidence and personal checks in the actual result',()=>{
+  const {comparison,html}=comparisonHtml({text:DEMO_REQUEST,overrides:{}})
+  assert.match(html,/작업을 시작할 후보/)
+  assert.match(html,/모델 확인이 필요한 서비스 후보/)
+  assert.match(html,/추가 확인이 필요한 후보/)
+  assert.equal((html.match(/설문 분석 성능 순위는 제공하지 않습니다/g)??[]).length,1)
+  assert.doesNotMatch(html,/다른 웹 후보 보기/)
+  const cards=[...html.matchAll(/<article class="candidate-card"[^>]*>[\s\S]*?<\/article>/g)].map(m=>m[0])
+  assert.ok(cards.some(c=>c.includes('data-candidate-kind="ready"')))
+  assert.ok(cards.some(c=>c.includes('data-candidate-kind="model-check"')))
+  for(const card of cards){
+    const visible=card.split('<details>')[0]
+    assert.doesNotMatch(visible,/AIME|Last Exam|직접 성능 비교가 부족/)
+    assert.match(visible,/<button[^>]*id="choose-/)
+    if(card.includes('data-candidate-kind="ready"'))assert.match(visible,/개인 계정|계정 설정/)
+    if(card.includes('data-candidate-kind="model-check"'))assert.match(visible,/모델 미지정/)
+  }
+  const service=comparison.recommendations.find(c=>!c.model&&c.assessment.features.status==='confirmed')
+  let selected
+  const tree=Comparison({comparison,request:{text:DEMO_REQUEST,overrides:{}},selected:null,onSelect:id=>{selected=id},onEdit:noop})
+  function find(node,predicate){if(!node||typeof node!=='object')return null;if(Array.isArray(node)){for(const child of node){const found=find(child,predicate);if(found)return found}return null}if(predicate(node))return node;return find(node.props?.children,predicate)}
+  const button=find(tree,node=>node.props?.id===`choose-${encodeURIComponent(service.id)}`)
+  assert.ok(button);button.props.onClick();assert.equal(selected,service.id)
+  const request={text:DEMO_REQUEST,overrides:{}},selection={default:selected,byStage:{}},bundle=buildGuideBundle(request,selection)
+  const workspace=render(Workspace,{session:{request,comparison,selection,bundle,drafts:{},checks:{},activeStageId:'statistics'},onStage:noop,onDraft:noop,onCandidate:noop,onReviewed:noop,onCompare:noop,onEdit:noop,onNew:noop})
+  assert.match(workspace,/id="prompt-statistics"/)
+  assert.match(workspace,/학년별 만족도 차이/)
+  assert.match(workspace,/공부 시간과 성적의 관계/)
+  assert.ok(workspace.includes(`href="${service.mapping.url}"`))
+})
+it('keeps an already selected confirmed plan route visible when another plan offers the same model',()=>{
+  const request={text:DEMO_REQUEST,overrides:{}},comparison=compareCandidates(request)
+  const modelRoutes=comparison.recommendations.filter(c=>c.assessment.start==='ready')
+  const alternatives=modelRoutes.filter(c=>modelRoutes.some(other=>other.id!==c.id&&other.model.id===c.model.id))
+  assert.ok(alternatives.length>=2)
+  for(const selected of alternatives){
+    const html=render(Comparison,{comparison,request,selected:selected.id,onSelect:noop,onEdit:noop})
+    assert.ok(html.includes(`id="choose-${encodeURIComponent(selected.id)}"`))
+    assert.match(html,/선택됨/)
+    const selection={default:selected.id,byStage:{}},bundle=buildGuideBundle(request,selection)
+    const workspace=render(Workspace,{session:{request,comparison,selection,bundle,drafts:{},checks:{},activeStageId:'statistics'},onStage:noop,onDraft:noop,onCandidate:noop,onReviewed:noop,onCompare:noop,onEdit:noop,onNew:noop})
+    assert.ok(workspace.includes(`value="${selected.id}" selected=""`))
+  }
+})
 it('renders three flow steps, broad task input and exact brand without budget or route controls',()=>{
   const html=render(App)
   assert.match(html,/AI\.\.may I\.\.\?/);assert.match(html,/Ai\.\.\.Khu/)
@@ -31,28 +75,56 @@ it('renders three flow steps, broad task input and exact brand without budget or
   assert.match(html,/작업 입력·해석/);assert.match(html,/모델 비교·선택/);assert.match(html,/프롬프트·활용/)
   assert.doesNotMatch(html,/name="budget"|name="priority"|usage-route|원본 파일 업로드.*type="file"/)
 })
-it('renders scoped algorithm ranks and ties before alternative web choices',()=>{
+it('keeps comparable algorithm ranks separate from public execution readiness and preserves ties',()=>{
   for(const tied of [false,true]){
     const data=structuredClone(snapshot);if(tied)data.evaluations.find(e=>e.id==='east-qwen235-2507-lcb').rawScore=48.9
     const {html}=comparisonHtml({text:'알고리즘 문제 풀이',overrides:{}},data)
-    const featured=html.slice(html.indexOf('id="recommended-options"'),html.indexOf('<details class="other-candidates"'))
+    const featured=[...html.matchAll(/<article class="candidate-card"[^>]*>[\s\S]*?<\/article>/g)].filter(m=>m[0].split('<details>')[0].includes('작업 관련 평가 집합')).map(m=>m[0]).join('')
     assert.equal((featured.match(/<article /g)??[]).length,3)
     assert.match(featured,/LiveCodeBench v6/);assert.match(featured,/48\.9/);assert.match(featured,/45\.2/)
     if(tied)assert.equal((featured.match(/평가 집합 공동 1위/g)??[]).length,2)
     else assert.match(featured,/51\.8/)
-    assert.match(html,/전체 모델의 절대 순위가 아니며/)
-    assert.match(html,/정확한 평가 버전의 웹 제공/)
+    assert.match(html,/성능 순위를 뜻하지 않습니다/)
+    assert.match(html,/웹 선택 가능 여부/)
   }
 })
-it('renders a small unranked survey shortlist and keeps all other candidates and evidence in details',()=>{
+it('shows all model and service candidates without an arbitrary top three and keeps peer order neutral',()=>{
   const {html}=comparisonHtml({text:DEMO_REQUEST,overrides:{}})
-  const featured=html.slice(html.indexOf('id="recommended-options"'),html.indexOf('<details class="other-candidates"'))
-  assert.equal((featured.match(/<article /g)??[]).length,3)
+  const featured=html.slice(html.indexOf('id="recommended-options"'),html.indexOf('<details class="evidence-section"'))
+  assert.equal((featured.match(/<article /g)??[]).length,24)
+  assert.doesNotMatch(html,/other-candidates|다른 웹 후보 보기|동등한 우선 검토/)
   assert.doesNotMatch(featured,/평가 집합.*위/)
-  assert.match(featured,/수학|추론/)
-  assert.match(html,/통계.*직접 비교/)
-  assert.match(html,/이름순이며 우열을 뜻하지 않습니다/)
+  for(const section of featured.matchAll(/<section class="candidate-section"[\s\S]*?<\/section>/g)){
+    const names=[...section[0].matchAll(/<article[\s\S]*?<h2>([^<]+)<\/h2>/g)].map(m=>m[1])
+    assert.deepEqual(names,[...names].sort((a,b)=>a.localeCompare(b,'en',{numeric:true})))
+  }
+  const visible=[...featured.matchAll(/<article[\s\S]*?<\/article>/g)].map(m=>m[0].split('<details>')[0]).join('')
+  assert.doesNotMatch(visible,/AIME|Last Exam|79\.8|17\.7|59\.4/)
+  assert.match(visible,/엑셀 파일/)
+  assert.match(visible,/계산·분석/)
+  assert.match(visible,/기능·경로 확인/)
+  assert.match(visible,/계정.*확인하지 않았/)
+  assert.match(html,/직접 비교.*설문 분석 성능/)
+  assert.match(html,/이름순.*중립 정렬.*성능 순위/)
   assert.match(html,/전체 비교 범위·다른 평가·출처/)
+})
+it('shows the verified route for a model and exposes sourced unsupported exclusions separately',()=>{
+  const data=structuredClone(snapshot)
+  const mapping=data.mappings.find(m=>m.modelId==='claude-opus-5-5'&&m.routeKind==='chat')
+  data.mappings=data.mappings.filter(m=>m!==mapping)
+  data.mappings.push({...mapping,id:'a-unknown',status:'confirmed',selectable:true,selection:'unknown'},
+    {...mapping,id:'z-verified',status:'confirmed',selectable:true,selection:'manual'})
+  const {html}=comparisonHtml({text:DEMO_REQUEST,overrides:{}},data)
+  const first=[...html.matchAll(/<article class="candidate-card"[^>]*>[\s\S]*?<\/article>/g)].find(m=>m[0].includes('id="choose-z-verified"'))[0]
+  assert.match(first,/Claude Opus 5\.5/)
+  assert.match(first,/id="choose-z-verified"/)
+  assert.match(first,/기능·경로 확인/)
+  const plan=data.plans.find(p=>p.id==='claude-pro')
+  plan.features.code={status:'unsupported',note:'fixture unsupported',sources:[{url:'https://example.com/web-unsupported',checkedAt:'2026-10-29'}]}
+  const {html:excluded}=comparisonHtml({text:DEMO_REQUEST,overrides:{}},data)
+  assert.doesNotMatch(excluded,/id="choose-z-verified"/)
+  assert.match(excluded,/필수 조건 미지원으로 제외/)
+  assert.match(excluded,/코드 실행 도구 공식 미지원/)
 })
 it('never exposes API or installation candidate selection and keeps every DOM selection ID unique',()=>{
   const {comparison,html}=comparisonHtml({text:'React 오류 수정',overrides:{}})
@@ -65,7 +137,7 @@ it('never exposes API or installation candidate selection and keeps every DOM se
 })
 it('keeps technical facts and complete evaluation provenance behind details after the selection button',()=>{
   const {html}=comparisonHtml({text:'알고리즘 문제 풀이',overrides:{}})
-  const card=html.slice(html.indexOf('<article'),html.indexOf('</article>'))
+  const card=[...html.matchAll(/<article[\s\S]*?<\/article>/g)].find(m=>m[0].includes('LiveCodeBench'))[0]
   assert.ok(card.indexOf('근거·상세 보기')>card.indexOf('class="button primary"'))
   assert.ok(card.indexOf('모델 ID:')>card.indexOf('근거·상세 보기'))
   assert.match(card,/평가 실행 조건·비교 한계·이용 조건/)
@@ -93,7 +165,7 @@ it('puts the editable prompt, external link, critical availability and handoff o
   const session={request,comparison,selection,bundle,drafts:{},checks:{},activeStageId:'statistics'}
   const html=render(Workspace,{session,onStage:noop,onDraft:noop,onCandidate:noop,onReviewed:noop,onCompare:noop,onEdit:noop,onNew:noop})
   assert.match(html,/id="prompt-statistics"/);assert.match(html,/id="copy-statistics"/);assert.match(html,/id="open-service"/)
-  assert.match(html,/정확한 모델 버전의 웹 제공|엑셀.*지원|파일.*지원/)
+  assert.match(html,/개인 계정의 도구 활성화·파일 한도·남은 사용량/)
   assert.match(html,/다음 단계로 가져갈 내용/);assert.match(html,/학년별 만족도 차이/)
   assert.match(html,/id="stage-review"/);assert.match(html,/원자료·요구사항과 직접 대조/)
 })

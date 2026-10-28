@@ -45,7 +45,7 @@ it('keeps missing survey facts as inputs and only changes final output condition
 })
 it('orders equally eligible model choices neutrally and independently of source array order',()=>{
   const candidates=compareCandidates(surveyRequest).recommendations
-  const names=(cs:typeof candidates)=>primaryAccessCandidates(cs).map(c=>c.model!.name)
+  const names=(cs:typeof candidates)=>primaryAccessCandidates(cs).map(c=>c.model?.name??`${c.service.name} ${c.plan.name}`)
   assert.deepEqual(names(candidates),names([...candidates].reverse()))
   assert.deepEqual(names(candidates),[...names(candidates)].sort((a,b)=>a!.localeCompare(b!,'en',{numeric:true})))
 })

@@ -26,7 +26,8 @@ it('does not turn same-provider current chat or retired APIs into exact-version 
   const request={text:'코드 오류 수정',tasks:['coding' as const],overrides:{}}
   const cs=compareCandidates(request).recommendations
   const primary=primaryAccessCandidates(cs)
-  assert.equal(primary.length,data.models.length)
+  assert.equal(primary.filter(c=>c.model).length,data.models.length)
+  assert.ok(primary.some(c=>!c.model))
   assert.ok(primary.some(c=>accessCategory(c)==='web'))
   assert.ok(primary.filter(c=>accessCategory(c)==='web').every(c=>c.mapping.status==='confirmed'&&!c.configuration))
   assert.ok(!cs.some(c=>c.mapping.hostedModelId==='mistral-small-2503'))

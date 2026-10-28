@@ -8,6 +8,7 @@ import { structureSurveyTask, surveyContext } from './surveyTask.ts'
 import { taskRecommendations } from './taskRanking.ts'
 import { inferCodingIntent } from './codingIntent.ts'
 import { workStages } from './workStages.ts'
+import { assessCandidate, taskCandidateOrder } from './taskReadiness.ts'
 import type { Recommendation, RecommendationSnapshot, ScoringTask, FeatureId, Source } from '../recommendationTypes'
 import type { Comparison, GuideStage, PromptBundle, PromptRequest, PromptTemplate, Session, StageSelection, TaskAnalysis } from '../types'
 
@@ -30,6 +31,7 @@ export function interpretTask(request: PromptRequest): TaskAnalysis {
   let features = detected.requiredFeatures
   if (inputMode === 'summary' && (request.inputMode === 'summary' || inferredMode === 'summary')) features = features.filter(f => !['upload','pdf','spreadsheet','imageInput'].includes(f))
   if (inputMode === 'file') features = [...features,'upload']
+  if (survey && tasks.includes('analysis') && inputMode==='file') features=[...features,'code']
   const requiredFeatures: FeatureId[] = [...new Set(request.requiredFeatures ?? features)]
   return { tasks, survey, requiredFeatures, inputMode, needsInputMode, codingIntent:tasks.includes('coding') ? request.codingIntent ?? inferCodingIntent(request.text) : null,
     notes: ['입력의 표현을 바탕으로 정리한 규칙 기반 해석입니다. 작업과 필수 기능을 직접 수정할 수 있어요.', requiredFeatures.includes('imageInput') ? '이미지 이해가 필요한 요청입니다. 해당 경로의 이미지 입력 방식·권한·한도를 확인하세요. 이미지 생성과는 별개예요.' : inputMode === 'summary' ? '요약 통계값·텍스트를 직접 넣는 경로입니다. 파일 첨부·코드 실행을 필수로 가정하지 않아요.' : inputMode === 'file' ? '파일은 사용자가 외부 서비스에서 직접 제공해요. 해당 플랜의 파일 형식·용량·분석 한도를 확인해야 해요.' : '자료를 넣을 형태가 미정이에요. 기능 적합성을 확정하기 전에 확인해 주세요.'] }
@@ -41,11 +43,13 @@ export function compareCandidates(request: PromptRequest, data: RecommendationSn
   if (!analysis.tasks.length) return { analysis, recommendations: [], excluded: [],context }
   const input = { text: request.text }
   const result = recommendForTask(analysis.tasks[0],input,analysis.requiredFeatures,data)
+  result.recommendations=result.recommendations.map(c=>({...c,inputStatus:analysis.needsInputMode&&analysis.inputMode==='unknown'?'unknown':'confirmed'}))
   if (analysis.needsInputMode && analysis.inputMode === 'unknown') result.recommendations = result.recommendations.map(c => ({ ...c,suitability:'확인 후 선택',eligibility:'conditional',holds:['입력 자료 형태 미정 · 요약 통계 직접 입력인지 파일인지 확인 필요',...c.holds] }))
   const references=referenceCandidatesForTask(analysis.tasks[0],input,[],data).recommendations
   const decision=taskRecommendations(analysis.tasks[0],request.text,analysis.requiredFeatures,result.recommendations,data,references,analysis.codingIntent)
-  const preferred=new Map(decision.entries.map((e,i)=>[e.candidate.id,i]))
-  result.recommendations.sort((a,b)=>(preferred.get(a.id)??Infinity)-(preferred.get(b.id)??Infinity))
+  const ranks=new Map(decision.mode==='ranked'?decision.entries.map(e=>[e.candidate.model?.id,e.rank??Infinity]):[])
+  result.recommendations.sort((a,b)=>(ranks.get(a.model?.id)??Infinity)-(ranks.get(b.model?.id)??Infinity)||taskCandidateOrder(a,b,analysis.requiredFeatures))
+  result.recommendations=result.recommendations.map(c=>({...c,assessment:assessCandidate(c,analysis.requiredFeatures,ranks.get(c.model?.id)??null)}))
   return { ...result,analysis,context,decision,references }
 }
 export function comparisonMatches(request:PromptRequest,comparison:Comparison):boolean { return JSON.stringify(normalizeRequest(request))===comparison.context }

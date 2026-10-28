@@ -44,13 +44,14 @@ it('uses app evidence for app work and enumerates groups before choosing indepen
   assert.equal(after.representative?.id,before.representative?.id)
   assert.deepEqual(after.entries.map(e=>e.evaluation?.id),before.entries.map(e=>e.evaluation?.id))
 })
-it('shows equal evidence-based survey and Korean writing candidates without editorial priority',()=>{
+it('keeps survey and Korean writing candidates equal even without indirect evidence',()=>{
   for(const text of ['설문 엑셀 분석과 보고서','한국어 홍보 글쓰기','한국어 창작 단편 소설을 써줘']){
     const d=compareCandidates({text,overrides:{}}).decision!
     assert.equal(d.representative,null)
     assert.ok(d.entries.length>3)
     assert.ok(d.entries.every(e=>e.rank===null&&e.equal))
-    assert.ok(d.entries.every(e=>e.evaluation&&/→/.test(e.relation)))
+    assert.ok(d.entries.some(e=>!e.evaluation&&e.relevance==='features'))
+    assert.ok(d.entries.every(e=>e.evaluation?/→/.test(e.relation):/평가가 미확인/.test(e.relation)))
     assert.ok(d.entries.every(e=>e.evaluation?.domain!=='coding'))
   }
 })
