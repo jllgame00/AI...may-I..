@@ -9,3 +9,4 @@
 @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
 
 .recommendation-rank{font-weight:700;color:var(--purple)}.recommendation-rank span{font-size:14px;font-weight:400;color:var(--muted)}.other-services,.remaining-models{border-top:1px solid var(--border);margin:24px 0;padding-top:12px}.remaining-models>p{margin:8px 0 16px}.candidate-section .candidate-grid{margin-top:16px}
+.execution-status{display:grid;gap:7px;font-size:16px;line-height:1.65;overflow-wrap:anywhere}.candidate-card .execution-status p{margin:0}

@@ -3,11 +3,13 @@ import { EvaluationFact } from './CurrentModelEvidence'
 import { candidateSummary, sourceLabel } from '../lib/candidatePresentation'
 import { assessCandidate, candidateGroup, exactWebModel, taskCandidateOrder } from '../lib/taskReadiness'
 import { recommendationDisplay } from '../lib/recommendationDisplay'
+import WeightedComparison from './WeightedComparison'
 import type { Comparison, PromptRequest } from '../types'
 import type { Recommendation, TaskRecommendationEntry } from '../recommendationTypes'
 
 export default function CandidateComparison({comparison,request,selected,onSelect,onEdit,needsCheckOpen=false,onNeedsCheckToggle}:{comparison:Comparison;request:PromptRequest;selected:string|null;onSelect:(id:string)=>void;onEdit:()=>void;needsCheckOpen?:boolean;onNeedsCheckToggle?:(open:boolean)=>void}){
   const d=comparison.decision
+  if(d?.weighted)return <WeightedComparison comparison={comparison} request={request} weighted={d.weighted} selected={selected} onSelect={onSelect} onEdit={onEdit} needsCheckOpen={needsCheckOpen} onNeedsCheckToggle={onNeedsCheckToggle}/>
   const models=primaryAccessCandidates(comparison.recommendations,comparison.analysis.requiredFeatures,selected)
   const entryFor=(c:Recommendation)=>c.model?[...(d?.entries??[]),...(d?.alternatives??[])].find(e=>e.candidate.model?.id===c.model?.id):undefined
   const ordered=[...models].sort((a,b)=>(d?.mode==='ranked'?(entryFor(a)?.rank??Infinity)-(entryFor(b)?.rank??Infinity):0)||taskCandidateOrder(a,b,comparison.analysis.requiredFeatures))

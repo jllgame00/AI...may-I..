@@ -3,6 +3,9 @@ import type { CandidateAssessment, FeatureId, FeatureSupport, Recommendation } f
 export function hasSupportSource(support:FeatureSupport|undefined):boolean {
   return !!support?.sources.some(s=>s.url&&s.checkedAt)
 }
+export function candidateFeatureSupport(c:Recommendation,feature:FeatureId):FeatureSupport|undefined {
+  return c.mapping.features?.[feature]??c.plan.features[feature]
+}
 export function exactWebModel(c:Recommendation):boolean {
   return ['chat','work'].includes(c.mapping.routeKind??'') && c.accessStatus==='연결 근거 확인' &&
     c.mapping.status==='confirmed' && c.mapping.selectable && c.mapping.selection==='manual' && !!c.model &&

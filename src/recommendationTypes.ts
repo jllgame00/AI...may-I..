@@ -32,10 +32,11 @@ export interface Model {
   route?: { kind:'api'|'self-hosted'|'unknown'; url:string; status:'confirmed'|'unknown'; note:string }
   apiPrice?: { input: number; output: number; cachedInput: number; currency: 'USD'; perTokens: 1000000; source: Source }
   webReview?: { checkedAt:string; status:'confirmed'|'unknown'; note:string; sources:Source[] }
+  taskEvidence?: ModelTaskEvidence[]
 }
 export interface ModelEvaluation {
   id: string; modelId: string; modelVersion: string; benchmark: string; benchmarkVersion: string
-  subset: string | null; domain: 'coding' | 'factuality' | 'workflow' | 'browsing' | 'vision' | 'science' | 'reasoning' | 'math' | 'knowledge' | 'writing' | 'general'
+  subset: string | null; domain: 'coding' | 'factuality' | 'workflow' | 'browsing' | 'vision' | 'science' | 'reasoning' | 'math' | 'knowledge' | 'writing' | 'general' | 'statistics' | 'analysis'
   index?: { name:string; version:string; components:string[]; scope:string }
   aa?: { field:string; apiModelId:string; creatorId:string; benchmark:string; benchmarkVersion:string; effort:string; capturedAt:string; versionSource:string; scope:string; components:string[] }
   evaluationType?: 'model'|'agent'; agentName?: string|null; agentVersion?: string|null
@@ -44,6 +45,8 @@ export interface ModelEvaluation {
   tools: string | null; harness: string | null; environment: string | null; trials: number | null
   fallbacks: string | null; evaluator: string; publisher: string; kind: 'provider' | 'independent' | 'independent-reported'
   publishedAt: string | null; evaluatedAt: string | null; source: Source; limitations: string; terms: string
+  taskScope?: TaskScoreScope
+  scoreRange?: { min:number; max:number }
 }
 export interface EvaluationConditions {
   evaluationId: string; version: string; environment: string | null; agentVersion: string | null
@@ -56,7 +59,12 @@ export interface BenchmarkObservation extends EvaluationConditions {
   redistribution: { status: 'allowed' | 'unknown'; licenseUrl: string | null }
 }
 export interface BenchmarkCohort extends EvaluationConditions { id: string; modelIds: string[] }
-export interface FeatureSupport { status: 'supported' | 'limited' | 'unsupported' | 'unknown'; note: string; sources: Source[] }
+export interface FeatureSupport {
+  status: 'supported' | 'limited' | 'unsupported' | 'unknown'; note: string; sources: Source[]
+  // Optional explicit bounds from the same reviewed source. Absence is unknown,
+  // never an invented quota. Existing snapshots remain unchanged.
+  constraints?: { maxFileSizeMB?:number; maxFiles?:number; maxRows?:number; formats?:string[]; unresolved?:string[] }
+}
 export interface ServicePlan {
   id: string; serviceId: ServiceId; name: string; tier: 'free' | 'paid' | 'unknown'
   // A non-commercial access descriptor, never a stored or invented subscription.
@@ -152,6 +160,40 @@ export interface TaskRecommendationDecision {
   alternatives: TaskRecommendationEntry[]
   coverage: ModelCoverage[]
   codingIntent: CodingIntent | null
+  weighted?: WeightedTaskDecision
+}
+export type TaskScoreProfile = 'survey'|'analysis'|'coding-algorithm'|'coding-application'|'coding-repository'|'coding-unspecified'|'writing'
+export interface TaskScoreScope { profile:TaskScoreProfile; language?:string; genre?:string }
+export interface ModelTaskEvidence {
+  modelId:string; modelVersion:string
+  scope:TaskScoreScope
+  capabilities:{ id:string; support:FeatureSupport }[]
+  purpose:FeatureSupport
+}
+export interface TaskScoreComponent {
+  id:string; label:string; weight:number
+  status?:FeatureSupport['status']
+  declaredStatus?:FeatureSupport['status']
+  checks?: { condition:string; requested:string|null; result:'met'|'unmet'|'unknown' }[]
+  value:number|null; contribution:number|null; reason:string; sources:Source[]
+}
+export interface WeightedTaskRow {
+  candidate:Recommendation
+  judgment:'recommended'|'conditional'|'needs-check'|'unsupported'
+  basis:'benchmark'|'functional'|'none'
+  reason:string
+  score:number|null; rank:number|null; tied:boolean; coverage:number
+  components:TaskScoreComponent[]; gaps:string[]
+  evaluation:ModelEvaluation|null
+  evidence:{ evaluation:ModelEvaluation; relevance:'direct'|'indirect'; reason:string }[]
+}
+export interface WeightedTaskDecision {
+  policyVersion:string; scope:TaskScoreScope
+  mode:'benchmark'|'functional'
+  criteria:{id:string;label:string;weight:number;rule:string}[]
+  cohort:EvidenceComparisonSet|null
+  rows:WeightedTaskRow[]
+  explanation:string
 }
 export interface WorkflowStep {
   id: string; title: string; description: string; output: string; kind: ScoringTask | 'image'

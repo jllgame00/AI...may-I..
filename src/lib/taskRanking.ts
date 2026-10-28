@@ -4,13 +4,14 @@ import { collectComparisonSets, validObservations } from './evidenceComparisons.
 import { inferCodingIntent } from './codingIntent.ts'
 import { referenceCandidatesForTask } from './recommend.ts'
 import { taskCandidateOrder, taskReady } from './taskReadiness.ts'
+import { weightedTaskRecommendations } from './weightedRecommendation.ts'
 import type { CodingIntent, FeatureId, Recommendation, RecommendationSnapshot, ScoringTask, TaskRecommendationDecision, TaskRecommendationEntry } from '../recommendationTypes'
 
 // Performance evidence is independent of web access and price. No cross-metric average.
 export function taskRecommendations(task:ScoringTask,text:string,required:FeatureId[],candidates:Recommendation[],data:RecommendationSnapshot,references:Recommendation[]=referenceCandidatesForTask(task,{text},[],data).recommendations,intent:CodingIntent|null=task==='coding'?inferCodingIntent(text):null):TaskRecommendationDecision {
   const models=new Map(primaryAccessCandidates([...candidates,...references]).filter(c=>c.model).map(c=>[c.model!.id,c]))
   const all=validObservations(data.evaluations??[]).filter(e=>data.models.some(m=>m.id===e.modelId&&m.version===e.modelVersion))
-  const relevant=all.filter(e=>task==='coding'?e.domain==='coding':task==='writing'?e.domain==='writing':['math','reasoning','knowledge','factuality'].includes(e.domain))
+  const relevant=all.filter(e=>task==='coding'?e.domain==='coding':task==='writing'?e.domain==='writing':['statistics','analysis','math','reasoning','knowledge','factuality'].includes(e.domain))
   const groups=collectComparisonSets(relevant,references,models,intent)
   const representative=task==='coding'&&intent!=='unspecified'?groups.find(g=>g.fit>=2)??null:null
   const represented=new Set(representative?.entries.map(e=>e.candidate.model!.id)??[])
@@ -35,7 +36,7 @@ export function taskRecommendations(task:ScoringTask,text:string,required:Featur
     return {modelId:m.id,modelName:m.name??m.id,category:represented.has(m.id)?'representative' as const:evaluations.length?'alternative' as const:'insufficient' as const,evaluations,
       reason:represented.has(m.id)?'대표 평가의 비교 집합에 포함됩니다.':evaluations.length?'다른 평가·실행 조건의 간접 근거입니다. 대표 집합과 합산하지 않습니다.':'이 작업에 연결할 평가가 부족합니다. 성능이 낮다는 뜻은 아닙니다.'}
   })
-  return {mode:representative?'ranked':'review',representative,groups,coverage,codingIntent:intent,
+  return {mode:representative?'ranked':'review',representative,groups,coverage,codingIntent:intent,weighted:weightedTaskRecommendations(task,text,required,candidates,data,references,intent),
     entries:representative?.entries??review,alternatives:representative?review.filter(e=>!represented.has(e.candidate.model!.id)):[],
     basis:representative?`${representative.benchmark} ${representative.version} · ${representative.selectionReason}`:review.some(e=>taskReady(e.candidate,required))?'정확한 웹 모델 제공과 모든 필수 기능이 확인된 후보를 먼저 표시합니다. 성능 순위가 아니며 같은 조건의 후보는 이름순 중립 정렬입니다.':'우선 추천을 정할 작업 관련 근거가 부족합니다. 동등 후보 전체를 이름순으로 중립 정렬하며 성능 순위를 뜻하지 않습니다.',
     scope:'확보한 비교 집합 안의 결과입니다. 전체 모델의 절대 순위가 아니며 가격·무료 여부는 순위에 반영하지 않습니다.',
