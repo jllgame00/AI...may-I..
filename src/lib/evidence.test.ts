@@ -30,12 +30,16 @@ describe('evidence recommendation engine', () => {
     assert.equal(item?.scores.benchmark, null); assert.equal(item?.score, null)
     assert.equal(item?.scores.features, 100); assert.equal(item?.scores.cost, 100)
   })
-  for (const field of ['version', 'environment', 'agentVersion', 'evaluationMode', 'unit', 'evaluatedAt'] as const) {
+  for (const field of ['version', 'environment', 'agentVersion', 'evaluationMode', 'unit'] as const) {
     it(`refuses comparison across different ${field}`, () => {
       const data = fixture(); data.observations[1][field] = 'different'
       assert.equal(run(data).recommendations.find(r => r.plan?.id === 'plan-0')?.scores.benchmark, null)
     })
   }
+  it('does not reject otherwise identical runs solely because evaluation dates differ', () => {
+    const data=fixture();data.observations[1].evaluatedAt='2026-10-28'
+    assert.equal(run(data).recommendations.find(r=>r.plan.id==='plan-0')?.scores.benchmark,100)
+  })
   it('uses task-specific evaluations and hand-calculated 60/25/15 totals', () => {
     const analysis = run(); const writing = run(fixture(), { tasks: ['writing'] })
     assert.equal(analysis.recommendations[0].plan.id, 'plan-0')
@@ -147,17 +151,17 @@ describe('evidence recommendation engine', () => {
   it('audits all six real plans across all tasks with feature and cost holds kept separate', () => {
     for (const task of ['analysis', 'writing', 'coding'] as const) {
       const result = engine.analyzeRequest({ ...input, tasks: [task], requiredFeatures: ['pdf', 'web'] })
-      assert.equal(result.recommendations.length, 6)
+      assert.equal(new Set(result.recommendations.map(r=>r.plan.id)).size, 6)
       for (const item of result.recommendations) {
-        assert.equal(item.model, null)
-        assert.equal(item.mapping.status, 'unknown')
+        assert.equal(item.mapping.status, item.mapping.routeKind==='work'?'confirmed':'unknown')
+        if(item.mapping.status==='confirmed')assert.equal(item.mapping.modelVersion,item.model?.version)
         assert.equal(item.scores.benchmark, null)
         assert.equal(item.score, null)
         assert.equal(item.scores.features, item.plan.id === 'gemini-pro' ? 100 : null)
         assert.equal(item.scores.cost, ['chatgpt-plus','claude-pro'].includes(item.plan.id) ? null : 100)
       }
       const webOnly = engine.analyzeRequest({ ...input, tasks: [task], requiredFeatures: ['web'] })
-      assert.ok(webOnly.recommendations.every(item => item.scores.features === (item.plan.id === 'gemini-free' ? null : 100)))
+      assert.ok(webOnly.recommendations.every(item => item.scores.features === (item.plan.id === 'gemini-free'||item.mapping.routeKind==='work' ? null : 100)))
     }
   })
   it('keeps manual selection, plan, stage and prompt consistent; reanalysis resets', () => {

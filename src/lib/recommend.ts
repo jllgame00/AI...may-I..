@@ -1,6 +1,7 @@
 import { serviceById, taskLabels } from '../data/services.ts'
 import { recommendationSnapshot } from '../data/recommendationSnapshot.ts'
 import { featureLabels, POLICY_VERSION, scoreWeights, scoringTaskLabels, taskEvaluations } from '../data/recommendationPolicy.ts'
+import { mappingLabel, relevantEvidence } from './currentEvidence.ts'
 import type { Analysis, BenchmarkDetail, EvaluationConditions, FeatureId, FeatureSupport, PlanModelMapping, Recommendation, RecommendationSnapshot, RequestInput, ScoringTask, ServicePlan, TaskKind, WorkflowStep } from '../recommendationTypes'
 export { scoreWeights } from '../data/recommendationPolicy.ts'
 
@@ -32,7 +33,7 @@ export function interpretRequest(text: string) {
   return { kind, tasks, requiredFeatures }
 }
 
-const conditionKeys: (keyof EvaluationConditions)[] = ['evaluationId', 'version', 'environment', 'agentVersion', 'evaluationMode', 'unit', 'higherIsBetter', 'evaluatedAt']
+const conditionKeys: (keyof EvaluationConditions)[] = ['evaluationId', 'version', 'environment', 'agentVersion', 'evaluationMode', 'unit', 'higherIsBetter']
 function benchmarkDetails(task: ScoringTask | 'image', modelId: string | null, data: RecommendationSnapshot): BenchmarkDetail[] {
   if (task === 'image') return []
   return taskEvaluations[task].map(slot => {
@@ -72,6 +73,8 @@ export function recommendForTask(task: ScoringTask | 'image', request: RequestIn
   const excluded: WorkflowStep['excluded'] = []
   const recommendations: Recommendation[] = []
   for (const plan of data.plans) {
+    const route = request.usageRoute ?? 'consumer'
+    if ((route === 'api') !== (plan.billingKind === 'usage')) continue
     const reasons: string[] = []
     if (request.budget === 'free' && plan.tier === 'paid') reasons.push('무료만 사용 조건: 유료 플랜 제외')
     if (request.maxKrw !== undefined && request.maxKrw !== null && plan.tier === 'paid' && plan.price.currency === 'KRW' && plan.price.period === 'month' && plan.price.amount !== null && plan.price.amount > request.maxKrw) reasons.push('확인된 한국 월 표시 가격이 원화 예산 상한을 초과합니다')
@@ -79,28 +82,36 @@ export function recommendForTask(task: ScoringTask | 'image', request: RequestIn
     if (reasons.length) { excluded.push({ plan, reasons }); continue }
     const mappings = data.mappings.filter(m => m.planId === plan.id)
     for (const mapping of mappings.length ? mappings : [unknownMapping(plan)]) {
+      if (route !== 'consumer' && (mapping.routeKind ?? 'chat') !== route) continue
       const model = data.models.find(m => m.id === mapping.modelId) ?? null
-      const linked = mapping.status === 'confirmed' && mapping.selectable && !!mapping.mode && !!model?.version && model.reasoning === mapping.mode && mapping.sources.some(s => s.url && s.checkedAt)
-      const benchmarks = benchmarkDetails(task, linked ? mapping.modelId : null, data)
-      const missingFeatures = required.filter(f => featureSupport(plan, f).status !== 'supported' || !featureSupport(plan, f).sources.some(s => s.url && s.checkedAt))
-      const holds = missingFeatures.map(f => `${featureLabels[f]}: ${featureSupport(plan, f).status === 'limited' ? '제한적 지원 · 이 작업이 제한 안에 드는지 미확인' : '플랜 지원 미확인'}`)
+      const current = data.evaluations !== undefined
+      const linked = mapping.status === 'confirmed' && mapping.selectable && mapping.selection!=='automatic' && !!mapping.mode && !!model?.version && (current?(model.modes ?? [model.reasoning]).includes(mapping.mode):model.reasoning===mapping.mode) && (!current || mapping.modelVersion===model.version) && mapping.sources.some(s => s.url && s.checkedAt)
+      const benchmarks = current ? [] : benchmarkDetails(task, linked ? mapping.modelId : null, data)
+      // Chat-plan tool permissions cannot be transplanted to Work or API.
+      const supportForPath = (f: FeatureId) => mapping.routeKind === 'api' && model?.nativeFeatures?.[f] ? model.nativeFeatures[f]! : mapping.routeKind === 'work' || mapping.routeKind === 'api' ? {status:'unknown',sources:[]} : featureSupport(plan,f)
+      const missingFeatures = required.filter(f => supportForPath(f).status !== 'supported' || !supportForPath(f).sources.some(s => s.url && s.checkedAt))
+      const holds = missingFeatures.map(f => `${featureLabels[f]}: ${supportForPath(f).status === 'limited' ? '제한적 지원 · 이 작업이 제한 안에 드는지 미확인' : '이 플랜·이용 경로 지원 미확인'}`)
       if (!linked) holds.push('정확한 평가 모델·버전·선택 모드와 플랜 연결 미확인')
+      const evidence = current ? relevantEvidence(task,request.text,required,model,mapping,data) : undefined
       const benchmark = benchmarks.length > 0 && benchmarks.every(b => b.normalized !== null) ? benchmarks.reduce((sum, b) => sum + b.normalized! * b.weight, 0) : null
-      if (benchmark === null) holds.push(task === 'image' ? '이미지 기획은 이번 벤치마크 정책 대상 밖' : '작업별 비교 가능한 평가 또는 공개 이용 근거 부족')
+      if (benchmark === null && !evidence?.length) holds.push(task === 'image' ? '이미지 기획은 이번 벤치마크 정책 대상 밖' : '작업별 비교 가능한 평가 또는 공개 이용 근거 부족')
       const features = missingFeatures.length ? null : 100
       const cost = costScore(plan, request.budget)
-      if (cost === null) holds.push('월 구독료·통화·결제 주기 미확인')
-      const priceHold = request.budget === 'unknown' || (plan.tier === 'paid' && (cost === null || !/한국/.test(plan.price.region) || plan.price.currency !== 'KRW' || /미확인/.test(plan.price.region)))
+      if (cost === null) holds.push(plan.billingKind==='usage'?'사용량 과금 · 토큰·도구·세금·환율에 따라 총액이 달라짐':'월 구독료·통화·결제 주기 미확인')
+      const priceHold = request.budget === 'unknown' || (plan.billingKind==='usage' ? request.maxKrw!=null : plan.tier === 'paid' && (cost === null || !/한국/.test(plan.price.region) || plan.price.currency !== 'KRW' || /미확인/.test(plan.price.region)))
       if (priceHold) holds.push(request.budget === 'unknown' ? '예산 미정 · 무료만/무료 선호/유료 허용을 확정하지 않음' : '한국 결제 총액·세금·지역 조건을 확인한 뒤 선택하세요. 원화 예산 이내로 확정하지 않습니다.')
-      const suitability: Recommendation['suitability'] = missingFeatures.length || priceHold ? '확인 후 선택' : '조건 비교 가능'
-      const score = linked && benchmark !== null && features !== null && cost !== null ? Math.round((benchmark * scoreWeights.benchmark + features * scoreWeights.features + cost * scoreWeights.cost) * 10) / 10 : null
+      const mappingHold = current && mapping.modelId!==null && !linked
+      const suitability: Recommendation['suitability'] = missingFeatures.length || priceHold || mappingHold ? '확인 후 선택' : '조건 비교 가능'
+      const score = !current && linked && benchmark !== null && features !== null && cost !== null ? Math.round((benchmark * scoreWeights.benchmark + features * scoreWeights.features + cost * scoreWeights.cost) * 10) / 10 : null
       const confirmed = required.filter(f => !missingFeatures.includes(f)).map(f => featureLabels[f])
       const label = task === 'image' ? '이미지 콘셉트·프롬프트 설계' : scoringTaskLabels[task]
+      const candidatePlan:ServicePlan = mapping.routeKind==='api' ? {...plan,features:{...plan.features,...model?.nativeFeatures}} : mapping.routeKind==='work' ? {...plan,route:'ChatGPT Work (웹)',features:{pdf:{status:'unknown',note:'Work 경로의 파일·PDF 권한 별도 확인',sources:[]},web:{status:'unknown',note:'Work 도구 권한 별도 확인',sources:[]}},freeScope:'이 정확한 모델의 Work 무료 이용 범위는 확인하지 않았습니다. Plus 제공 근거로 제시하는 후보입니다.',limits:['계정별 모델·추론 옵션, 사용량·크레딧·도구 권한을 확인하세요. 일반 Chat 한도를 Work에 그대로 적용하지 않음.'],upgrade:'이미 Plus 경로입니다. 사용량·크레딧 조건을 계정에서 확인하세요. API 과금은 별도입니다.'} : plan
       recommendations.push({
-        id: mapping.id, service: serviceById[plan.serviceId], plan, mapping, model,
+        id: mapping.id, service: mapping.routeKind==='api'?{...serviceById[plan.serviceId],name:plan.name,subtitle:'개발자 API · 별도 사용량 과금'}:serviceById[plan.serviceId], plan:candidatePlan, mapping, model,
         score, scores: { benchmark, features, cost }, holds, benchmarks, nearTie: false,
-        eligibility: missingFeatures.length || priceHold ? 'conditional' : 'confirmed', status: score === null ? 'conditional' : 'scored', suitability,
-        reason: `${label} 단계입니다. ${confirmed.length ? `${confirmed.join('·')} 지원을 확인했습니다.` : required.length ? '필수 기능 지원을 먼저 확인하세요.' : '추가 필수 기능이 지정되지 않았습니다.'} ${score === null ? '성능 순위는 보류하고 기능·예산 조건으로 비교합니다.' : '이 작업의 개별 평가와 기능·예산 정책을 반영했습니다.'}`,
+        eligibility: missingFeatures.length || priceHold || mappingHold ? 'conditional' : 'confirmed', status: score === null ? 'conditional' : 'scored', suitability,
+        evidence, evidenceNote: evidence?.length ? `작업 관련 원점수 참고. 선택한 ${mapping.mode ?? '설정 미확인'}과 평가 설정·도구·환경이 다를 수 있어 동일 성능을 보장하지 않습니다. 비교 가능한 실행 조건이 부족해 확정 우열을 정하지 않습니다.` : '현재 작업에 직접 연결할 성능 근거 부족 · 공식 기능·비용에 따른 조건 기반 후보',
+        reason: `${label} 단계입니다. ${confirmed.length ? `${confirmed.join('·')} 지원을 확인했습니다.` : required.length ? '필수 기능 지원을 먼저 확인하세요.' : '추가 필수 기능이 지정되지 않았습니다.'} ${evidence?.length ? '이 작업과 관련된 평가 원점수가 있어 참고할 수 있습니다. 환경·설정 차이를 함께 확인하세요.' : score === null ? '성능 순위는 보류하고 기능·예산 조건으로 비교합니다.' : '이 작업의 개별 평가와 기능·예산 정책을 반영했습니다.'}`,
       })
     }
   }
@@ -163,5 +174,6 @@ export function selectedCandidate(step: WorkflowStep | undefined): Recommendatio
   return step?.recommendations.find(r => r.id === step.candidateId) ?? null
 }
 export function candidateLabel(candidate: Recommendation): string {
+  if(candidate.mapping.routeKind) return `${candidate.service.name} · ${candidate.plan.name} · ${candidate.model ? `${candidate.model.name ?? candidate.model.id} ID: ${candidate.model.id} v${candidate.model.version} (${candidate.mapping.mode ?? '모드 미확인'})${candidate.mapping.status!=='confirmed'?' · 플랜 연결 미확인':''}` : candidate.mapping.selection==='automatic'?'자동 라우팅 · 모델·버전 선택 가능 여부 미확인':'모델·버전·모드 미확인'} · ${mappingLabel(candidate.mapping)}`
   return `${candidate.service.name} · ${candidate.plan.name}${candidate.mapping.status === 'confirmed' && candidate.mapping.mode ? ` · ${candidate.model?.id ?? '모델 미확인'} (${candidate.mapping.mode})` : ' · 모델·모드 미확인'}`
 }

@@ -1,5 +1,6 @@
 import type { FeatureSupport, RecommendationSnapshot, ServicePlan, Source } from '../recommendationTypes'
 import { applyResearch } from './researchOverlay.ts'
+import { apiPlans, currentEvaluations, currentMappings, currentModels, currentResearchSources, MODEL_CHECKED_AT, reviewedPlans } from './currentModels.ts'
 const checkedAt = '2026-10-21'
 const source = (url: string): Source => ({ url, checkedAt })
 const chat = source('https://chatgpt.com/pricing/')
@@ -52,7 +53,7 @@ const plans: ServicePlan[] = [
 ]
 
 // Public, manually reviewed snapshot. No leaderboard rows or API prices are bundled.
-export const recommendationSnapshot: RecommendationSnapshot = {
+const previousSnapshot: RecommendationSnapshot = {
   version: 'official-2026-10-21+supplied-research-2026-10-28', checkedAt, plans: applyResearch(plans), models: [], observations: [], cohorts: [],
   mappings: plans.map(plan => ({
     id: `${plan.id}-unconfirmed`, planId: plan.id, modelId: null, status: 'unknown', selectable: false, mode: null,
@@ -72,4 +73,11 @@ export const recommendationSnapshot: RecommendationSnapshot = {
     { ...source('https://www.swebench.com/verified.html'), name: 'SWE-bench Verified', status: '방법론 확인 · 수치 미포함', note: '500개 문제. 에이전트 버전이 다른 실행은 섞지 않음.' },
     { ...source('https://github.com/SWE-bench/experiments'), name: 'SWE-bench 공식 실험', status: '개별 결과 접근 성공 · 재배포 범위 미확인', note: 'mini-SWE-agent 2.0.0의 두 metadata.yaml과 인스턴스 결과 확인. 결과 라이선스, 실행 설정의 완전한 동일성, 현재 플랜 연결은 미확인.' },
   ],
+}
+
+export const recommendationSnapshot: RecommendationSnapshot = {
+  ...previousSnapshot, version:'exact-models-2026-10-28',checkedAt:MODEL_CHECKED_AT,
+  plans:[...reviewedPlans(previousSnapshot.plans),...apiPlans()],models:currentModels,
+  mappings:currentMappings(previousSnapshot.mappings),evaluations:currentEvaluations,
+  sources:[...currentResearchSources,...previousSnapshot.sources],
 }

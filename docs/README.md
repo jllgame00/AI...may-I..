@@ -2,6 +2,7 @@
 
 ## 현재 제품
 
+- [정확한 모델 추천 기준·실제 자료·갱신·이번 검증](model-recommendation-methodology.md): 기존 흐름을 유지한 모델 확장. 5개 모델·13건 실제 평가와 환경상 미실행 검증 구분.
 - [AI 비교·선택·단계별 활용 최종 기록](final-ai-guide-application.md): 마지막 지시의 현재 구현·복구·검증.
 
 - [프롬프트 전용 전환 기록](prompt-workspace-application.md): 이후 취소된 방향의 당시 구현·검증 이력이며 현재 제품 명세가 아님.
