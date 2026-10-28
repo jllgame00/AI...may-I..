@@ -24,6 +24,33 @@ const {recommendationSnapshot:snapshot}=await import('../src/data/recommendation
 const render=(component,props={})=>renderToStaticMarkup(createElement(component,props))
 const noop=()=>{}
 function comparisonHtml(request,data=snapshot){const comparison=compareCandidates(request,data);return {comparison,html:render(Comparison,{comparison,request,selected:null,onSelect:noop,onEdit:noop})}}
+it('shows two tied survey recommendations, shares repeated guidance and collapses four unspecified services',()=>{
+  const {html}=comparisonHtml({text:DEMO_REQUEST,overrides:{}})
+  assert.match(html,/<h1[^>]*>이 작업에 사용할 모델<\/h1>/)
+  const ready=html.match(/<section class="candidate-section" data-group="ready">[\s\S]*?<\/section>/)[0]
+  assert.equal((ready.match(/<article /g)??[]).length,2)
+  assert.equal((ready.match(/추천 공동 1위/g)??[]).length,2)
+  assert.equal((html.match(/엑셀 파일을 첨부해 계산·분석하고 결과표를 만들 수 있습니다\./g)??[]).length,1)
+  assert.equal((html.match(/개인 계정의 도구 활성화·파일 한도·남은 사용량은 확인하지 않았습니다\./g)??[]).length,1)
+  assert.doesNotMatch(ready,/candidate-limit|추천 2위|추천 3위/)
+  const services=html.match(/<details class="other-services"[^>]*>[\s\S]*?<section class="candidate-section" data-group="model-check">[\s\S]*?<\/section><\/details>/)[0]
+  assert.match(services,/<summary id="other-services">다른 서비스에서 시작하기 \(4\)<\/summary>/)
+  assert.doesNotMatch(services.split('>')[0],/open/)
+  assert.equal((services.match(/<article /g)??[]).length,4)
+  assert.match(services,/코드 실행 지원과 사용할 모델을 서비스에서 확인/)
+  assert.match(html,/FP8 제공으로 평가 실행 조건과 차이/)
+})
+it('limits featured recommendations to three without removing tied or selected candidates',()=>{
+  const request={text:DEMO_REQUEST,inputMode:'summary',requiredFeatures:[],overrides:{}},comparison=compareCandidates(request)
+  const html=render(Comparison,{comparison,request,selected:null,onSelect:noop,onEdit:noop})
+  const ready=html.match(/<section class="candidate-section" data-group="ready">[\s\S]*?<\/section>/)[0]
+  assert.equal((ready.match(/<article /g)??[]).length,3)
+  assert.match(html,/나머지 모델 후보/)
+  const selected=comparison.recommendations.filter(c=>c.assessment.start==='ready').at(-1)
+  const chosen=render(Comparison,{comparison,request,selected:selected.id,onSelect:noop,onEdit:noop})
+  assert.ok(chosen.includes(`id="choose-${encodeURIComponent(selected.id)}"`))
+  assert.match(chosen,/선택됨/)
+})
 it('separates ready models, unspecified-model services, performance evidence and personal checks in the actual result',()=>{
   const {comparison,html}=comparisonHtml({text:DEMO_REQUEST,overrides:{}})
   assert.match(html,/작업을 시작할 후보/)
@@ -38,7 +65,7 @@ it('separates ready models, unspecified-model services, performance evidence and
     const visible=card.split('<details>')[0]
     assert.doesNotMatch(visible,/AIME|Last Exam|직접 성능 비교가 부족/)
     assert.match(visible,/<button[^>]*id="choose-/)
-    if(card.includes('data-candidate-kind="ready"'))assert.match(visible,/개인 계정|계정 설정/)
+    if(card.includes('data-candidate-kind="ready"'))assert.doesNotMatch(visible,/개인 계정의 도구 활성화/)
     if(card.includes('data-candidate-kind="model-check"'))assert.match(visible,/모델 미지정/)
   }
   const service=comparison.recommendations.find(c=>!c.model&&c.assessment.features.status==='confirmed')
@@ -79,20 +106,20 @@ it('keeps comparable algorithm ranks separate from public execution readiness an
   for(const tied of [false,true]){
     const data=structuredClone(snapshot);if(tied)data.evaluations.find(e=>e.id==='east-qwen235-2507-lcb').rawScore=48.9
     const {html}=comparisonHtml({text:'알고리즘 문제 풀이',overrides:{}},data)
-    const featured=[...html.matchAll(/<article class="candidate-card"[^>]*>[\s\S]*?<\/article>/g)].filter(m=>m[0].split('<details>')[0].includes('작업 관련 평가 집합')).map(m=>m[0]).join('')
+    const featured=[...html.matchAll(/<article class="candidate-card"[^>]*>[\s\S]*?<\/article>/g)].filter(m=>m[0].includes('벤치마크 원점수 순위')).map(m=>m[0]).join('')
     assert.equal((featured.match(/<article /g)??[]).length,3)
     assert.match(featured,/LiveCodeBench v6/);assert.match(featured,/48\.9/);assert.match(featured,/45\.2/)
-    if(tied)assert.equal((featured.match(/평가 집합 공동 1위/g)??[]).length,2)
+    if(tied)assert.equal((featured.match(/벤치마크 원점수 순위: 집합 내 공동 1위/g)??[]).length,2)
     else assert.match(featured,/51\.8/)
     assert.match(html,/성능 순위를 뜻하지 않습니다/)
     assert.match(html,/웹 선택 가능 여부/)
   }
 })
-it('shows all model and service candidates without an arbitrary top three and keeps peer order neutral',()=>{
+it('preserves all model and service choices beneath the featured recommendations and keeps peer order neutral',()=>{
   const {html}=comparisonHtml({text:DEMO_REQUEST,overrides:{}})
   const featured=html.slice(html.indexOf('id="recommended-options"'),html.indexOf('<details class="evidence-section"'))
   assert.equal((featured.match(/<article /g)??[]).length,24)
-  assert.doesNotMatch(html,/other-candidates|다른 웹 후보 보기|동등한 우선 검토/)
+  assert.doesNotMatch(html,/다른 웹 후보 보기|동등한 우선 검토/)
   assert.doesNotMatch(featured,/평가 집합.*위/)
   for(const section of featured.matchAll(/<section class="candidate-section"[\s\S]*?<\/section>/g)){
     const names=[...section[0].matchAll(/<article[\s\S]*?<h2>([^<]+)<\/h2>/g)].map(m=>m[1])
@@ -100,10 +127,10 @@ it('shows all model and service candidates without an arbitrary top three and ke
   }
   const visible=[...featured.matchAll(/<article[\s\S]*?<\/article>/g)].map(m=>m[0].split('<details>')[0]).join('')
   assert.doesNotMatch(visible,/AIME|Last Exam|79\.8|17\.7|59\.4/)
-  assert.match(visible,/엑셀 파일/)
-  assert.match(visible,/계산·분석/)
+  assert.match(featured,/엑셀 파일/)
+  assert.match(featured,/계산·분석/)
   assert.match(visible,/기능·경로 확인/)
-  assert.match(visible,/계정.*확인하지 않았/)
+  assert.match(html,/개인 계정.*확인하지 않았/)
   assert.match(html,/직접 비교.*설문 분석 성능/)
   assert.match(html,/이름순.*중립 정렬.*성능 순위/)
   assert.match(html,/전체 비교 범위·다른 평가·출처/)

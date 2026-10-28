@@ -29,7 +29,9 @@ export function candidateSummary(c:Recommendation, required:FeatureId[]) {
   const importantLimit=assessment.input.status==='unknown'?'입력 자료 형태를 먼저 선택하세요. 기능 요구사항이 아직 확정되지 않았습니다.':assessment.start==='ready'?'개인 계정의 도구 활성화·파일 한도·남은 사용량은 확인하지 않았습니다.':
     !c.model?`${assessment.features.pending.length?`${assessment.features.pending.map(f=>shortFeatures[f]).join('·')} 지원과 `:''}사용할 모델을 서비스에서 확인하세요. 계정의 잔여 한도는 미확인입니다.`:
     [!exactWebModel(c)?'이 버전의 웹 선택 가능 여부':null,...assessment.features.pending.map(f=>`${shortFeatures[f]}${c.plan.features[f]?.status==='limited'?' 처리 범위':' 지원'}`)].filter(Boolean).join('·')+' 확인 필요'
-  return {facts:facts.slice(0,2),requirements,reason,limit:importantLimit+(/FP8/.test(c.mapping.note)?' FP8 제공으로 평가 실행 조건과 차이가 있습니다.':'')}
+  const routeLimit=/FP8/.test(c.mapping.note)?' FP8 제공으로 평가 실행 조건과 차이가 있습니다.':''
+  const cardLimit=(assessment.start==='ready'?'':importantLimit.replace(' 계정의 잔여 한도는 미확인입니다.',''))+routeLimit
+  return {facts:facts.slice(0,2),requirements,reason,limit:importantLimit+routeLimit,cardLimit}
 }
 export function accountCheck(c:Recommendation, required:FeatureId[]):string {
   return `사용할 계정에서 ${c.model?.name??c.service.name}${c.mapping.mode?` (${c.mapping.mode})`:''} 선택${required.length?`과 ${required.map(f=>shortFeatures[f]).join('·')} 사용 가능 여부 및 한도`:'과 사용 한도'}를 확인하세요.`
