@@ -1,0 +1,36 @@
+{
+  "name": "prompt-mate",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "engines": { "node": ">=22.18.0" },
+  "scripts": {
+    "dev": "vite --host 127.0.0.1",
+    "build": "tsc -b && vite build",
+    "preview": "vite preview --host 127.0.0.1",
+    "typecheck": "tsc -b --pretty",
+    "test": "node --test --test-isolation=none src/lib/*.test.ts tests/*.test.mjs",
+    "data:refresh": "node scripts/refresh-data.mts",
+    "data:validate": "node scripts/refresh-data.mts --validate",
+    "data:restore": "node scripts/refresh-data.mts --restore",
+    "data:estimate": "node scripts/estimate-models.mts",
+    "report:estimation": "node scripts/model-score-estimation-report.mjs",
+    "test:browser": "node tests/browser-check.mjs",
+    "qa:preview": "node tests/preview.mjs"
+  },
+  "dependencies": {
+    "@tailwindcss/vite": "^4.1.0",
+    "lucide-react": "^0.468.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "tailwindcss": "^4.1.0"
+  },
+  "devDependencies": {
+    "@types/node": "^24.0.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "@vitejs/plugin-react": "^5.0.0",
+    "typescript": "~5.9.0",
+    "vite": "^7.0.0"
+  }
+}

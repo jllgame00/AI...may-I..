@@ -1,0 +1,3434 @@
+{
+  "generatedAt": "2026-10-29T05:12:55.734Z",
+  "policy": {
+    "version": "provider-evidence-v1",
+    "maxFeatured": 3,
+    "weights": {
+      "fit": 0.4,
+      "quality": 0.3,
+      "cost": 0.2,
+      "ease": 0.1
+    },
+    "scoring": "withheld-until-direct-quality-and-comparable-ease-evidence"
+  },
+  "catalog": {
+    "version": "provider-catalog-2026-10-29-v1",
+    "providers": 12,
+    "services": 13,
+    "plans": 18,
+    "evidence": [
+      {
+        "id": "chatgpt-pricing",
+        "url": "https://chatgpt.com/pricing/",
+        "scope": "Free/Plus 텍스트 채팅, Free 첨부·이미지 생성·분석 제한 및 Plus 확대. 이번 응답에서 숫자 월 가격 미추출.",
+        "serviceId": "chatgpt",
+        "planIds": [
+          "chatgpt-free",
+          "chatgpt-plus"
+        ],
+        "checkedAt": "2026-10-29",
+        "verification": "reviewed"
+      },
+      {
+        "id": "chatgpt-data",
+        "url": "https://help.openai.com/en/articles/8437071-data-analysis-with-chatgpt",
+        "scope": "XLSX/CSV/PDF 업로드·코드 기반 데이터 분석. 형식은 플랜/계정별로 달라질 수 있어 가격표와 조합하며 PDF 플랜별 범위는 미확인으로 유지.",
+        "serviceId": "chatgpt",
+        "planIds": [
+          "chatgpt-free",
+          "chatgpt-plus"
+        ],
+        "checkedAt": "2026-10-29",
+        "verification": "reviewed"
+      },
+      {
+        "id": "chatgpt-overview",
+        "url": "https://chatgpt.com/overview/",
+        "scope": "텍스트 작성·코드 작성/디버깅 사용 사례. 웹 텍스트 채팅 권한과 조합한 용도, 작업 품질 평가는 아님.",
+        "serviceId": "chatgpt",
+        "planIds": [
+          "chatgpt-free",
+          "chatgpt-plus"
+        ],
+        "checkedAt": "2026-10-29",
+        "verification": "reviewed"
+      },
+      {
+        "id": "claude-pricing",
+        "url": "https://claude.com/pricing",
+        "scope": "Free 웹 대화·웹 검색·파일 생성·코드 실행 및 Pro 포함. 월 $20/연 $200; 지역·ISO 통화·세금 총액 별도.",
+        "serviceId": "claude",
+        "planIds": [
+          "claude-free",
+          "claude-pro"
+        ],
+        "checkedAt": "2026-10-29",
+        "verification": "reviewed"
+      },
+      {
+        "id": "claude-files",
+        "url": "https://support.claude.com/en/articles/8241126-upload-files-to-claude",
+        "scope": "웹 PDF/CSV/XLSX 첨부. XLSX는 코드 실행·파일 생성 활성화 필요.",
+        "serviceId": "claude",
+        "planIds": [
+          "claude-free",
+          "claude-pro"
+        ],
+        "checkedAt": "2026-10-29",
+        "verification": "reviewed"
+      },
+      {
+        "id": "claude-execution",
+        "url": "https://support.claude.com/en/articles/12111783-create-and-edit-files-with-claude",
+        "scope": "코드 실행·파일 생성과 업로드 자료 분석, Excel·PowerPoint 생성. Free/Pro 제공과 계정 활성화·사용량 별도.",
+        "serviceId": "claude",
+        "planIds": [
+          "claude-free",
+          "claude-pro"
+        ],
+        "checkedAt": "2026-10-29",
+        "verification": "reviewed"
+      },
+      {
+        "id": "gemini-pricing",
+        "url": "https://one.google.com/intl/ko_kr/about/google-ai-plans/",
+        "scope": "Google AI Pro와 Gemini 앱의 글·보고서 활용 및 이미지 생성 확대. 이번 읽기에서 정확한 한국 가격 숫자 미확보.",
+        "serviceId": "gemini",
+        "planIds": [
+          "gemini-free",
+          "gemini-pro"
+        ],
+        "checkedAt": "2026-10-29",
+        "verification": "reviewed"
+      },
+      {
+        "id": "gemini-subscriptions",
+        "url": "https://gemini.google/subscriptions/",
+        "scope": "Free Google 계정 $0/월, 일상 작업·Canvas·이미지 생성. Pro는 Free 포함. 미국 페이지이며 국가별 제공 조건 별도.",
+        "serviceId": "gemini",
+        "planIds": [
+          "gemini-free",
+          "gemini-pro"
+        ],
+        "checkedAt": "2026-10-29",
+        "verification": "reviewed"
+      },
+      {
+        "id": "gemini-files",
+        "url": "https://support.google.com/gemini/answer/14903178?hl=en",
+        "scope": "Gemini 개인 웹의 파일·문서·시트 분석. 무료 사용량 제한, 정확한 확장자·계산 런타임은 별도 확인.",
+        "serviceId": "gemini",
+        "planIds": [
+          "gemini-free",
+          "gemini-pro"
+        ],
+        "checkedAt": "2026-10-29",
+        "verification": "reviewed"
+      },
+      {
+        "id": "gemini-limits",
+        "url": "https://support.google.com/gemini/answer/16275805?hl=ko",
+        "scope": "저장된 공식 개인 미가입/Pro 기능·파일 한도 검토. 일반 업로드와 임의 코드 실행은 구분.",
+        "serviceId": "gemini",
+        "planIds": [
+          "gemini-free",
+          "gemini-pro"
+        ],
+        "checkedAt": "2026-10-28",
+        "verification": "reviewed"
+      },
+      {
+        "id": "firefly-pricing",
+        "url": "https://www.adobe.com/products/firefly/plans.html",
+        "scope": "무료 일일 생성 제한. Standard 표준 이미지 생성/벡터 기능과 premium 크레딧 구분. 응답 가격은 일본 JPY 1580/월·세금 포함, 한국 가격 아님.",
+        "serviceId": "firefly",
+        "planIds": [
+          "firefly-free",
+          "firefly-standard"
+        ],
+        "checkedAt": "2026-10-29",
+        "verification": "reviewed"
+      },
+      {
+        "id": "runway-pricing",
+        "url": "https://runway.com/pricing",
+        "scope": "Free 125 일회성 크레딧. Standard 이미지/영상 생성, 월 $15와 연간 월 환산 $12 구분. 국가/세금 미확인.",
+        "serviceId": "runway",
+        "planIds": [
+          "runway-free",
+          "runway-standard"
+        ],
+        "checkedAt": "2026-10-29",
+        "verification": "reviewed"
+      },
+      {
+        "id": "claude-artifacts",
+        "url": "https://support.claude.com/en/articles/17153992-what-are-artifacts-and-how-do-i-use-them",
+        "scope": "Free/Pro 웹 대화의 Artifacts에서 코드·단일 페이지 웹·도구를 생성/편집. 코드 실행과 별개의 코드 작성 용도.",
+        "serviceId": "claude",
+        "planIds": [
+          "claude-free",
+          "claude-pro"
+        ],
+        "checkedAt": "2026-10-29",
+        "verification": "reviewed"
+      },
+      {
+        "id": "gemini-canvas",
+        "url": "https://gemini.google/overview/canvas/",
+        "scope": "모든 Gemini 사용자의 Canvas에서 코드 생성·문서 작성. 실행 런타임/저장소 자동 접근을 보장하지 않음.",
+        "serviceId": "gemini",
+        "planIds": [
+          "gemini-free",
+          "gemini-pro"
+        ],
+        "checkedAt": "2026-10-29",
+        "verification": "reviewed"
+      }
+    ]
+  },
+  "historical": {
+    "models": 28,
+    "evaluations": 111
+  },
+  "verification": {
+    "unitAndReactSSR": {
+      "command": "npm test",
+      "passed": 52,
+      "failed": 0
+    },
+    "typecheck": {
+      "command": "npm run typecheck",
+      "exitCode": 0
+    },
+    "catalog": {
+      "command": "npm run data:validate",
+      "exitCode": 0,
+      "providers": 12,
+      "services": 13,
+      "plans": 18
+    },
+    "maintenance": {
+      "refresh": "validated-and-preserved, no external collection",
+      "restore": "executed against identical valid Provider backup",
+      "invalidImportAndCorruptPrimaryRecovery": "passed using a temporary directory"
+    },
+    "preservation": {
+      "files": 106,
+      "sha256": "all passed; archive text normalization disabled"
+    },
+    "activeImportGraph": "cannot reach model snapshots, scoring, benchmark tables or archived fallback",
+    "browserRunnerSyntax": {
+      "command": "node --check tests/browser-check.mjs",
+      "exitCode": 0
+    },
+    "productionBuild": {
+      "command": "npm run build",
+      "exitCode": 1,
+      "reason": "Vite/esbuild child-process spawn EPERM after TypeScript"
+    },
+    "browserE2E": {
+      "executed": false,
+      "reason": "CUA browser access host and native pipe unavailable; no alternate automation attempted"
+    },
+    "externalAIExecution": false,
+    "paidCalls": false,
+    "commitPushDeploy": false
+  },
+  "cases": [
+    {
+      "id": "survey",
+      "title": "설문 문항 작성",
+      "request": {
+        "text": "대학생의 학습 만족도 설문 문항을 작성해줘",
+        "overrides": {}
+      },
+      "requirements": {
+        "goal": "대학생의 학습 만족도 설문 문항을 작성해줘",
+        "works": [
+          {
+            "id": "writing",
+            "category": "writing",
+            "label": "글·발표 대본",
+            "required": [
+              "textGeneration",
+              "surveyDraft"
+            ],
+            "preferred": []
+          }
+        ],
+        "required": [
+          "textGeneration",
+          "surveyDraft"
+        ],
+        "preferred": [],
+        "budget": {
+          "freeOnly": null,
+          "maxMonthly": null,
+          "currency": null,
+          "country": null
+        },
+        "inputFormats": [],
+        "outputFormat": null,
+        "volume": null,
+        "bounds": {
+          "fileSizeMB": null,
+          "fileCount": null,
+          "rowCount": null,
+          "itemCount": null
+        },
+        "composite": false,
+        "questions": [
+          {
+            "id": "budget",
+            "label": "무료만 필요한가요? 월 예산이 있다면 함께 입력하세요."
+          }
+        ],
+        "notes": [
+          "입력하지 않은 예산·국가·분량은 미정입니다. 기능은 수정할 수 있으며 성능 품질 평가와 구분합니다."
+        ]
+      },
+      "recommended": [
+        {
+          "providerId": "anthropic",
+          "company": "Anthropic",
+          "service": "Claude",
+          "plan": "Free",
+          "status": "eligible",
+          "score": null,
+          "rank": null,
+          "reason": "이 서비스·플랜에서 요청한 필수 기능과 예산 조건을 확인했습니다. 작업 품질 우열은 미평가입니다.",
+          "gaps": [],
+          "features": [
+            {
+              "id": "textGeneration",
+              "status": "supported",
+              "sourceIds": [
+                "claude-pricing"
+              ]
+            },
+            {
+              "id": "surveyDraft",
+              "status": "supported",
+              "sourceIds": [
+                "claude-pricing"
+              ]
+            }
+          ]
+        },
+        {
+          "providerId": "google",
+          "company": "Google",
+          "service": "Gemini",
+          "plan": "Free",
+          "status": "eligible",
+          "score": null,
+          "rank": null,
+          "reason": "이 서비스·플랜에서 요청한 필수 기능과 예산 조건을 확인했습니다. 작업 품질 우열은 미평가입니다.",
+          "gaps": [],
+          "features": [
+            {
+              "id": "textGeneration",
+              "status": "supported",
+              "sourceIds": [
+                "gemini-pricing",
+                "gemini-subscriptions"
+              ]
+            },
+            {
+              "id": "surveyDraft",
+              "status": "supported",
+              "sourceIds": [
+                "gemini-pricing",
+                "gemini-subscriptions"
+              ]
+            }
+          ]
+        },
+        {
+          "providerId": "openai",
+          "company": "OpenAI",
+          "service": "ChatGPT",
+          "plan": "Free",
+          "status": "eligible",
+          "score": null,
+          "rank": null,
+          "reason": "이 서비스·플랜에서 요청한 필수 기능과 예산 조건을 확인했습니다. 작업 품질 우열은 미평가입니다.",
+          "gaps": [],
+          "features": [
+            {
+              "id": "textGeneration",
+              "status": "supported",
+              "sourceIds": [
+                "chatgpt-pricing",
+                "chatgpt-overview"
+              ]
+            },
+            {
+              "id": "surveyDraft",
+              "status": "supported",
+              "sourceIds": [
+                "chatgpt-pricing",
+                "chatgpt-overview"
+              ]
+            }
+          ]
+        }
+      ],
+      "remaining": [],
+      "conditional": [
+        {
+          "providerId": "adobe",
+          "company": "Adobe",
+          "service": "Adobe Firefly",
+          "plan": "Free",
+          "status": "conditional",
+          "score": null,
+          "rank": null,
+          "reason": "필수 기능·플랜 또는 예산의 미확인 조건을 먼저 확인하세요.",
+          "gaps": [
+            "텍스트 작성: 미확인 · 이 서비스·플랜 기능의 공식 근거 미확보",
+            "설문 문항 작성: 미확인 · 이 서비스·플랜 기능의 공식 근거 미확보"
+          ],
+          "features": [
+            {
+              "id": "textGeneration",
+              "status": "unknown",
+              "sourceIds": []
+            },
+            {
+              "id": "surveyDraft",
+              "status": "unknown",
+              "sourceIds": []
+            }
+          ]
+        },
+        {
+          "providerId": "alibaba",
+          "company": "Alibaba",
+          "service": "Qwen",
+          "plan": "웹 플랜 확인 필요",
+          "status": "conditional",
+          "score": null,
+          "rank": null,
+          "reason": "필수 기능·플랜 또는 예산의 미확인 조건을 먼저 확인하세요.",
+          "gaps": [
+            "텍스트 작성: 미확인 · 이 서비스·플랜 기능의 공식 근거 미확보",
+            "설문 문항 작성: 미확인 · 이 서비스·플랜 기능의 공식 근거 미확보"
+          ],
+          "features": [
+            {
+              "id": "textGeneration",
+              "status": "unknown",
+              "sourceIds": []
+            },
+            {
+              "id": "surveyDraft",
+              "status": "unknown",
+              "sourceIds": []
+            }
+          ]
+        },
+        {
+          "providerId": "deepseek",
+          "company": "DeepSeek",
+          "service": "DeepSeek",
+          "plan": "웹 플랜 확인 필요",
+          "status": "conditional",
+          "score": null,
+          "rank": null,
+          "reason": "필수 기능·플랜 또는 예산의 미확인 조건을 먼저 확인하세요.",
+          "gaps": [
+            "텍스트 작성: 미확인 · 이 서비스·플랜 기능의 공식 근거 미확보",
+            "설문 문항 작성: 미확인 · 이 서비스·플랜 기능의 공식 근거 미확보"
+          ],
+          "features": [
+            {
+              "id": "textGeneration",
+              "status": "unknown",
+              "sourceIds": []
+            },
+            {
+              "id": "surveyDraft",
+              "status": "unknown",
+              "sourceIds": []
+            }
+          ]
+        },
+        {
+          "providerId": "microsoft",
+          "company": "Microsoft",
+          "service": "Microsoft Copilot",
+          "plan": "웹 플랜 확인 필요",
+          "status": "conditional",
+          "score": null,
+          "rank": null,
+          "reason": "필수 기능·플랜 또는 예산의 미확인 조건을 먼저 확인하세요.",
+          "gaps": [
+            "텍스트 작성: 미확인 · 이 서비스·플랜 기능의 공식 근거 미확보",
+            "설문 문항 작성: 미확인 · 이 서비스·플랜 기능의 공식 근거 미확보"
+          ],
+          "features": [
+            {
+              "id": "textGeneration",
+              "status": "unknown",
+              "sourceIds": []
+            },
+            {
+              "id": "surveyDraft",
+              "status": "unknown",
+              "sourceIds": []
+            }
+          ]
+        },
+        {
+          "providerId": "mistral",
+          "company": "Mistral AI",
+          "service": "Mistral 서비스",
+          "plan": "웹 플랜 확인 필요",
+          "status": "conditional",
+          "score": null,
+          "rank": null,
+          "reason": "필수 기능·플랜 또는 예산의 미확인 조건을 먼저 확인하세요.",
+          "gaps": [
+            "텍스트 작성: 미확인 · 이 서비스·플랜 기능의 공식 근거 미확보",
+            "설문 문항 작성: 미확인 · 이 서비스·플랜 기능의 공식 근거 미확보"
+          ],
+          "features": [
+            {
+              "id": "textGeneration",
+              "status": "unknown",
+              "sourceIds": []
+            },
+            {
+              "id": "surveyDraft",
+              "status": "unknown",
+              "sourceIds": []
+            }
+          ]
+        },
+        {
+          "providerId": "moonshot",
+          "company": "Moonshot AI",
+          "service": "Kimi",
+          "plan": "웹 플랜 확인 필요",
+          "status": "conditional",
+          "score": null,
+          "rank": null,
+          "reason": "필수 기능·플랜 또는 예산의 미확인 조건을 먼저 확인하세요.",
+          "gaps": [
+            "텍스트 작성: 미확인 · 이 서비스·플랜 기능의 공식 근거 미확보",
+            "설문 문항 작성: 미확인 · 이 서비스·플랜 기능의 공식 근거 미확보"
+          ],
+          "features": [
+            {
+              "id": "textGeneration",
+              "status": "unknown",
+              "sourceIds": []
+            },
+            {
+              "id": "surveyDraft",
+              "status": "unknown",
+              "sourceIds": []
+            }
+          ]
+        },
+        {
+          "providerId": "perplexity",
+          "company": "Perplexity",
+          "service": "Perplexity",
+          "plan": "웹 플랜 확인 필요",
+          "status": "conditional",
+          "score": null,
+          "rank": null,
+          "reason": "필수 기능·플랜 또는 예산의 미확인 조건을 먼저 확인하세요.",
+          "gaps": [
+            "텍스트 작성: 미확인 · 이 서비스·플랜 기능의 공식 근거 미확보",
+            "설문 문항 작성: 미확인 · 이 서비스·플랜 기능의 공식 근거 미확보"
+          ],
+          "features": [
+            {
+              "id": "textGeneration",
+              "status": "unknown",
+              "sourceIds": []
+            },
+            {
+              "id": "surveyDraft",
+              "status": "unknown",
+              "sourceIds": []
+            }
+          ]
+        },
+        {
+          "providerId": "runway",
+          "company": "Runway",
+          "service": "Runway",
+          "plan": "Free",
+          "status": "conditional",
+          "score": null,
+          "rank": null,
+          "reason": "필수 기능·플랜 또는 예산의 미확인 조건을 먼저 확인하세요.",
+          "gaps": [
+            "텍스트 작성: 미확인 · 이 서비스·플랜 기능의 공식 근거 미확보",
+            "설문 문항 작성: 미확인 · 이 서비스·플랜 기능의 공식 근거 미확보"
+          ],
+          "features": [
+            {
+              "id": "textGeneration",
+              "status": "unknown",
+              "sourceIds": []
+            },
+            {
+              "id": "surveyDraft",
+              "status": "unknown",
+              "sourceIds": []
+            }
+          ]
+        },
+        {
+          "providerId": "xai",
+          "company": "xAI",
+          "service": "Grok",
+          "plan": "웹 플랜 확인 필요",
+          "status": "conditional",
+          "score": null,
+          "rank": null,
+          "reason": "필수 기능·플랜 또는 예산의 미확인 조건을 먼저 확인하세요.",
+          "gaps": [
+            "텍스트 작성: 미확인 · 이 서비스·플랜 기능의 공식 근거 미확보",
+            "설문 문항 작성: 미확인 · 이 서비스·플랜 기능의 공식 근거 미확보"
+          ],
+          "features": [
+            {
+              "id": "textGeneration",
+              "status": "unknown",
+              "sourceIds": []
+            },
+            {
+              "id": "surveyDraft",
+              "status": "unknown",
+              "sourceIds": []
+            }
+          ]
+        }
+      ],
+      "excluded": [],
+      "selected": [
+        {
+          "workId": "writing",
+          "provider": "Anthropic",
+          "service": "Claude",
+          "plan": "Free",
+          "status": "eligible"
+        }
+      ],
+      "selection": {
+        "default": null,
+        "byStage": {
+          "survey-outline": "claude-free",
+          "survey-compose": "claude-free",
+          "survey-review": "claude-free"
+        }
+      },
+      "stages": [
+        {
+          "id": "survey-outline",
+          "workId": "writing",
+          "title": "설문 설계",
+          "text": "작업 원문\n대학생의 학습 만족도 설문 문항을 작성해줘\n\n단계 목표: 조사 목적·대상·측정할 개념을 정리하고 문항 형식과 응답 척도를 설계하세요. 실제 설문 폼 생성과 문항 초안을 구분하세요.\n\n대학생의 학습 만족도 설문 문항을 작성해줘\n\n사용 맥락\n[사용 목적을 입력하세요]\n\n결과 형식\n[원하는 결과 형식을 입력하세요]\n\n답변 전 확인\n요청한 목적·형식·분량을 지켰는지 확인하고, 정보가 부족한 부분은 임의로 채우지 마세요.\n\n제공된 자료만 사용하고 실제로 실행하거나 파일을 만들지 않았다면 수행했다고 말하지 마세요."
+        },
+        {
+          "id": "survey-compose",
+          "workId": "writing",
+          "title": "설문 문항 초안",
+          "text": "작업 원문\n대학생의 학습 만족도 설문 문항을 작성해줘\n\n단계 목표: 중립적인 문항과 선택지·응답 척도·분기 안내를 작성하세요. 조사 목적을 모르면 먼저 확인하세요.\n\n대학생의 학습 만족도 설문 문항을 작성해줘\n\n사용 맥락\n[사용 목적을 입력하세요]\n\n결과 형식\n[원하는 결과 형식을 입력하세요]\n\n답변 전 확인\n요청한 목적·형식·분량을 지켰는지 확인하고, 정보가 부족한 부분은 임의로 채우지 마세요.\n\n제공된 자료만 사용하고 실제로 실행하거나 파일을 만들지 않았다면 수행했다고 말하지 마세요."
+        },
+        {
+          "id": "survey-review",
+          "workId": "writing",
+          "title": "문항 검토",
+          "text": "작업 원문\n대학생의 학습 만족도 설문 문항을 작성해줘\n\n단계 목표: 유도·이중 질문·중복·모호한 척도와 불필요한 개인정보 수집을 점검하고 수정안을 제시하세요.\n\n대학생의 학습 만족도 설문 문항을 작성해줘\n\n사용 맥락\n[사용 목적을 입력하세요]\n\n결과 형식\n[원하는 결과 형식을 입력하세요]\n\n답변 전 확인\n요청한 목적·형식·분량을 지켰는지 확인하고, 정보가 부족한 부분은 임의로 채우지 마세요.\n\n제공된 자료만 사용하고 실제로 실행하거나 파일을 만들지 않았다면 수행했다고 말하지 마세요."
+        }
+      ],
+      "checks": {
+        "reactSSR": true,
+        "originalPreserved": true,
+        "draftPreserved": true,
+        "regenerationAndRecovery": true,
+        "copyWriterExact": true,
+        "copyFailureHandled": true,
+        "additionalInitiallyFolded": true,
+        "browser": false,
+        "osClipboard": false
+      }
+    },
+    {
+      "id": "xlsx",
+      "title": "기존 XLSX 분석",
+      "request": {
+        "text": "기존 XLSX 설문 결과를 분석하고 학년별 차이를 설명해줘",
+        "overrides": {}
+      },
+      "requirements": {
+        "goal": "기존 XLSX 설문 결과를 분석하고 학년별 차이를 설명해줘",
+        "works": [
+          {
+            "id": "analysis",
+            "category": "analysis",
+            "label": "자료 분석",
+            "required": [
+              "fileUpload",
+              "spreadsheetAnalysis",
+              "codeExecution"
+            ],
+            "preferred": []
+          }
+        ],
+        "required": [
+          "fileUpload",
+          "spreadsheetAnalysis",
+          "codeExecution"
+        ],
+        "preferred": [],
+        "budget": {
+          "freeOnly": null,
+          "maxMonthly": null,
+          "currency": null,
+          "country": null
+        },
+        "inputFormats": [
+          "xlsx"
+        ],
+        "outputFormat": null,
+        "volume": null,
+        "bounds": {
+          "fileSizeMB": null,
+          "fileCount": null,
+          "rowCount": null,
+          "itemCount": null
+        },
+        "composite": false,
+        "questions": [
+          {
+            "id": "budget",
+            "label": "무료만 필요한가요? 월 예산이 있다면 함께 입력하세요."
+          },
+          {
+            "id": "volume",
+            "label": "파일 크기·개수·PDF 페이지 수 등 필요한 처리 범위는 얼마인가요?"
+          }
+        ],
+        "notes": [
+          "입력하지 않은 예산·국가·분량은 미정입니다. 기능은 수정할 수 있으며 성능 품질 평가와 구분합니다."
+        ]
+      },
+      "recommended": [
+        {
+          "providerId": "anthropic",
+          "company": "Anthropic",
+          "service": "Claude",
+          "plan": "Free",
+          "status": "eligible",
+          "score": null,
+          "rank": null,
+          "reason": "이 서비스·플랜에서 요청한 필수 기능과 예산 조건을 확인했습니다. 작업 품질 우열은 미평가입니다.",
+          "gaps": [],
+          "features": [
+            {
+              "id": "fileUpload",
+              "status": "supported",
+              "sourceIds": [
+                "claude-pricing",
+                "claude-files",
+                "claude-execution"
+              ]
+            },
+            {
+              "id": "spreadsheetAnalysis",
+              "status": "supported",
+              "sourceIds": [
+                "claude-files",
+                "claude-execution"
+              ]
+            },
+            {
+              "id": "codeExecution",
+              "status": "supported",
+              "sourceIds": [
+                "claude-pricing",
+                "claude-execution"
+              ]
+            }
+          ]
+        },
+        {
+          "providerId": "openai",
+          "company": "OpenAI",
+          "service": "ChatGPT",
+          "plan": "Plus",
+          "status": "eligible",
+          "score": null,
+          "rank": null,
+          "reason": "이 서비스·플랜에서 요청한 필수 기능과 예산 조건을 확인했습니다. 작업 품질 우열은 미평가입니다.",
+          "gaps": [],
+          "features": [
+            {
+              "id": "fileUpload",
+              "status": "supported",
+              "sourceIds": [
+                "chatgpt-pricing",
+                "chatgpt-data"
+              ]
+            },
+            {
+              "id": "spreadsheetAnalysis",
+              "status": "supported",
+              "sourceIds": [
+                "chatgpt-pricing",
+                "chatgpt-data"
+              ]
+            },
+            {
+              "id": "codeExecution",
+              "status": "supported",
+              "sourceIds": [
+                "chatgpt-pricing",
+                "chatgpt-data"
+              ]
+            }
+          ]
+        }
+      ],
+      "remaining": [],
+      "conditional": [
+        {
+          "providerId": "adobe",
+          "company": "Adobe",
+          "service": "Adobe Firefly",
+          "plan": "Free",
+          "status": "conditional",
+          "score": null,
+          "rank": null,
+          "reason": "필수 기능·플랜 또는 예산의 미확인 조건을 먼저 확인하세요.",
+          "gaps": [
+            "파일 업로드: 미확인 · 이 서비스·플랜 기능의 공식 근거 미확보",
+            "기존 XLSX·시트 분석: 미확인 · 이 서비스·플랜 기능의 공식 근거 미확보",
+            "코드 실행: 미확인 · 이 서비스·플랜 기능의 공식 근거 미확보"
+          ],
+          "features": [
+            {
+              "id": "fileUpload",
+              "status": "unknown",
+              "sourceIds": []
+            },
+            {
+              "id": "spreadsheetAnalysis",
+              "status": "unknown",
+              "sourceIds": []
+            },
+            {
+              "id": "codeExecution",
+              "status": "unknown",
+              "sourceIds": []
+            }
+          ]
+        },
+        {
+          "providerId": "alibaba",
+          "company": "Alibaba",
+          "service": "Qwen",
+          "plan": "웹 플랜 확인 필요",
+          "status": "conditional",
+          "score": null,
+          "rank": null,
+          "reason": "필수 기능·플랜 또는 예산의 미확인 조건을 먼저 확인하세요.",
+          "gaps": [
+            "파일 업로드: 미확인 · 이 서비스·플랜 기능의 공식 근거 미확보",
+            "기존 XLSX·시트 분석: 미확인 · 이 서비스·플랜 기능의 공식 근거 미확보",
+            "코드 실행: 미확인 · 이 서비스·플랜 기능의 공식 근거 미확보"
+          ],
+          "features": [
+            {
+              "id": "fileUpload",
+              "status": "unknown",
+              "sourceIds": []
+            },
+            {
+              "id": "spreadsheetAnalysis",
+              "status": "unknown",
+              "sourceIds": []
+            },
+            {
+              "id": "codeExecution",
+              "status": "unknown",
+              "sourceIds": []
+            }
+          ]
+        },
+        {
+          "providerId": "deepseek",
+          "company": "DeepSeek",
+          "service": "DeepSeek",
+          "plan": "웹 플랜 확인 필요",
+          "status": "conditional",
+          "score": null,
+          "rank": null,
+          "reason": "필수 기능·플랜 또는 예산의 미확인 조건을 먼저 확인하세요.",
+          "gaps": [
+            "파일 업로드: 미확인 · 이 서비스·플랜 기능의 공식 근거 미확보",
+            "기존 XLSX·시트 분석: 미확인 · 이 서비스·플랜 기능의 공식 근거 미확보",
+            "코드 실행: 미확인 · 이 서비스·플랜 기능의 공식 근거 미확보"
+          ],
+          "features": [
+            {
+              "id": "fileUpload",
+              "status": "unknown",
+              "sourceIds": []
+            },
+            {
+              "id": "spreadsheetAnalysis",
+              "status": "unknown",
+              "sourceIds": []
+            },
+            {
+              "id": "codeExecution",
+              "status": "unknown",
+              "sourceIds": []
+            }
+          ]
+        },
+        {
+          "providerId": "google",
+          "company": "Google",
+          "service": "Gemini",
+          "plan": "Free",
+          "status": "conditional",
+          "score": null,
+          "rank": null,
+          "reason": "필수 기능·플랜 또는 예산의 미확인 조건을 먼저 확인하세요.",
+          "gaps": [
+            "파일 업로드: 제한 확인 필요 · 개인 웹 파일 업로드. 무료 사용량·컨텍스트 조건 확인. · 요청 형식의 구체적 지원 근거를 확인해야 합니다.",
+            "기존 XLSX·시트 분석: 제한 확인 필요 · 시트 분석·차트 지원. 정확한 XLSX 입력 범위·수식 처리는 추가 확인 필요. · 요청 형식의 구체적 지원 근거를 확인해야 합니다.",
+            "코드 실행: 미확인 · 이 서비스·플랜 기능의 공식 근거 미확보"
+          ],
+          "features": [
+            {
+              "id": "fileUpload",
+              "status": "limited",
+              "sourceIds": [
+                "gemini-files",
+                "gemini-limits"
+              ]
+            },
+            {
+              "id": "spreadsheetAnalysis",
+              "status": "limited",
+              "sourceIds": [
+                "gemini-files"
+              ]
+            },
+            {
+              "id": "codeExecution",
+              "status": "unknown",
+              "sourceIds": []
+            }
+          ]
+        },
+        {
+          "providerId": "microsoft",
+          "company": "Microsoft",
+          "service": "Microsoft Copilot",
+          "plan": "웹 플랜 확인 필요",
+          "status": "conditional",
+          "score": null,
+          "rank": null,
+          "reason": "필수 기능·플랜 또는 예산의 미확인 조건을 먼저 확인하세요.",
+          "gaps": [
+            "파일 업로드: 미확인 · 이 서비스·플랜 기능의 공식 근거 미확보",
+            "기존 XLSX·시트 분석: 미확인 · 이 서비스·플랜 기능의 공식 근거 미확보",
+            "코드 실행: 미확인 · 이 서비스·플랜 기능의 공식 근거 미확보"
+          ],
+          "features": [
+            {
+              "id": "fileUpload",
+              "status": "unknown",
+              "sourceIds": []
+            },
+            {
+              "id": "spreadsheetAnalysis",
+              "status": "unknown",
+              "sourceIds": []
+            },
+            {
+              "id": "codeExecution",
+              "status": "unknown",
+              "sourceIds": []
+            }
+          ]
+        },
+        {
+          "providerId": "mistral",
+          "company": "Mistral AI",
+          "service": "Mistral 서비스",
+          "plan": "웹 플랜 확인 필요",
+          "status": "conditional",
+          "score": null,
+          "rank": null,
+          "reason": "필수 기능·플랜 또는 예산의 미확인 조건을 먼저 확인하세요.",
+          "gaps": [
+            "파일 업로드: 미확인 · 이 서비스·플랜 기능의 공식 근거 미확보",
+            "기존 XLSX·시트 분석: 미확인 · 이 서비스·플랜 기능의 공식 근거 미확보",
+            "코드 실행: 미확인 · 이 서비스·플랜 기능의 공식 근거 미확보"
+          ],
+          "features": [
+            {
+              "id": "fileUpload",
+              "status": "unknown",
+              "sourceIds": []
+            },
+            {
+              "id": "spreadsheetAnalysis",
+              "status": "unknown",
+              "sourceIds": []
+            },
+            {
+              "id": "codeExecution",
+              "status": "unknown",
+              "sourceIds": []
+            }
+          ]
+        },
+        {
+          "providerId": "moonshot",
+          "company": "Moonshot AI",
+          "service": "Kimi",
+          "plan": "웹 플랜 확인 필요",
+          "status": "conditional",
+          "score": null,
+          "rank": null,
+          "reason": "필수 기능·플랜 또는 예산의 미확인 조건을 먼저 확인하세요.",
+          "gaps": [
+            "파일 업로드: 미확인 · 이 서비스·플랜 기능의 공식 근거 미확보",
+            "기존 XLSX·시트 분석: 미확인 · 이 서비스·플랜 기능의 공식 근거 미확보",
+            "코드 실행: 미확인 · 이 서비스·플랜 기능의 공식 근거 미확보"
+          ],
+          "features": [
+            {
+              "id": "fileUpload",
+              "status": "unknown",
+              "sourceIds": []
+            },
+            {
+              "id": "spreadsheetAnalysis",
+              "status": "unknown",
+              "sourceIds": []
+            },
+            {
+              "id": "codeExecution",
+              "status": "unknown",
+              "sourceIds": []
+            }
+          ]
+        },
+        {
+          "providerId": "perplexity",
+          "company": "Perplexity",
+          "service": "Perplexity",
+          "plan": "웹 플랜 확인 필요",
+          "status": "conditional",
+          "score": null,
+          "rank": null,
+          "reason": "필수 기능·플랜 또는 예산의 미확인 조건을 먼저 확인하세요.",
+          "gaps": [
+            "파일 업로드: 미확인 · 이 서비스·플랜 기능의 공식 근거 미확보",
+            "기존 XLSX·시트 분석: 미확인 · 이 서비스·플랜 기능의 공식 근거 미확보",
+            "코드 실행: 미확인 · 이 서비스·플랜 기능의 공식 근거 미확보"
+          ],
+          "features": [
+            {
+              "id": "fileUpload",
+              "status": "unknown",
+              "sourceIds": []
+            },
+            {
+              "id": "spreadsheetAnalysis",
+              "status": "unknown",
+              "sourceIds": []
+            },
+            {
+              "id": "codeExecution",
+              "status": "unknown",
+              "sourceIds": []
+            }
+          ]
+        },
+        {
+          "providerId": "runway",
+          "company": "Runway",
+          "service": "Runway",
+          "plan": "Free",
+          "status": "conditional",
+          "score": null,
+          "rank": null,
+          "reason": "필수 기능·플랜 또는 예산의 미확인 조건을 먼저 확인하세요.",
+          "gaps": [
+            "파일 업로드: 미확인 · 이 서비스·플랜 기능의 공식 근거 미확보",
+            "기존 XLSX·시트 분석: 미확인 · 이 서비스·플랜 기능의 공식 근거 미확보",
+            "코드 실행: 미확인 · 이 서비스·플랜 기능의 공식 근거 미확보"
+          ],
+          "features": [
+            {
+              "id": "fileUpload",
+              "status": "unknown",
+              "sourceIds": []
+            },
+            {
+              "id": "spreadsheetAnalysis",
+              "status": "unknown",
+              "sourceIds": []
+            },
+            {
+              "id": "codeExecution",
+              "status": "unknown",
+              "sourceIds": []
+            }
+          ]
+        },
+        {
+          "providerId": "xai",
+          "company": "xAI",
+          "service": "Grok",
+          "plan": "웹 플랜 확인 필요",
+          "status": "conditional",
+          "score": null,
+          "rank": null,
+          "reason": "필수 기능·플랜 또는 예산의 미확인 조건을 먼저 확인하세요.",
+          "gaps": [
+            "파일 업로드: 미확인 · 이 서비스·플랜 기능의 공식 근거 미확보",
+            "기존 XLSX·시트 분석: 미확인 · 이 서비스·플랜 기능의 공식 근거 미확보",
+            "코드 실행: 미확인 · 이 서비스·플랜 기능의 공식 근거 미확보"
+          ],
+          "features": [
+            {
+              "id": "fileUpload",
+              "status": "unknown",
+              "sourceIds": []
+            },
+            {
+              "id": "spreadsheetAnalysis",
+              "status": "unknown",
+              "sourceIds": []
+            },
+            {
+              "id": "codeExecution",
+              "status": "unknown",
+              "sourceIds": []
+            }
+          ]
+        }
+      ],
+      "excluded": [],
+      "selected": [
+        {
+          "workId": "analysis",
+          "provider": "Anthropic",
+          "service": "Claude",
+          "plan": "Free",
+          "status": "eligible"
+        }
+      ],
+      "selection": {
+        "default": null,
+        "byStage": {
+          "statistics": "claude-free",
+          "interpretation": "claude-free"
+        }
+      },
+      "stages": [
+        {
+          "id": "statistics",
+          "workId": "analysis",
+          "title": "통계 분석",
+          "text": "작업 원문 (그대로 보존)\n기존 XLSX 설문 결과를 분석하고 학년별 차이를 설명해줘\n\n원문의 조사 배경·추가 조건도 반영하되, 아래 정리·수정한 조건을 우선 적용하세요. 분석·해석 단계에는 최종 보고서 분량을 강제하지 마세요.\n작업: 설문 통계 분석\n자료: 기존 XLSX 설문 결과\n조사 대상·표본 수: [확인한 대상과 표본 수를 입력하세요]\n자료 형식: XLSX\n연구 질문\n1. 기존 XLSX 설문 결과를 분석하고 학년별 차이를 설명해줘\n\n단계 목표: 설문 자료에 맞는 통계 분석을 수행하고 결과표를 작성합니다.\n\n[문항·변수 정의·집단 구분과 설문 자료를 제공하세요. 첨부가 가능한 경우 CSV·엑셀 파일을 제공하거나 표·요약 통계를 여기에 붙여넣으세요]\n먼저 변수 유형·표본 수·결측을 확인하고, 질문에 맞는 통계 분석을 수행해 주세요. 빈도·비율, 평균·표준편차 등 적절한 기술 통계를 계산해 결과표로 작성하고, 집단 차이·상관 분석은 자료와 가정이 충족될 때 수행해 주세요. 집단 비교는 척도·집단 수·독립성·분포를 확인해 검정과 사후 비교를 선택하고 이유를 쉽게 설명해 주세요. 변수 간 관계는 산점도·이상치·선형성을 살펴 적절한 상관 분석을 선택해 주세요. 계산 가능한 검정통계량·유의확률·효과크기·신뢰구간과 분석별 표본 수·단위를 결과표에 적고, 계산 근거와 가정 위반의 한계를 밝혀 주세요. 자료가 없으면 먼저 요청하고 수치나 유의확률을 만들지 마세요. 요약 통계만으로 계산할 수 없는 항목은 필요한 원자료를 알려 주세요.\n파일을 읽거나 계산을 실행할 수 없으면 그 한계를 밝히고, 텍스트·요약 통계 입력 또는 재현 가능한 분석 코드로 진행할 방법을 제안해 주세요.\n\n이 단계의 결과 형식: 기술 통계·가능한 집단 비교 결과표와 분석 방법·한계"
+        },
+        {
+          "id": "interpretation",
+          "workId": "analysis",
+          "title": "결과 해석",
+          "text": "작업 원문 (그대로 보존)\n기존 XLSX 설문 결과를 분석하고 학년별 차이를 설명해줘\n\n원문의 조사 배경·추가 조건도 반영하되, 아래 정리·수정한 조건을 우선 적용하세요. 분석·해석 단계에는 최종 보고서 분량을 강제하지 마세요.\n작업: 설문 통계 분석\n자료: 기존 XLSX 설문 결과\n조사 대상·표본 수: [확인한 대상과 표본 수를 입력하세요]\n자료 형식: XLSX\n연구 질문\n1. 기존 XLSX 설문 결과를 분석하고 학년별 차이를 설명해줘\n\n단계 목표: 검토한 통계가 말해 주는 범위 안에서 의미와 한계를 정리합니다.\n\n[앞 단계에서 확인한 통계표·변수 정의·계산 방법·남은 한계를 붙여넣으세요]\n관찰된 결과와 가능한 해석을 구분해 주세요. 제공되지 않은 집단 차이·유의성·인과 관계를 단정하지 마세요. 해석의 근거 수치를 짚고 추가로 필요한 자료를 알려 주세요.\n\n이 단계의 결과 형식: 관찰 사실·가능한 해석·추론할 수 없는 내용·한계 목록"
+        }
+      ],
+      "checks": {
+        "reactSSR": true,
+        "originalPreserved": true,
+        "draftPreserved": true,
+        "regenerationAndRecovery": true,
+        "copyWriterExact": true,
+        "copyFailureHandled": true,
+        "additionalInitiallyFolded": true,
+        "browser": false,
+        "osClipboard": false
+      }
+    },
+    {
+      "id": "pdf",
+      "title": "PDF 논문 분석",
+      "request": {
+        "text": "PDF 논문을 업로드해서 핵심 주장과 한계를 분석해줘",
+        "overrides": {}
+      },
+      "requirements": {
+        "goal": "PDF 논문을 업로드해서 핵심 주장과 한계를 분석해줘",
+        "works": [
+          {
+            "id": "analysis",
+            "category": "analysis",
+            "label": "자료 분석",
+            "required": [
+              "fileUpload",
+              "pdfUpload",
+              "pdfAnalysis"
+            ],
+            "preferred": []
+          }
+        ],
+        "required": [
+          "fileUpload",
+          "pdfUpload",
+          "pdfAnalysis"
+        ],
+        "preferred": [],
+        "budget": {
+          "freeOnly": null,
+          "maxMonthly": null,
+          "currency": null,
+          "country": null
+        },
+        "inputFormats": [
+          "pdf"
+        ],
+        "outputFormat": null,
+        "volume": null,
+        "bounds": {
+          "fileSizeMB": null,
+          "fileCount": null,
+          "rowCount": null,
+          "itemCount": null
+        },
+        "composite": false,
+        "questions": [
+          {
+            "id": "budget",
+            "label": "무료만 필요한가요? 월 예산이 있다면 함께 입력하세요."
+          },
+          {
+            "id": "volume",
+            "label": "파일 크기·개수·PDF 페이지 수 등 필요한 처리 범위는 얼마인가요?"
+          }
+        ],
+        "notes": [
+          "입력하지 않은 예산·국가·분량은 미정입니다. 기능은 수정할 수 있으며 성능 품질 평가와 구분합니다."
+        ]
+      },
+      "recommended": [],
+      "remaining": [],
+      "conditional": [
+        {
+          "providerId": "adobe",
+          "company": "Adobe",
+          "service": "Adobe Firefly",
+          "plan": "Free",
+          "status": "conditional",
+          "score": null,
+          "rank": null,
+          "reason": "필수 기능·플랜 또는 예산의 미확인 조건을 먼저 확인하세요.",
+          "gaps": [
+            "파일 업로드: 미확인 · 이 서비스·플랜 기능의 공식 근거 미확보",
+            "PDF 업로드: 미확인 · 이 서비스·플랜 기능의 공식 근거 미확보",
+            "PDF 내용 분석: 미확인 · 이 서비스·플랜 기능의 공식 근거 미확보"
+          ],
+          "features": [
+            {
+              "id": "fileUpload",
+              "status": "unknown",
+              "sourceIds": []
+            },
+            {
+              "id": "pdfUpload",
+              "status": "unknown",
+              "sourceIds": []
+            },
+            {
+              "id": "pdfAnalysis",
+              "status": "unknown",
+              "sourceIds": []
+            }
+          ]
+        },
+        {
+          "providerId": "alibaba",
+          "company": "Alibaba",
+          "service": "Qwen",
+          "plan": "웹 플랜 확인 필요",
+          "status": "conditional",
+          "score": null,
+          "rank": null,
+          "reason": "필수 기능·플랜 또는 예산의 미확인 조건을 먼저 확인하세요.",
+          "gaps": [
+            "파일 업로드: 미확인 · 이 서비스·플랜 기능의 공식 근거 미확보",
+            "PDF 업로드: 미확인 · 이 서비스·플랜 기능의 공식 근거 미확보",
+            "PDF 내용 분석: 미확인 · 이 서비스·플랜 기능의 공식 근거 미확보"
+          ],
+          "features": [
+            {
+              "id": "fileUpload",
+              "status": "unknown",
+              "sourceIds": []
+            },
+            {
+              "id": "pdfUpload",
+              "status": "unknown",
+              "sourceIds": []
+            },
+            {
+              "id": "pdfAnalysis",
+              "status": "unknown",
+              "sourceIds": []
+            }
+          ]
+        },
+        {
+          "providerId": "anthropic",
+          "company": "Anthropic",
+          "service": "Claude",
+          "plan": "Free",
+          "status": "conditional",
+          "score": null,
+          "rank": null,
+          "reason": "필수 기능·플랜 또는 예산의 미확인 조건을 먼저 확인하세요.",
+          "gaps": [
+            "PDF 내용 분석: 제한 확인 필요 · PDF 내용 처리는 페이지·스캔/시각 분석 범위를 확인해야 합니다."
+          ],
+          "features": [
+            {
+              "id": "fileUpload",
+              "status": "supported",
+              "sourceIds": [
+                "claude-pricing",
+                "claude-files",
+                "claude-execution"
+              ]
+            },
+            {
+              "id": "pdfUpload",
+              "status": "supported",
+              "sourceIds": [
+                "claude-pricing",
+                "claude-files"
+              ]
+            },
+            {
+              "id": "pdfAnalysis",
+              "status": "limited",
+              "sourceIds": [
+                "claude-files"
+              ]
+            }
+          ]
+        },
+        {
+          "providerId": "deepseek",
+          "company": "DeepSeek",
+          "service": "DeepSeek",
+          "plan": "웹 플랜 확인 필요",
+          "status": "conditional",
+          "score": null,
+          "rank": null,
+          "reason": "필수 기능·플랜 또는 예산의 미확인 조건을 먼저 확인하세요.",
+          "gaps": [
+            "파일 업로드: 미확인 · 이 서비스·플랜 기능의 공식 근거 미확보",
+            "PDF 업로드: 미확인 · 이 서비스·플랜 기능의 공식 근거 미확보",
+            "PDF 내용 분석: 미확인 · 이 서비스·플랜 기능의 공식 근거 미확보"
+          ],
+          "features": [
+            {
+              "id": "fileUpload",
+              "status": "unknown",
+              "sourceIds": []
+            },
+            {
+              "id": "pdfUpload",
+              "status": "unknown",
+              "sourceIds": []
+            },
+            {
+              "id": "pdfAnalysis",
+              "status": "unknown",
+              "sourceIds": []
+            }
+          ]
+        },
+        {
+          "providerId": "google",
+          "company": "Google",
+          "service": "Gemini",
+          "plan": "Google AI Pro",
+          "status": "conditional",
+          "score": null,
+          "rank": null,
+          "reason": "필수 기능·플랜 또는 예산의 미확인 조건을 먼저 확인하세요.",
+          "gaps": [
+            "파일 업로드: 제한 확인 필요 · 개인 웹 파일 업로드. 무료 사용량·컨텍스트 조건 확인. · 요청 형식의 구체적 지원 근거를 확인해야 합니다.",
+            "PDF 내용 분석: 제한 확인 필요 · PDF 내용 분석은 가능하나 스캔·표·페이지·컨텍스트 제한의 요청 충족 여부 확인 필요."
+          ],
+          "features": [
+            {
+              "id": "fileUpload",
+              "status": "limited",
+              "sourceIds": [
+                "gemini-files",
+                "gemini-limits"
+              ]
+            },
+            {
+              "id": "pdfUpload",
+              "status": "supported",
+              "sourceIds": [
+                "gemini-files",
+                "gemini-limits"
+              ]
+            },
+            {
+              "id": "pdfAnalysis",
+              "status": "limited",
+              "sourceIds": [
+                "gemini-files",
+                "gemini-limits"
+              ]
+            }
+          ]
+        },
+        {
+          "providerId": "microsoft",
+          "company": "Microsoft",
+          "service": "Microsoft Copilot",
+          "plan": "웹 플랜 확인 필요",
+          "status": "conditional",
+          "score": null,
+          "rank": null,
+          "reason": "필수 기능·플랜 또는 예산의 미확인 조건을 먼저 확인하세요.",
+          "gaps": [
+            "파일 업로드: 미확인 · 이 서비스·플랜 기능의 공식 근거 미확보",
+            "PDF 업로드: 미확인 · 이 서비스·플랜 기능의 공식 근거 미확보",
+            "PDF 내용 분석: 미확인 · 이 서비스·플랜 기능의 공식 근거 미확보"
+          ],
+          "features": [
+            {
+              "id": "fileUpload",
+              "status": "unknown",
+              "sourceIds": []
+            },
+            {
+              "id": "pdfUpload",
+              "status": "unknown",
+              "sourceIds": []
+            },
+            {
+              "id": "pdfAnalysis",
+              "status": "unknown",
+              "sourceIds": []
+            }
+          ]
+        },
+        {
+          "providerId": "mistral",
+          "company": "Mistral AI",
+          "service": "Mistral 서비스",
+          "plan": "웹 플랜 확인 필요",
+          "status": "conditional",
+          "score": null,
+          "rank": null,
+          "reason": "필수 기능·플랜 또는 예산의 미확인 조건을 먼저 확인하세요.",
+          "gaps": [
+            "파일 업로드: 미확인 · 이 서비스·플랜 기능의 공식 근거 미확보",
+            "PDF 업로드: 미확인 · 이 서비스·플랜 기능의 공식 근거 미확보",
+            "PDF 내용 분석: 미확인 · 이 서비스·플랜 기능의 공식 근거 미확보"
+          ],
+          "features": [
+            {
+              "id": "fileUpload",
+              "status": "unknown",
+              "sourceIds": []
+            },
+            {
+              "id": "pdfUpload",
+              "status": "unknown",
+              "sourceIds": []
+            },
+            {
+              "id": "pdfAnalysis",
+              "status": "unknown",
+              "sourceIds": []
+            }
+          ]
+        },
+        {
+          "providerId": "moonshot",
+          "company": "Moonshot AI",
+          "service": "Kimi",
+          "plan": "웹 플랜 확인 필요",
+          "status": "conditional",
+          "score": null,
+          "rank": null,
+          "reason": "필수 기능·플랜 또는 예산의 미확인 조건을 먼저 확인하세요.",
+          "gaps": [
+            "파일 업로드: 미확인 · 이 서비스·플랜 기능의 공식 근거 미확보",
+            "PDF 업로드: 미확인 · 이 서비스·플랜 기능의 공식 근거 미확보",
+            "PDF 내용 분석: 미확인 · 이 서비스·플랜 기능의 공식 근거 미확보"
+          ],
+          "features": [
+            {
+              "id": "fileUpload",
+              "status": "unknown",
+              "sourceIds": []
+            },
+            {
+              "id": "pdfUpload",
+              "status": "unknown",
+              "sourceIds": []
+            },
+            {
+              "id": "pdfAnalysis",
+              "status": "unknown",
+              "sourceIds": []
+            }
+          ]
+        },
+        {
+          "providerId": "openai",
+          "company": "OpenAI",
+          "service": "ChatGPT",
+          "plan": "Plus",
+          "status": "conditional",
+          "score": null,
+          "rank": null,
+          "reason": "필수 기능·플랜 또는 예산의 미확인 조건을 먼저 확인하세요.",
+          "gaps": [
+            "PDF 업로드: 미확인 · 서비스 전체 PDF 지원은 확인했으나 현재 플랜의 상세 PDF 범위는 별도 확인.",
+            "PDF 내용 분석: 미확인 · PDF 업로드와 페이지·도표·스캔 내용 분석 범위를 구분해 확인."
+          ],
+          "features": [
+            {
+              "id": "fileUpload",
+              "status": "supported",
+              "sourceIds": [
+                "chatgpt-pricing",
+                "chatgpt-data"
+              ]
+            },
+            {
+              "id": "pdfUpload",
+              "status": "unknown",
+              "sourceIds": [
+                "chatgpt-data"
+              ]
+            },
+            {
+              "id": "pdfAnalysis",
+              "status": "unknown",
+              "sourceIds": [
+                "chatgpt-data"
+              ]
+            }
+          ]
+        },
+        {
+          "providerId": "perplexity",
+          "company": "Perplexity",
+          "service": "Perplexity",
+          "plan": "웹 플랜 확인 필요",
+          "status": "conditional",
+          "score": null,
+          "rank": null,
+          "reason": "필수 기능·플랜 또는 예산의 미확인 조건을 먼저 확인하세요.",
+          "gaps": [
+            "파일 업로드: 미확인 · 이 서비스·플랜 기능의 공식 근거 미확보",
+            "PDF 업로드: 미확인 · 이 서비스·플랜 기능의 공식 근거 미확보",
+            "PDF 내용 분석: 미확인 · 이 서비스·플랜 기능의 공식 근거 미확보"
+          ],
+          "features": [
+            {
+              "id": "fileUpload",
+              "status": "unknown",
+              "sourceIds": []
+            },
+            {
+              "id": "pdfUpload",
+              "status": "unknown",
+              "sourceIds": []
+            },
+            {
+              "id": "pdfAnalysis",
+              "status": "unknown",
+              "sourceIds": []
+            }
+          ]
+        },
+        {
+          "providerId": "runway",
+          "company": "Runway",
+          "service": "Runway",
+          "plan": "Free",
+          "status": "conditional",
+          "score": null,
+          "rank": null,
+          "reason": "필수 기능·플랜 또는 예산의 미확인 조건을 먼저 확인하세요.",
+          "gaps": [
+            "파일 업로드: 미확인 · 이 서비스·플랜 기능의 공식 근거 미확보",
+            "PDF 업로드: 미확인 · 이 서비스·플랜 기능의 공식 근거 미확보",
+            "PDF 내용 분석: 미확인 · 이 서비스·플랜 기능의 공식 근거 미확보"
+          ],
+          "features": [
+            {
+              "id": "fileUpload",
+              "status": "unknown",
+              "sourceIds": []
+            },
+            {
+              "id": "pdfUpload",
+              "status": "unknown",
+              "sourceIds": []
+            },
+            {
+              "id": "pdfAnalysis",
+              "status": "unknown",
+              "sourceIds": []
+            }
+          ]
+        },
+        {
+          "providerId": "xai",
+          "company": "xAI",
+          "service": "Grok",
+          "plan": "웹 플랜 확인 필요",
+          "status": "conditional",
+          "score": null,
+          "rank": null,
+          "reason": "필수 기능·플랜 또는 예산의 미확인 조건을 먼저 확인하세요.",
+          "gaps": [
+            "파일 업로드: 미확인 · 이 서비스·플랜 기능의 공식 근거 미확보",
+            "PDF 업로드: 미확인 · 이 서비스·플랜 기능의 공식 근거 미확보",
+            "PDF 내용 분석: 미확인 · 이 서비스·플랜 기능의 공식 근거 미확보"
+          ],
+          "features": [
+            {
+              "id": "fileUpload",
+              "status": "unknown",
+              "sourceIds": []
+            },
+            {
+              "id": "pdfUpload",
+              "status": "unknown",
+              "sourceIds": []
+            },
+            {
+              "id": "pdfAnalysis",
+              "status": "unknown",
+              "sourceIds": []
+            }
+          ]
+        }
+      ],
+      "excluded": [],
+      "selected": [
+        {
+          "workId": "analysis",
+          "provider": "Anthropic",
+          "service": "Claude",
+          "plan": "Free",
+          "status": "conditional"
+        }
+      ],
+      "selection": {
+        "default": null,
+        "byStage": {
+          "analyze": "claude-free",
+          "verify": "claude-free"
+        }
+      },
+      "stages": [
+        {
+          "id": "analyze",
+          "workId": "analysis",
+          "title": "자료 분석",
+          "text": "작업 원문\nPDF 논문을 업로드해서 핵심 주장과 한계를 분석해줘\n\n단계 목표: 자료를 읽고 요청한 질문에 답하며 수치·출처·분석 한계를 정리하세요.\n\nPDF 논문을 업로드해서 핵심 주장과 한계를 분석해줘\n\n입력 자료\n[분석할 자료 또는 직접 확인한 요약을 붙여넣으세요]\n자료가 없으면 내용을 추측하지 말고 필요한 자료를 물어봐 주세요.\n\n지킬 조건\n제공한 자료에 없는 사실·수치·인용을 만들지 마세요. 확인할 수 없는 내용은 구분해 주세요.\n\n답변 전 확인\n요청한 목적·형식·분량을 지켰는지 확인하고, 정보가 부족한 부분은 임의로 채우지 마세요.\n\n제공된 자료만 사용하고 실제로 실행하거나 파일을 만들지 않았다면 수행했다고 말하지 마세요."
+        },
+        {
+          "id": "verify",
+          "workId": "analysis",
+          "title": "결과 검토",
+          "text": "작업 원문\nPDF 논문을 업로드해서 핵심 주장과 한계를 분석해줘\n\n단계 목표: 원자료와 분석 결과를 대조해 오류·추론 한계·추가 확인 사항을 정리하세요.\n\nPDF 논문을 업로드해서 핵심 주장과 한계를 분석해줘\n\n입력 자료\n[분석할 자료 또는 직접 확인한 요약을 붙여넣으세요]\n자료가 없으면 내용을 추측하지 말고 필요한 자료를 물어봐 주세요.\n\n지킬 조건\n제공한 자료에 없는 사실·수치·인용을 만들지 마세요. 확인할 수 없는 내용은 구분해 주세요.\n\n답변 전 확인\n요청한 목적·형식·분량을 지켰는지 확인하고, 정보가 부족한 부분은 임의로 채우지 마세요.\n\n제공된 자료만 사용하고 실제로 실행하거나 파일을 만들지 않았다면 수행했다고 말하지 마세요."
+        }
+      ],
+      "checks": {
+        "reactSSR": true,
+        "originalPreserved": true,
+        "draftPreserved": true,
+        "regenerationAndRecovery": true,
+        "copyWriterExact": true,
+        "copyFailureHandled": true,
+        "additionalInitiallyFolded": true,
+        "browser": false,
+        "osClipboard": false
+      }
+    },
+    {
+      "id": "script",
+      "title": "발표 대본",
+      "request": {
+        "text": "대학생 대상 5분 발표 대본을 작성해줘",
+        "overrides": {}
+      },
+      "requirements": {
+        "goal": "대학생 대상 5분 발표 대본을 작성해줘",
+        "works": [
+          {
+            "id": "writing",
+            "category": "writing",
+            "label": "글·발표 대본",
+            "required": [
+              "textGeneration"
+            ],
+            "preferred": []
+          }
+        ],
+        "required": [
+          "textGeneration"
+        ],
+        "preferred": [],
+        "budget": {
+          "freeOnly": null,
+          "maxMonthly": null,
+          "currency": null,
+          "country": null
+        },
+        "inputFormats": [],
+        "outputFormat": "발표 대본",
+        "volume": "5분",
+        "bounds": {
+          "fileSizeMB": null,
+          "fileCount": null,
+          "rowCount": null,
+          "itemCount": null
+        },
+        "composite": false,
+        "questions": [
+          {
+            "id": "budget",
+            "label": "무료만 필요한가요? 월 예산이 있다면 함께 입력하세요."
+          }
+        ],
+        "notes": [
+          "입력하지 않은 예산·국가·분량은 미정입니다. 기능은 수정할 수 있으며 성능 품질 평가와 구분합니다."
+        ]
+      },
+      "recommended": [
+        {
+          "providerId": "anthropic",
+          "company": "Anthropic",
+          "service": "Claude",
+          "plan": "Free",
+          "status": "eligible",
+          "score": null,
+          "rank": null,
+          "reason": "이 서비스·플랜에서 요청한 필수 기능과 예산 조건을 확인했습니다. 작업 품질 우열은 미평가입니다.",
+          "gaps": [],
+          "features": [
+            {
+              "id": "textGeneration",
+              "status": "supported",
+              "sourceIds": [
+                "claude-pricing"
+              ]
+            }
+          ]
+        },
+        {
+          "providerId": "google",
+          "company": "Google",
+          "service": "Gemini",
+          "plan": "Free",
+          "status": "eligible",
+          "score": null,
+          "rank": null,
+          "reason": "이 서비스·플랜에서 요청한 필수 기능과 예산 조건을 확인했습니다. 작업 품질 우열은 미평가입니다.",
+          "gaps": [],
+          "features": [
+            {
+              "id": "textGeneration",
+              "status": "supported",
+              "sourceIds": [
+                "gemini-pricing",
+                "gemini-subscriptions"
+              ]
+            }
+          ]
+        },
+        {
+          "providerId": "openai",
+          "company": "OpenAI",
+          "service": "ChatGPT",
+          "plan": "Free",
+          "status": "eligible",
+          "score": null,
+          "rank": null,
+          "reason": "이 서비스·플랜에서 요청한 필수 기능과 예산 조건을 확인했습니다. 작업 품질 우열은 미평가입니다.",
+          "gaps": [],
+          "features": [
+            {
+              "id": "textGeneration",
+              "status": "supported",
+              "sourceIds": [
+                "chatgpt-pricing",
+                "chatgpt-overview"
+              ]
+            }
+          ]
+        }
+      ],
+      "remaining": [],
+      "conditional": [
+        {
+          "providerId": "adobe",
+          "company": "Adobe",
+          "service": "Adobe Firefly",
+          "plan": "Free",
+          "status": "conditional",
+          "score": null,
+          "rank": null,
+          "reason": "필수 기능·플랜 또는 예산의 미확인 조건을 먼저 확인하세요.",
+          "gaps": [
+            "텍스트 작성: 미확인 · 이 서비스·플랜 기능의 공식 근거 미확보"
+          ],
+          "features": [
+            {
+              "id": "textGeneration",
+              "status": "unknown",
+              "sourceIds": []
+            }
+          ]
+        },
+        {
+          "providerId": "alibaba",
+          "company": "Alibaba",
+          "service": "Qwen",
+          "plan": "웹 플랜 확인 필요",
+          "status": "conditional",
+          "score": null,
+          "rank": null,
+          "reason": "필수 기능·플랜 또는 예산의 미확인 조건을 먼저 확인하세요.",
+          "gaps": [
+            "텍스트 작성: 미확인 · 이 서비스·플랜 기능의 공식 근거 미확보"
+          ],
+          "features": [
+            {
+              "id": "textGeneration",
+              "status": "unknown",
+              "sourceIds": []
+            }
+          ]
+        },
+        {
+          "providerId": "deepseek",
+          "company": "DeepSeek",
+          "service": "DeepSeek",
+          "plan": "웹 플랜 확인 필요",
+          "status": "conditional",
+          "score": null,
+          "rank": null,
+          "reason": "필수 기능·플랜 또는 예산의 미확인 조건을 먼저 확인하세요.",
+          "gaps": [
+            "텍스트 작성: 미확인 · 이 서비스·플랜 기능의 공식 근거 미확보"
+          ],
+          "features": [
+            {
+              "id": "textGeneration",
+              "status": "unknown",
+              "sourceIds": []
+            }
+          ]
+        },
+        {
+          "providerId": "microsoft",
+          "company": "Microsoft",
+          "service": "Microsoft Copilot",
+          "plan": "웹 플랜 확인 필요",
+          "status": "conditional",
+          "score": null,
+          "rank": null,
+          "reason": "필수 기능·플랜 또는 예산의 미확인 조건을 먼저 확인하세요.",
+          "gaps": [
+            "텍스트 작성: 미확인 · 이 서비스·플랜 기능의 공식 근거 미확보"
+          ],
+          "features": [
+            {
+              "id": "textGeneration",
+              "status": "unknown",
+              "sourceIds": []
+            }
+          ]
+        },
+        {
+          "providerId": "mistral",
+          "company": "Mistral AI",
+          "service": "Mistral 서비스",
+          "plan": "웹 플랜 확인 필요",
+          "status": "conditional",
+          "score": null,
+          "rank": null,
+          "reason": "필수 기능·플랜 또는 예산의 미확인 조건을 먼저 확인하세요.",
+          "gaps": [
+            "텍스트 작성: 미확인 · 이 서비스·플랜 기능의 공식 근거 미확보"
+          ],
+          "features": [
+            {
+              "id": "textGeneration",
+              "status": "unknown",
+              "sourceIds": []
+            }
+          ]
+        },
+        {
+          "providerId": "moonshot",
+          "company": "Moonshot AI",
+          "service": "Kimi",
+          "plan": "웹 플랜 확인 필요",
+          "status": "conditional",
+          "score": null,
+          "rank": null,
+          "reason": "필수 기능·플랜 또는 예산의 미확인 조건을 먼저 확인하세요.",
+          "gaps": [
+            "텍스트 작성: 미확인 · 이 서비스·플랜 기능의 공식 근거 미확보"
+          ],
+          "features": [
+            {
+              "id": "textGeneration",
+              "status": "unknown",
+              "sourceIds": []
+            }
+          ]
+        },
+        {
+          "providerId": "perplexity",
+          "company": "Perplexity",
+          "service": "Perplexity",
+          "plan": "웹 플랜 확인 필요",
+          "status": "conditional",
+          "score": null,
+          "rank": null,
+          "reason": "필수 기능·플랜 또는 예산의 미확인 조건을 먼저 확인하세요.",
+          "gaps": [
+            "텍스트 작성: 미확인 · 이 서비스·플랜 기능의 공식 근거 미확보"
+          ],
+          "features": [
+            {
+              "id": "textGeneration",
+              "status": "unknown",
+              "sourceIds": []
+            }
+          ]
+        },
+        {
+          "providerId": "runway",
+          "company": "Runway",
+          "service": "Runway",
+          "plan": "Free",
+          "status": "conditional",
+          "score": null,
+          "rank": null,
+          "reason": "필수 기능·플랜 또는 예산의 미확인 조건을 먼저 확인하세요.",
+          "gaps": [
+            "텍스트 작성: 미확인 · 이 서비스·플랜 기능의 공식 근거 미확보"
+          ],
+          "features": [
+            {
+              "id": "textGeneration",
+              "status": "unknown",
+              "sourceIds": []
+            }
+          ]
+        },
+        {
+          "providerId": "xai",
+          "company": "xAI",
+          "service": "Grok",
+          "plan": "웹 플랜 확인 필요",
+          "status": "conditional",
+          "score": null,
+          "rank": null,
+          "reason": "필수 기능·플랜 또는 예산의 미확인 조건을 먼저 확인하세요.",
+          "gaps": [
+            "텍스트 작성: 미확인 · 이 서비스·플랜 기능의 공식 근거 미확보"
+          ],
+          "features": [
+            {
+              "id": "textGeneration",
+              "status": "unknown",
+              "sourceIds": []
+            }
+          ]
+        }
+      ],
+      "excluded": [],
+      "selected": [
+        {
+          "workId": "writing",
+          "provider": "Anthropic",
+          "service": "Claude",
+          "plan": "Free",
+          "status": "eligible"
+        }
+      ],
+      "selection": {
+        "default": null,
+        "byStage": {
+          "outline": "claude-free",
+          "compose": "claude-free",
+          "polish": "claude-free"
+        }
+      },
+      "stages": [
+        {
+          "id": "outline",
+          "workId": "writing",
+          "title": "메시지 구성",
+          "text": "작업 원문\n대학생 대상 5분 발표 대본을 작성해줘\n\n독자: 대학생\n최종 형식: 발표 대본\n최종 분량: 5분\n\n단계 목표: 독자에게 전달할 핵심 내용과 글의 흐름을 설계합니다.\n\n[글·대본의 주제·목적·독자·사용할 사실과 필수 문구를 붙여넣으세요]\n\n독자와 글의 목적을 정리하고 핵심 메시지·근거·행동 유도를 구성해 주세요. 홍보 글이면 이름·대상·일정·참여 방법이 부족할 때 필요한 내용만 요청해 주세요. 없는 혜택·성과·출처를 만들지 마세요.\n\n결과 형식: 핵심 메시지·문단별 개요·추가로 필요한 정보\n검토 기준: 주장과 제공 사실 일치 / 독자와 목적에 맞는 흐름"
+        },
+        {
+          "id": "compose",
+          "workId": "writing",
+          "title": "글·대본 초안",
+          "text": "작업 원문\n대학생 대상 5분 발표 대본을 작성해줘\n\n독자: 대학생\n최종 형식: 발표 대본\n최종 분량: 5분\n\n단계 목표: 확인한 개요에 따라 바로 사용할 글을 작성합니다.\n\n[앞 단계의 확인한 사실·메시지·개요를 여기에 붙여넣으세요]\n\n원래 요청과 수정 조건에 맞는 완성 초안을 작성해 주세요. 도입에서 핵심 매력을 전달하고 필요한 정보를 자연스럽게 연결해 주세요. 홍보 목적이면 참여 방법을 명확히 제시하고 확인되지 않은 내용은 빈칸으로 표시해 주세요.\n\n결과 형식: 5분 분량의 발표 대본 초안 및 확인할 빈칸\n검토 기준: 분량·말투·독자 조건 반영 / 근거 없는 과장 금지"
+        },
+        {
+          "id": "polish",
+          "workId": "writing",
+          "title": "검토·다듬기",
+          "text": "작업 원문\n대학생 대상 5분 발표 대본을 작성해줘\n\n독자: 대학생\n최종 형식: 발표 대본\n최종 분량: 5분\n\n단계 목표: 초안의 조건·사실·가독성을 대조하고 최종본을 만듭니다.\n\n[앞 단계의 초안·확인한 사실·원래 작성 기준을 여기에 붙여넣으세요]\n\n요구사항 누락, 모호한 표현, 사실 불일치와 과장을 찾아 수정 이유를 적고 최종본을 작성해 주세요. 새 사실이나 출처는 추가하지 마세요.\n\n결과 형식: 수정 이유와 5분 최종본\n검토 기준: 원래 사실·일정·참여 방법 대조 / 분량·말투·오탈자 확인"
+        }
+      ],
+      "checks": {
+        "reactSSR": true,
+        "originalPreserved": true,
+        "draftPreserved": true,
+        "regenerationAndRecovery": true,
+        "copyWriterExact": true,
+        "copyFailureHandled": true,
+        "additionalInitiallyFolded": true,
+        "browser": false,
+        "osClipboard": false
+      }
+    },
+    {
+      "id": "code",
+      "title": "코드 오류 분석",
+      "request": {
+        "text": "React 코드 오류의 원인을 분석하고 수정안과 테스트를 작성해줘",
+        "overrides": {}
+      },
+      "requirements": {
+        "goal": "React 코드 오류의 원인을 분석하고 수정안과 테스트를 작성해줘",
+        "works": [
+          {
+            "id": "coding",
+            "category": "coding",
+            "label": "코드 작업",
+            "required": [
+              "codeGeneration"
+            ],
+            "preferred": []
+          }
+        ],
+        "required": [
+          "codeGeneration"
+        ],
+        "preferred": [],
+        "budget": {
+          "freeOnly": null,
+          "maxMonthly": null,
+          "currency": null,
+          "country": null
+        },
+        "inputFormats": [],
+        "outputFormat": "코드",
+        "volume": null,
+        "bounds": {
+          "fileSizeMB": null,
+          "fileCount": null,
+          "rowCount": null,
+          "itemCount": null
+        },
+        "composite": false,
+        "questions": [
+          {
+            "id": "budget",
+            "label": "무료만 필요한가요? 월 예산이 있다면 함께 입력하세요."
+          }
+        ],
+        "notes": [
+          "입력하지 않은 예산·국가·분량은 미정입니다. 기능은 수정할 수 있으며 성능 품질 평가와 구분합니다."
+        ]
+      },
+      "recommended": [
+        {
+          "providerId": "anthropic",
+          "company": "Anthropic",
+          "service": "Claude",
+          "plan": "Free",
+          "status": "eligible",
+          "score": null,
+          "rank": null,
+          "reason": "이 서비스·플랜에서 요청한 필수 기능과 예산 조건을 확인했습니다. 작업 품질 우열은 미평가입니다.",
+          "gaps": [],
+          "features": [
+            {
+              "id": "codeGeneration",
+              "status": "supported",
+              "sourceIds": [
+                "claude-artifacts"
+              ]
+            }
+          ]
+        },
+        {
+          "providerId": "google",
+          "company": "Google",
+          "service": "Gemini",
+          "plan": "Free",
+          "status": "eligible",
+          "score": null,
+          "rank": null,
+          "reason": "이 서비스·플랜에서 요청한 필수 기능과 예산 조건을 확인했습니다. 작업 품질 우열은 미평가입니다.",
+          "gaps": [],
+          "features": [
+            {
+              "id": "codeGeneration",
+              "status": "supported",
+              "sourceIds": [
+                "gemini-subscriptions",
+                "gemini-canvas"
+              ]
+            }
+          ]
+        },
+        {
+          "providerId": "openai",
+          "company": "OpenAI",
+          "service": "ChatGPT",
+          "plan": "Free",
+          "status": "eligible",
+          "score": null,
+          "rank": null,
+          "reason": "이 서비스·플랜에서 요청한 필수 기능과 예산 조건을 확인했습니다. 작업 품질 우열은 미평가입니다.",
+          "gaps": [],
+          "features": [
+            {
+              "id": "codeGeneration",
+              "status": "supported",
+              "sourceIds": [
+                "chatgpt-pricing",
+                "chatgpt-overview"
+              ]
+            }
+          ]
+        }
+      ],
+      "remaining": [],
+      "conditional": [
+        {
+          "providerId": "adobe",
+          "company": "Adobe",
+          "service": "Adobe Firefly",
+          "plan": "Free",
+          "status": "conditional",
+          "score": null,
+          "rank": null,
+          "reason": "필수 기능·플랜 또는 예산의 미확인 조건을 먼저 확인하세요.",
+          "gaps": [
+            "코드 작성·오류 분석: 미확인 · 이 서비스·플랜 기능의 공식 근거 미확보"
+          ],
+          "features": [
+            {
+              "id": "codeGeneration",
+              "status": "unknown",
+              "sourceIds": []
+            }
+          ]
+        },
+        {
+          "providerId": "alibaba",
+          "company": "Alibaba",
+          "service": "Qwen",
+          "plan": "웹 플랜 확인 필요",
+          "status": "conditional",
+          "score": null,
+          "rank": null,
+          "reason": "필수 기능·플랜 또는 예산의 미확인 조건을 먼저 확인하세요.",
+          "gaps": [
+            "코드 작성·오류 분석: 미확인 · 이 서비스·플랜 기능의 공식 근거 미확보"
+          ],
+          "features": [
+            {
+              "id": "codeGeneration",
+              "status": "unknown",
+              "sourceIds": []
+            }
+          ]
+        },
+        {
+          "providerId": "deepseek",
+          "company": "DeepSeek",
+          "service": "DeepSeek",
+          "plan": "웹 플랜 확인 필요",
+          "status": "conditional",
+          "score": null,
+          "rank": null,
+          "reason": "필수 기능·플랜 또는 예산의 미확인 조건을 먼저 확인하세요.",
+          "gaps": [
+            "코드 작성·오류 분석: 미확인 · 이 서비스·플랜 기능의 공식 근거 미확보"
+          ],
+          "features": [
+            {
+              "id": "codeGeneration",
+              "status": "unknown",
+              "sourceIds": []
+            }
+          ]
+        },
+        {
+          "providerId": "microsoft",
+          "company": "Microsoft",
+          "service": "Microsoft Copilot",
+          "plan": "웹 플랜 확인 필요",
+          "status": "conditional",
+          "score": null,
+          "rank": null,
+          "reason": "필수 기능·플랜 또는 예산의 미확인 조건을 먼저 확인하세요.",
+          "gaps": [
+            "코드 작성·오류 분석: 미확인 · 이 서비스·플랜 기능의 공식 근거 미확보"
+          ],
+          "features": [
+            {
+              "id": "codeGeneration",
+              "status": "unknown",
+              "sourceIds": []
+            }
+          ]
+        },
+        {
+          "providerId": "mistral",
+          "company": "Mistral AI",
+          "service": "Mistral 서비스",
+          "plan": "웹 플랜 확인 필요",
+          "status": "conditional",
+          "score": null,
+          "rank": null,
+          "reason": "필수 기능·플랜 또는 예산의 미확인 조건을 먼저 확인하세요.",
+          "gaps": [
+            "코드 작성·오류 분석: 미확인 · 이 서비스·플랜 기능의 공식 근거 미확보"
+          ],
+          "features": [
+            {
+              "id": "codeGeneration",
+              "status": "unknown",
+              "sourceIds": []
+            }
+          ]
+        },
+        {
+          "providerId": "moonshot",
+          "company": "Moonshot AI",
+          "service": "Kimi",
+          "plan": "웹 플랜 확인 필요",
+          "status": "conditional",
+          "score": null,
+          "rank": null,
+          "reason": "필수 기능·플랜 또는 예산의 미확인 조건을 먼저 확인하세요.",
+          "gaps": [
+            "코드 작성·오류 분석: 미확인 · 이 서비스·플랜 기능의 공식 근거 미확보"
+          ],
+          "features": [
+            {
+              "id": "codeGeneration",
+              "status": "unknown",
+              "sourceIds": []
+            }
+          ]
+        },
+        {
+          "providerId": "perplexity",
+          "company": "Perplexity",
+          "service": "Perplexity",
+          "plan": "웹 플랜 확인 필요",
+          "status": "conditional",
+          "score": null,
+          "rank": null,
+          "reason": "필수 기능·플랜 또는 예산의 미확인 조건을 먼저 확인하세요.",
+          "gaps": [
+            "코드 작성·오류 분석: 미확인 · 이 서비스·플랜 기능의 공식 근거 미확보"
+          ],
+          "features": [
+            {
+              "id": "codeGeneration",
+              "status": "unknown",
+              "sourceIds": []
+            }
+          ]
+        },
+        {
+          "providerId": "runway",
+          "company": "Runway",
+          "service": "Runway",
+          "plan": "Free",
+          "status": "conditional",
+          "score": null,
+          "rank": null,
+          "reason": "필수 기능·플랜 또는 예산의 미확인 조건을 먼저 확인하세요.",
+          "gaps": [
+            "코드 작성·오류 분석: 미확인 · 이 서비스·플랜 기능의 공식 근거 미확보"
+          ],
+          "features": [
+            {
+              "id": "codeGeneration",
+              "status": "unknown",
+              "sourceIds": []
+            }
+          ]
+        },
+        {
+          "providerId": "xai",
+          "company": "xAI",
+          "service": "Grok",
+          "plan": "웹 플랜 확인 필요",
+          "status": "conditional",
+          "score": null,
+          "rank": null,
+          "reason": "필수 기능·플랜 또는 예산의 미확인 조건을 먼저 확인하세요.",
+          "gaps": [
+            "코드 작성·오류 분석: 미확인 · 이 서비스·플랜 기능의 공식 근거 미확보"
+          ],
+          "features": [
+            {
+              "id": "codeGeneration",
+              "status": "unknown",
+              "sourceIds": []
+            }
+          ]
+        }
+      ],
+      "excluded": [],
+      "selected": [
+        {
+          "workId": "coding",
+          "provider": "Anthropic",
+          "service": "Claude",
+          "plan": "Free",
+          "status": "eligible"
+        }
+      ],
+      "selection": {
+        "default": null,
+        "byStage": {
+          "diagnose": "claude-free",
+          "implement": "claude-free",
+          "test": "claude-free"
+        }
+      },
+      "stages": [
+        {
+          "id": "diagnose",
+          "workId": "coding",
+          "title": "원인 분석",
+          "text": "작업 원문\nReact 코드 오류의 원인을 분석하고 수정안과 테스트를 작성해줘\n\n최종 형식: 코드\n\n단계 목표: 요구사항·기대 동작과 재현 조건을 분석합니다.\n\n[관련 코드·오류 메시지·실행 환경·기대 동작을 붙여넣으세요]\n\n코드의 데이터 흐름과 실패 지점을 추적하고, 확인된 원인과 가설을 구분해 주세요. 새 기능이면 요구사항과 기존 구조를 대조해 구현 위치와 영향을 설계해 주세요. 자료가 없으면 필요한 코드와 재현 입력을 요청해 주세요.\n\n결과 형식: 재현 절차·원인 근거·구현/수정 계획\n검토 기준: 추측과 코드로 확인한 사실 구분 / 기존 동작과 변경 영향 확인"
+        },
+        {
+          "id": "implement",
+          "workId": "coding",
+          "title": "코드 수정",
+          "text": "작업 원문\nReact 코드 오류의 원인을 분석하고 수정안과 테스트를 작성해줘\n\n최종 형식: 코드\n\n단계 목표: 원인과 요구사항에 맞는 실행 가능한 코드를 작성합니다.\n\n[앞 단계의 원인 분석·수정 계획과 원래 코드를 여기에 붙여넣으세요]\n\n합의한 범위의 코드 또는 패치를 작성해 주세요. 관련 파일과 수정 이유, 필요한 의존성 및 실행 방법을 설명해 주세요. 전체 코드가 없으면 적용할 위치를 명확히 하고 존재하지 않는 함수·파일을 사실처럼 말하지 마세요.\n\n결과 형식: 파일별 코드/패치·수정 이유·실행 방법\n검토 기준: 기존 기능 보존 / 누락된 예외 처리·보안·의존성 확인"
+        },
+        {
+          "id": "test",
+          "workId": "coding",
+          "title": "테스트·검토",
+          "text": "작업 원문\nReact 코드 오류의 원인을 분석하고 수정안과 테스트를 작성해줘\n\n최종 형식: 코드\n\n단계 목표: 변경 코드의 동작과 회귀 위험을 검증합니다.\n\n[앞 단계의 변경 코드·재현 입력·원래 요구사항을 여기에 붙여넣으세요]\n\n정상·경계·오류 입력과 원래 버그 재현 조건을 다루는 테스트를 작성하고 실행 명령 및 기대 결과를 알려 주세요. 실행할 수 있으면 실제 결과를 기록하고, 실행하지 않았다면 미실행으로 명시해 주세요. 실패 시 원인과 수정안을 제시해 주세요.\n\n결과 형식: 테스트 코드·명령·실행 결과 또는 미실행 항목·남은 위험\n검토 기준: 실행하지 않은 테스트를 통과했다고 하지 않기 / 회귀·경계·오류 입력 확인"
+        }
+      ],
+      "checks": {
+        "reactSSR": true,
+        "originalPreserved": true,
+        "draftPreserved": true,
+        "regenerationAndRecovery": true,
+        "copyWriterExact": true,
+        "copyFailureHandled": true,
+        "additionalInitiallyFolded": true,
+        "browser": false,
+        "osClipboard": false
+      }
+    },
+    {
+      "id": "image",
+      "title": "이미지 생성",
+      "request": {
+        "text": "교내 환경 캠페인 포스터 이미지를 생성해줘",
+        "overrides": {}
+      },
+      "requirements": {
+        "goal": "교내 환경 캠페인 포스터 이미지를 생성해줘",
+        "works": [
+          {
+            "id": "image",
+            "category": "image",
+            "label": "이미지 생성",
+            "required": [
+              "imageGeneration"
+            ],
+            "preferred": []
+          }
+        ],
+        "required": [
+          "imageGeneration"
+        ],
+        "preferred": [],
+        "budget": {
+          "freeOnly": null,
+          "maxMonthly": null,
+          "currency": null,
+          "country": null
+        },
+        "inputFormats": [],
+        "outputFormat": null,
+        "volume": null,
+        "bounds": {
+          "fileSizeMB": null,
+          "fileCount": null,
+          "rowCount": null,
+          "itemCount": null
+        },
+        "composite": false,
+        "questions": [
+          {
+            "id": "budget",
+            "label": "무료만 필요한가요? 월 예산이 있다면 함께 입력하세요."
+          }
+        ],
+        "notes": [
+          "입력하지 않은 예산·국가·분량은 미정입니다. 기능은 수정할 수 있으며 성능 품질 평가와 구분합니다."
+        ]
+      },
+      "recommended": [
+        {
+          "providerId": "adobe",
+          "company": "Adobe",
+          "service": "Adobe Firefly",
+          "plan": "Standard",
+          "status": "eligible",
+          "score": null,
+          "rank": null,
+          "reason": "이 서비스·플랜에서 요청한 필수 기능과 예산 조건을 확인했습니다. 작업 품질 우열은 미평가입니다.",
+          "gaps": [],
+          "features": [
+            {
+              "id": "imageGeneration",
+              "status": "supported",
+              "sourceIds": [
+                "firefly-pricing"
+              ]
+            }
+          ]
+        },
+        {
+          "providerId": "google",
+          "company": "Google",
+          "service": "Gemini",
+          "plan": "Google AI Pro",
+          "status": "eligible",
+          "score": null,
+          "rank": null,
+          "reason": "이 서비스·플랜에서 요청한 필수 기능과 예산 조건을 확인했습니다. 작업 품질 우열은 미평가입니다.",
+          "gaps": [],
+          "features": [
+            {
+              "id": "imageGeneration",
+              "status": "supported",
+              "sourceIds": [
+                "gemini-pricing",
+                "gemini-limits"
+              ]
+            }
+          ]
+        },
+        {
+          "providerId": "openai",
+          "company": "OpenAI",
+          "service": "ChatGPT",
+          "plan": "Plus",
+          "status": "eligible",
+          "score": null,
+          "rank": null,
+          "reason": "이 서비스·플랜에서 요청한 필수 기능과 예산 조건을 확인했습니다. 작업 품질 우열은 미평가입니다.",
+          "gaps": [],
+          "features": [
+            {
+              "id": "imageGeneration",
+              "status": "supported",
+              "sourceIds": [
+                "chatgpt-pricing"
+              ]
+            }
+          ]
+        }
+      ],
+      "remaining": [
+        {
+          "providerId": "runway",
+          "company": "Runway",
+          "service": "Runway",
+          "plan": "Standard",
+          "status": "eligible",
+          "score": null,
+          "rank": null,
+          "reason": "이 서비스·플랜에서 요청한 필수 기능과 예산 조건을 확인했습니다. 작업 품질 우열은 미평가입니다.",
+          "gaps": [],
+          "features": [
+            {
+              "id": "imageGeneration",
+              "status": "supported",
+              "sourceIds": [
+                "runway-pricing"
+              ]
+            }
+          ]
+        }
+      ],
+      "conditional": [
+        {
+          "providerId": "alibaba",
+          "company": "Alibaba",
+          "service": "Qwen",
+          "plan": "웹 플랜 확인 필요",
+          "status": "conditional",
+          "score": null,
+          "rank": null,
+          "reason": "필수 기능·플랜 또는 예산의 미확인 조건을 먼저 확인하세요.",
+          "gaps": [
+            "실제 이미지 생성: 미확인 · 이 서비스·플랜 기능의 공식 근거 미확보"
+          ],
+          "features": [
+            {
+              "id": "imageGeneration",
+              "status": "unknown",
+              "sourceIds": []
+            }
+          ]
+        },
+        {
+          "providerId": "anthropic",
+          "company": "Anthropic",
+          "service": "Claude",
+          "plan": "Free",
+          "status": "conditional",
+          "score": null,
+          "rank": null,
+          "reason": "필수 기능·플랜 또는 예산의 미확인 조건을 먼저 확인하세요.",
+          "gaps": [
+            "실제 이미지 생성: 미확인 · 이 서비스·플랜 기능의 공식 근거 미확보"
+          ],
+          "features": [
+            {
+              "id": "imageGeneration",
+              "status": "unknown",
+              "sourceIds": []
+            }
+          ]
+        },
+        {
+          "providerId": "deepseek",
+          "company": "DeepSeek",
+          "service": "DeepSeek",
+          "plan": "웹 플랜 확인 필요",
+          "status": "conditional",
+          "score": null,
+          "rank": null,
+          "reason": "필수 기능·플랜 또는 예산의 미확인 조건을 먼저 확인하세요.",
+          "gaps": [
+            "실제 이미지 생성: 미확인 · 이 서비스·플랜 기능의 공식 근거 미확보"
+          ],
+          "features": [
+            {
+              "id": "imageGeneration",
+              "status": "unknown",
+              "sourceIds": []
+            }
+          ]
+        },
+        {
+          "providerId": "microsoft",
+          "company": "Microsoft",
+          "service": "Microsoft Copilot",
+          "plan": "웹 플랜 확인 필요",
+          "status": "conditional",
+          "score": null,
+          "rank": null,
+          "reason": "필수 기능·플랜 또는 예산의 미확인 조건을 먼저 확인하세요.",
+          "gaps": [
+            "실제 이미지 생성: 미확인 · 이 서비스·플랜 기능의 공식 근거 미확보"
+          ],
+          "features": [
+            {
+              "id": "imageGeneration",
+              "status": "unknown",
+              "sourceIds": []
+            }
+          ]
+        },
+        {
+          "providerId": "mistral",
+          "company": "Mistral AI",
+          "service": "Mistral 서비스",
+          "plan": "웹 플랜 확인 필요",
+          "status": "conditional",
+          "score": null,
+          "rank": null,
+          "reason": "필수 기능·플랜 또는 예산의 미확인 조건을 먼저 확인하세요.",
+          "gaps": [
+            "실제 이미지 생성: 미확인 · 이 서비스·플랜 기능의 공식 근거 미확보"
+          ],
+          "features": [
+            {
+              "id": "imageGeneration",
+              "status": "unknown",
+              "sourceIds": []
+            }
+          ]
+        },
+        {
+          "providerId": "moonshot",
+          "company": "Moonshot AI",
+          "service": "Kimi",
+          "plan": "웹 플랜 확인 필요",
+          "status": "conditional",
+          "score": null,
+          "rank": null,
+          "reason": "필수 기능·플랜 또는 예산의 미확인 조건을 먼저 확인하세요.",
+          "gaps": [
+            "실제 이미지 생성: 미확인 · 이 서비스·플랜 기능의 공식 근거 미확보"
+          ],
+          "features": [
+            {
+              "id": "imageGeneration",
+              "status": "unknown",
+              "sourceIds": []
+            }
+          ]
+        },
+        {
+          "providerId": "perplexity",
+          "company": "Perplexity",
+          "service": "Perplexity",
+          "plan": "웹 플랜 확인 필요",
+          "status": "conditional",
+          "score": null,
+          "rank": null,
+          "reason": "필수 기능·플랜 또는 예산의 미확인 조건을 먼저 확인하세요.",
+          "gaps": [
+            "실제 이미지 생성: 미확인 · 이 서비스·플랜 기능의 공식 근거 미확보"
+          ],
+          "features": [
+            {
+              "id": "imageGeneration",
+              "status": "unknown",
+              "sourceIds": []
+            }
+          ]
+        },
+        {
+          "providerId": "xai",
+          "company": "xAI",
+          "service": "Grok",
+          "plan": "웹 플랜 확인 필요",
+          "status": "conditional",
+          "score": null,
+          "rank": null,
+          "reason": "필수 기능·플랜 또는 예산의 미확인 조건을 먼저 확인하세요.",
+          "gaps": [
+            "실제 이미지 생성: 미확인 · 이 서비스·플랜 기능의 공식 근거 미확보"
+          ],
+          "features": [
+            {
+              "id": "imageGeneration",
+              "status": "unknown",
+              "sourceIds": []
+            }
+          ]
+        }
+      ],
+      "excluded": [],
+      "selected": [
+        {
+          "workId": "image",
+          "provider": "Adobe",
+          "service": "Adobe Firefly",
+          "plan": "Standard",
+          "status": "eligible"
+        }
+      ],
+      "selection": {
+        "default": null,
+        "byStage": {
+          "generate-image": "firefly-standard"
+        }
+      },
+      "stages": [
+        {
+          "id": "generate-image",
+          "workId": "image",
+          "title": "이미지 생성",
+          "text": "작업 원문\n교내 환경 캠페인 포스터 이미지를 생성해줘\n\n단계 목표: 선택한 서비스의 이미지 생성 기능에서 실제 이미지를 생성하고 구도·문구·비율을 검토하세요.\n\n교내 환경 캠페인 포스터 이미지를 생성해줘\n\n답변 전 확인\n요청한 목적·형식·분량을 지켰는지 확인하고, 정보가 부족한 부분은 임의로 채우지 마세요.\n\n제공된 자료만 사용하고 실제로 실행하거나 파일을 만들지 않았다면 수행했다고 말하지 마세요."
+        }
+      ],
+      "checks": {
+        "reactSSR": true,
+        "originalPreserved": true,
+        "draftPreserved": true,
+        "regenerationAndRecovery": true,
+        "copyWriterExact": true,
+        "copyFailureHandled": true,
+        "additionalInitiallyFolded": true,
+        "browser": false,
+        "osClipboard": false
+      }
+    },
+    {
+      "id": "composite",
+      "title": "복합 작업",
+      "request": {
+        "text": "기존 XLSX 설문 결과를 분석하고 발표자료를 만들고 발표 대본을 작성해줘",
+        "overrides": {}
+      },
+      "requirements": {
+        "goal": "기존 XLSX 설문 결과를 분석하고 발표자료를 만들고 발표 대본을 작성해줘",
+        "works": [
+          {
+            "id": "analysis",
+            "category": "analysis",
+            "label": "자료 분석",
+            "required": [
+              "fileUpload",
+              "spreadsheetAnalysis",
+              "codeExecution"
+            ],
+            "preferred": []
+          },
+          {
+            "id": "slides",
+            "category": "slides",
+            "label": "발표자료 생성",
+            "required": [
+              "slidesCreation"
+            ],
+            "preferred": []
+          },
+          {
+            "id": "writing",
+            "category": "writing",
+            "label": "글·발표 대본",
+            "required": [
+              "textGeneration"
+            ],
+            "preferred": []
+          }
+        ],
+        "required": [
+          "fileUpload",
+          "spreadsheetAnalysis",
+          "codeExecution",
+          "slidesCreation",
+          "textGeneration"
+        ],
+        "preferred": [],
+        "budget": {
+          "freeOnly": null,
+          "maxMonthly": null,
+          "currency": null,
+          "country": null
+        },
+        "inputFormats": [
+          "xlsx"
+        ],
+        "outputFormat": "발표 대본",
+        "volume": null,
+        "bounds": {
+          "fileSizeMB": null,
+          "fileCount": null,
+          "rowCount": null,
+          "itemCount": null
+        },
+        "composite": true,
+        "questions": [
+          {
+            "id": "budget",
+            "label": "무료만 필요한가요? 월 예산이 있다면 함께 입력하세요."
+          },
+          {
+            "id": "volume",
+            "label": "파일 크기·개수·PDF 페이지 수 등 필요한 처리 범위는 얼마인가요?"
+          }
+        ],
+        "notes": [
+          "입력하지 않은 예산·국가·분량은 미정입니다. 기능은 수정할 수 있으며 성능 품질 평가와 구분합니다."
+        ]
+      },
+      "recommended": [
+        {
+          "providerId": "anthropic",
+          "company": "Anthropic",
+          "service": "Claude",
+          "plan": "Free",
+          "status": "eligible",
+          "score": null,
+          "rank": null,
+          "reason": "이 서비스·플랜에서 요청한 필수 기능과 예산 조건을 확인했습니다. 작업 품질 우열은 미평가입니다.",
+          "gaps": [],
+          "features": [
+            {
+              "id": "fileUpload",
+              "status": "supported",
+              "sourceIds": [
+                "claude-pricing",
+                "claude-files",
+                "claude-execution"
+              ]
+            },
+            {
+              "id": "spreadsheetAnalysis",
+              "status": "supported",
+              "sourceIds": [
+                "claude-files",
+                "claude-execution"
+              ]
+            },
+            {
+              "id": "codeExecution",
+              "status": "supported",
+              "sourceIds": [
+                "claude-pricing",
+                "claude-execution"
+              ]
+            },
+            {
+              "id": "slidesCreation",
+              "status": "supported",
+              "sourceIds": [
+                "claude-execution"
+              ]
+            },
+            {
+              "id": "textGeneration",
+              "status": "supported",
+              "sourceIds": [
+                "claude-pricing"
+              ]
+            }
+          ]
+        }
+      ],
+      "remaining": [],
+      "conditional": [
+        {
+          "providerId": "adobe",
+          "company": "Adobe",
+          "service": "Adobe Firefly",
+          "plan": "Free",
+          "status": "conditional",
+          "score": null,
+          "rank": null,
+          "reason": "필수 기능·플랜 또는 예산의 미확인 조건을 먼저 확인하세요.",
+          "gaps": [
+            "파일 업로드: 미확인 · 이 서비스·플랜 기능의 공식 근거 미확보",
+            "기존 XLSX·시트 분석: 미확인 · 이 서비스·플랜 기능의 공식 근거 미확보",
+            "코드 실행: 미확인 · 이 서비스·플랜 기능의 공식 근거 미확보",
+            "발표자료 파일 생성: 미확인 · 이 서비스·플랜 기능의 공식 근거 미확보",
+            "텍스트 작성: 미확인 · 이 서비스·플랜 기능의 공식 근거 미확보"
+          ],
+          "features": [
+            {
+              "id": "fileUpload",
+              "status": "unknown",
+              "sourceIds": []
+            },
+            {
+              "id": "spreadsheetAnalysis",
+              "status": "unknown",
+              "sourceIds": []
+            },
+            {
+              "id": "codeExecution",
+              "status": "unknown",
+              "sourceIds": []
+            },
+            {
+              "id": "slidesCreation",
+              "status": "unknown",
+              "sourceIds": []
+            },
+            {
+              "id": "textGeneration",
+              "status": "unknown",
+              "sourceIds": []
+            }
+          ]
+        },
+        {
+          "providerId": "alibaba",
+          "company": "Alibaba",
+          "service": "Qwen",
+          "plan": "웹 플랜 확인 필요",
+          "status": "conditional",
+          "score": null,
+          "rank": null,
+          "reason": "필수 기능·플랜 또는 예산의 미확인 조건을 먼저 확인하세요.",
+          "gaps": [
+            "파일 업로드: 미확인 · 이 서비스·플랜 기능의 공식 근거 미확보",
+            "기존 XLSX·시트 분석: 미확인 · 이 서비스·플랜 기능의 공식 근거 미확보",
+            "코드 실행: 미확인 · 이 서비스·플랜 기능의 공식 근거 미확보",
+            "발표자료 파일 생성: 미확인 · 이 서비스·플랜 기능의 공식 근거 미확보",
+            "텍스트 작성: 미확인 · 이 서비스·플랜 기능의 공식 근거 미확보"
+          ],
+          "features": [
+            {
+              "id": "fileUpload",
+              "status": "unknown",
+              "sourceIds": []
+            },
+            {
+              "id": "spreadsheetAnalysis",
+              "status": "unknown",
+              "sourceIds": []
+            },
+            {
+              "id": "codeExecution",
+              "status": "unknown",
+              "sourceIds": []
+            },
+            {
+              "id": "slidesCreation",
+              "status": "unknown",
+              "sourceIds": []
+            },
+            {
+              "id": "textGeneration",
+              "status": "unknown",
+              "sourceIds": []
+            }
+          ]
+        },
+        {
+          "providerId": "deepseek",
+          "company": "DeepSeek",
+          "service": "DeepSeek",
+          "plan": "웹 플랜 확인 필요",
+          "status": "conditional",
+          "score": null,
+          "rank": null,
+          "reason": "필수 기능·플랜 또는 예산의 미확인 조건을 먼저 확인하세요.",
+          "gaps": [
+            "파일 업로드: 미확인 · 이 서비스·플랜 기능의 공식 근거 미확보",
+            "기존 XLSX·시트 분석: 미확인 · 이 서비스·플랜 기능의 공식 근거 미확보",
+            "코드 실행: 미확인 · 이 서비스·플랜 기능의 공식 근거 미확보",
+            "발표자료 파일 생성: 미확인 · 이 서비스·플랜 기능의 공식 근거 미확보",
+            "텍스트 작성: 미확인 · 이 서비스·플랜 기능의 공식 근거 미확보"
+          ],
+          "features": [
+            {
+              "id": "fileUpload",
+              "status": "unknown",
+              "sourceIds": []
+            },
+            {
+              "id": "spreadsheetAnalysis",
+              "status": "unknown",
+              "sourceIds": []
+            },
+            {
+              "id": "codeExecution",
+              "status": "unknown",
+              "sourceIds": []
+            },
+            {
+              "id": "slidesCreation",
+              "status": "unknown",
+              "sourceIds": []
+            },
+            {
+              "id": "textGeneration",
+              "status": "unknown",
+              "sourceIds": []
+            }
+          ]
+        },
+        {
+          "providerId": "google",
+          "company": "Google",
+          "service": "Gemini",
+          "plan": "Free",
+          "status": "conditional",
+          "score": null,
+          "rank": null,
+          "reason": "필수 기능·플랜 또는 예산의 미확인 조건을 먼저 확인하세요.",
+          "gaps": [
+            "파일 업로드: 제한 확인 필요 · 개인 웹 파일 업로드. 무료 사용량·컨텍스트 조건 확인. · 요청 형식의 구체적 지원 근거를 확인해야 합니다.",
+            "기존 XLSX·시트 분석: 제한 확인 필요 · 시트 분석·차트 지원. 정확한 XLSX 입력 범위·수식 처리는 추가 확인 필요. · 요청 형식의 구체적 지원 근거를 확인해야 합니다.",
+            "코드 실행: 미확인 · 이 서비스·플랜 기능의 공식 근거 미확보",
+            "발표자료 파일 생성: 미확인 · 이 서비스·플랜 기능의 공식 근거 미확보"
+          ],
+          "features": [
+            {
+              "id": "fileUpload",
+              "status": "limited",
+              "sourceIds": [
+                "gemini-files",
+                "gemini-limits"
+              ]
+            },
+            {
+              "id": "spreadsheetAnalysis",
+              "status": "limited",
+              "sourceIds": [
+                "gemini-files"
+              ]
+            },
+            {
+              "id": "codeExecution",
+              "status": "unknown",
+              "sourceIds": []
+            },
+            {
+              "id": "slidesCreation",
+              "status": "unknown",
+              "sourceIds": []
+            },
+            {
+              "id": "textGeneration",
+              "status": "supported",
+              "sourceIds": [
+                "gemini-pricing",
+                "gemini-subscriptions"
+              ]
+            }
+          ]
+        },
+        {
+          "providerId": "microsoft",
+          "company": "Microsoft",
+          "service": "Microsoft Copilot",
+          "plan": "웹 플랜 확인 필요",
+          "status": "conditional",
+          "score": null,
+          "rank": null,
+          "reason": "필수 기능·플랜 또는 예산의 미확인 조건을 먼저 확인하세요.",
+          "gaps": [
+            "파일 업로드: 미확인 · 이 서비스·플랜 기능의 공식 근거 미확보",
+            "기존 XLSX·시트 분석: 미확인 · 이 서비스·플랜 기능의 공식 근거 미확보",
+            "코드 실행: 미확인 · 이 서비스·플랜 기능의 공식 근거 미확보",
+            "발표자료 파일 생성: 미확인 · 이 서비스·플랜 기능의 공식 근거 미확보",
+            "텍스트 작성: 미확인 · 이 서비스·플랜 기능의 공식 근거 미확보"
+          ],
+          "features": [
+            {
+              "id": "fileUpload",
+              "status": "unknown",
+              "sourceIds": []
+            },
+            {
+              "id": "spreadsheetAnalysis",
+              "status": "unknown",
+              "sourceIds": []
+            },
+            {
+              "id": "codeExecution",
+              "status": "unknown",
+              "sourceIds": []
+            },
+            {
+              "id": "slidesCreation",
+              "status": "unknown",
+              "sourceIds": []
+            },
+            {
+              "id": "textGeneration",
+              "status": "unknown",
+              "sourceIds": []
+            }
+          ]
+        },
+        {
+          "providerId": "mistral",
+          "company": "Mistral AI",
+          "service": "Mistral 서비스",
+          "plan": "웹 플랜 확인 필요",
+          "status": "conditional",
+          "score": null,
+          "rank": null,
+          "reason": "필수 기능·플랜 또는 예산의 미확인 조건을 먼저 확인하세요.",
+          "gaps": [
+            "파일 업로드: 미확인 · 이 서비스·플랜 기능의 공식 근거 미확보",
+            "기존 XLSX·시트 분석: 미확인 · 이 서비스·플랜 기능의 공식 근거 미확보",
+            "코드 실행: 미확인 · 이 서비스·플랜 기능의 공식 근거 미확보",
+            "발표자료 파일 생성: 미확인 · 이 서비스·플랜 기능의 공식 근거 미확보",
+            "텍스트 작성: 미확인 · 이 서비스·플랜 기능의 공식 근거 미확보"
+          ],
+          "features": [
+            {
+              "id": "fileUpload",
+              "status": "unknown",
+              "sourceIds": []
+            },
+            {
+              "id": "spreadsheetAnalysis",
+              "status": "unknown",
+              "sourceIds": []
+            },
+            {
+              "id": "codeExecution",
+              "status": "unknown",
+              "sourceIds": []
+            },
+            {
+              "id": "slidesCreation",
+              "status": "unknown",
+              "sourceIds": []
+            },
+            {
+              "id": "textGeneration",
+              "status": "unknown",
+              "sourceIds": []
+            }
+          ]
+        },
+        {
+          "providerId": "moonshot",
+          "company": "Moonshot AI",
+          "service": "Kimi",
+          "plan": "웹 플랜 확인 필요",
+          "status": "conditional",
+          "score": null,
+          "rank": null,
+          "reason": "필수 기능·플랜 또는 예산의 미확인 조건을 먼저 확인하세요.",
+          "gaps": [
+            "파일 업로드: 미확인 · 이 서비스·플랜 기능의 공식 근거 미확보",
+            "기존 XLSX·시트 분석: 미확인 · 이 서비스·플랜 기능의 공식 근거 미확보",
+            "코드 실행: 미확인 · 이 서비스·플랜 기능의 공식 근거 미확보",
+            "발표자료 파일 생성: 미확인 · 이 서비스·플랜 기능의 공식 근거 미확보",
+            "텍스트 작성: 미확인 · 이 서비스·플랜 기능의 공식 근거 미확보"
+          ],
+          "features": [
+            {
+              "id": "fileUpload",
+              "status": "unknown",
+              "sourceIds": []
+            },
+            {
+              "id": "spreadsheetAnalysis",
+              "status": "unknown",
+              "sourceIds": []
+            },
+            {
+              "id": "codeExecution",
+              "status": "unknown",
+              "sourceIds": []
+            },
+            {
+              "id": "slidesCreation",
+              "status": "unknown",
+              "sourceIds": []
+            },
+            {
+              "id": "textGeneration",
+              "status": "unknown",
+              "sourceIds": []
+            }
+          ]
+        },
+        {
+          "providerId": "openai",
+          "company": "OpenAI",
+          "service": "ChatGPT",
+          "plan": "Plus",
+          "status": "conditional",
+          "score": null,
+          "rank": null,
+          "reason": "필수 기능·플랜 또는 예산의 미확인 조건을 먼저 확인하세요.",
+          "gaps": [
+            "발표자료 파일 생성: 미확인 · 이 서비스·플랜 기능의 공식 근거 미확보"
+          ],
+          "features": [
+            {
+              "id": "fileUpload",
+              "status": "supported",
+              "sourceIds": [
+                "chatgpt-pricing",
+                "chatgpt-data"
+              ]
+            },
+            {
+              "id": "spreadsheetAnalysis",
+              "status": "supported",
+              "sourceIds": [
+                "chatgpt-pricing",
+                "chatgpt-data"
+              ]
+            },
+            {
+              "id": "codeExecution",
+              "status": "supported",
+              "sourceIds": [
+                "chatgpt-pricing",
+                "chatgpt-data"
+              ]
+            },
+            {
+              "id": "slidesCreation",
+              "status": "unknown",
+              "sourceIds": []
+            },
+            {
+              "id": "textGeneration",
+              "status": "supported",
+              "sourceIds": [
+                "chatgpt-pricing",
+                "chatgpt-overview"
+              ]
+            }
+          ]
+        },
+        {
+          "providerId": "perplexity",
+          "company": "Perplexity",
+          "service": "Perplexity",
+          "plan": "웹 플랜 확인 필요",
+          "status": "conditional",
+          "score": null,
+          "rank": null,
+          "reason": "필수 기능·플랜 또는 예산의 미확인 조건을 먼저 확인하세요.",
+          "gaps": [
+            "파일 업로드: 미확인 · 이 서비스·플랜 기능의 공식 근거 미확보",
+            "기존 XLSX·시트 분석: 미확인 · 이 서비스·플랜 기능의 공식 근거 미확보",
+            "코드 실행: 미확인 · 이 서비스·플랜 기능의 공식 근거 미확보",
+            "발표자료 파일 생성: 미확인 · 이 서비스·플랜 기능의 공식 근거 미확보",
+            "텍스트 작성: 미확인 · 이 서비스·플랜 기능의 공식 근거 미확보"
+          ],
+          "features": [
+            {
+              "id": "fileUpload",
+              "status": "unknown",
+              "sourceIds": []
+            },
+            {
+              "id": "spreadsheetAnalysis",
+              "status": "unknown",
+              "sourceIds": []
+            },
+            {
+              "id": "codeExecution",
+              "status": "unknown",
+              "sourceIds": []
+            },
+            {
+              "id": "slidesCreation",
+              "status": "unknown",
+              "sourceIds": []
+            },
+            {
+              "id": "textGeneration",
+              "status": "unknown",
+              "sourceIds": []
+            }
+          ]
+        },
+        {
+          "providerId": "runway",
+          "company": "Runway",
+          "service": "Runway",
+          "plan": "Free",
+          "status": "conditional",
+          "score": null,
+          "rank": null,
+          "reason": "필수 기능·플랜 또는 예산의 미확인 조건을 먼저 확인하세요.",
+          "gaps": [
+            "파일 업로드: 미확인 · 이 서비스·플랜 기능의 공식 근거 미확보",
+            "기존 XLSX·시트 분석: 미확인 · 이 서비스·플랜 기능의 공식 근거 미확보",
+            "코드 실행: 미확인 · 이 서비스·플랜 기능의 공식 근거 미확보",
+            "발표자료 파일 생성: 미확인 · 이 서비스·플랜 기능의 공식 근거 미확보",
+            "텍스트 작성: 미확인 · 이 서비스·플랜 기능의 공식 근거 미확보"
+          ],
+          "features": [
+            {
+              "id": "fileUpload",
+              "status": "unknown",
+              "sourceIds": []
+            },
+            {
+              "id": "spreadsheetAnalysis",
+              "status": "unknown",
+              "sourceIds": []
+            },
+            {
+              "id": "codeExecution",
+              "status": "unknown",
+              "sourceIds": []
+            },
+            {
+              "id": "slidesCreation",
+              "status": "unknown",
+              "sourceIds": []
+            },
+            {
+              "id": "textGeneration",
+              "status": "unknown",
+              "sourceIds": []
+            }
+          ]
+        },
+        {
+          "providerId": "xai",
+          "company": "xAI",
+          "service": "Grok",
+          "plan": "웹 플랜 확인 필요",
+          "status": "conditional",
+          "score": null,
+          "rank": null,
+          "reason": "필수 기능·플랜 또는 예산의 미확인 조건을 먼저 확인하세요.",
+          "gaps": [
+            "파일 업로드: 미확인 · 이 서비스·플랜 기능의 공식 근거 미확보",
+            "기존 XLSX·시트 분석: 미확인 · 이 서비스·플랜 기능의 공식 근거 미확보",
+            "코드 실행: 미확인 · 이 서비스·플랜 기능의 공식 근거 미확보",
+            "발표자료 파일 생성: 미확인 · 이 서비스·플랜 기능의 공식 근거 미확보",
+            "텍스트 작성: 미확인 · 이 서비스·플랜 기능의 공식 근거 미확보"
+          ],
+          "features": [
+            {
+              "id": "fileUpload",
+              "status": "unknown",
+              "sourceIds": []
+            },
+            {
+              "id": "spreadsheetAnalysis",
+              "status": "unknown",
+              "sourceIds": []
+            },
+            {
+              "id": "codeExecution",
+              "status": "unknown",
+              "sourceIds": []
+            },
+            {
+              "id": "slidesCreation",
+              "status": "unknown",
+              "sourceIds": []
+            },
+            {
+              "id": "textGeneration",
+              "status": "unknown",
+              "sourceIds": []
+            }
+          ]
+        }
+      ],
+      "excluded": [],
+      "selected": [
+        {
+          "workId": "analysis",
+          "provider": "Anthropic",
+          "service": "Claude",
+          "plan": "Free",
+          "status": "eligible"
+        },
+        {
+          "workId": "slides",
+          "provider": "Anthropic",
+          "service": "Claude",
+          "plan": "Free",
+          "status": "eligible"
+        },
+        {
+          "workId": "writing",
+          "provider": "Anthropic",
+          "service": "Claude",
+          "plan": "Free",
+          "status": "eligible"
+        }
+      ],
+      "selection": {
+        "default": null,
+        "byStage": {
+          "statistics": "claude-free",
+          "interpretation": "claude-free",
+          "slides-create-slides": "claude-free",
+          "writing-outline": "claude-free",
+          "writing-compose": "claude-free",
+          "writing-polish": "claude-free"
+        }
+      },
+      "stages": [
+        {
+          "id": "statistics",
+          "workId": "analysis",
+          "title": "통계 분석",
+          "text": "작업 원문 (그대로 보존)\n기존 XLSX 설문 결과를 분석하고 발표자료를 만들고 발표 대본을 작성해줘\n\n원문의 조사 배경·추가 조건도 반영하되, 아래 정리·수정한 조건을 우선 적용하세요. 분석·해석 단계에는 최종 보고서 분량을 강제하지 마세요.\n작업: 설문 통계 분석\n자료: 기존 XLSX 설문 결과\n조사 대상·표본 수: [확인한 대상과 표본 수를 입력하세요]\n자료 형식: XLSX\n연구 질문\n[분석할 연구 질문을 입력하세요]\n\n단계 목표: 설문 자료에 맞는 통계 분석을 수행하고 결과표를 작성합니다.\n\n[문항·변수 정의·집단 구분과 설문 자료를 제공하세요. 첨부가 가능한 경우 CSV·엑셀 파일을 제공하거나 표·요약 통계를 여기에 붙여넣으세요]\n먼저 변수 유형·표본 수·결측을 확인하고, 질문에 맞는 통계 분석을 수행해 주세요. 빈도·비율, 평균·표준편차 등 적절한 기술 통계를 계산해 결과표로 작성하고, 집단 차이·상관 분석은 자료와 가정이 충족될 때 수행해 주세요. 집단 비교는 척도·집단 수·독립성·분포를 확인해 검정과 사후 비교를 선택하고 이유를 쉽게 설명해 주세요. 변수 간 관계는 산점도·이상치·선형성을 살펴 적절한 상관 분석을 선택해 주세요. 계산 가능한 검정통계량·유의확률·효과크기·신뢰구간과 분석별 표본 수·단위를 결과표에 적고, 계산 근거와 가정 위반의 한계를 밝혀 주세요. 자료가 없으면 먼저 요청하고 수치나 유의확률을 만들지 마세요. 요약 통계만으로 계산할 수 없는 항목은 필요한 원자료를 알려 주세요.\n파일을 읽거나 계산을 실행할 수 없으면 그 한계를 밝히고, 텍스트·요약 통계 입력 또는 재현 가능한 분석 코드로 진행할 방법을 제안해 주세요.\n\n이 단계의 결과 형식: 기술 통계·가능한 집단 비교 결과표와 분석 방법·한계"
+        },
+        {
+          "id": "interpretation",
+          "workId": "analysis",
+          "title": "결과 해석",
+          "text": "작업 원문 (그대로 보존)\n기존 XLSX 설문 결과를 분석하고 발표자료를 만들고 발표 대본을 작성해줘\n\n원문의 조사 배경·추가 조건도 반영하되, 아래 정리·수정한 조건을 우선 적용하세요. 분석·해석 단계에는 최종 보고서 분량을 강제하지 마세요.\n작업: 설문 통계 분석\n자료: 기존 XLSX 설문 결과\n조사 대상·표본 수: [확인한 대상과 표본 수를 입력하세요]\n자료 형식: XLSX\n연구 질문\n[분석할 연구 질문을 입력하세요]\n\n단계 목표: 검토한 통계가 말해 주는 범위 안에서 의미와 한계를 정리합니다.\n\n[앞 단계에서 확인한 통계표·변수 정의·계산 방법·남은 한계를 붙여넣으세요]\n관찰된 결과와 가능한 해석을 구분해 주세요. 제공되지 않은 집단 차이·유의성·인과 관계를 단정하지 마세요. 해석의 근거 수치를 짚고 추가로 필요한 자료를 알려 주세요.\n\n이 단계의 결과 형식: 관찰 사실·가능한 해석·추론할 수 없는 내용·한계 목록"
+        },
+        {
+          "id": "slides-create-slides",
+          "workId": "slides",
+          "title": "발표자료 만들기",
+          "text": "작업 원문 (그대로 보존)\n기존 XLSX 설문 결과를 분석하고 발표자료를 만들고 발표 대본을 작성해줘\n\n원문의 조사 배경·추가 조건도 반영하되, 아래 정리·수정한 조건을 우선 적용하세요. 분석·해석 단계에는 최종 보고서 분량을 강제하지 마세요.\n작업: 설문 통계 분석\n자료: 기존 XLSX 설문 결과\n조사 대상·표본 수: [확인한 대상과 표본 수를 입력하세요]\n자료 형식: XLSX\n연구 질문\n[분석할 연구 질문을 입력하세요]\n\n단계 목표: 앞 단계의 확인한 자료로 발표자료를 만들고 요구한 파일 형식으로 제공하세요. 대본만 작성하는 작업과 구분하세요.\n\n작업 원문\n기존 XLSX 설문 결과를 분석하고 발표자료를 만들고 발표 대본을 작성해줘\n\n단계 목표: 앞 단계의 확인한 자료로 발표자료를 만들고 요구한 파일 형식으로 제공하세요. 대본만 작성하는 작업과 구분하세요.\n\n기존 XLSX 설문 결과를 분석하고 발표자료를 만들고 발표 대본을 작성해줘\n\n작성 조건\n- 결과 형식: 발표 대본\n\n입력 자료\n[분석할 자료 또는 직접 확인한 요약을 붙여넣으세요]\n자료가 없으면 내용을 추측하지 말고 필요한 자료를 물어봐 주세요.\n\n지킬 조건\n제공한 자료에 없는 사실·수치·인용을 만들지 마세요. 확인할 수 없는 내용은 구분해 주세요.\n\n답변 전 확인\n요청한 목적·형식·분량을 지켰는지 확인하고, 정보가 부족한 부분은 임의로 채우지 마세요.\n\n제공된 자료만 사용하고 실제로 실행하거나 파일을 만들지 않았다면 수행했다고 말하지 마세요.\n\n이 단계의 결과 형식: 발표자료 생성"
+        },
+        {
+          "id": "writing-outline",
+          "workId": "writing",
+          "title": "메시지 구성",
+          "text": "작업 원문 (그대로 보존)\n기존 XLSX 설문 결과를 분석하고 발표자료를 만들고 발표 대본을 작성해줘\n\n원문의 조사 배경·추가 조건도 반영하되, 아래 정리·수정한 조건을 우선 적용하세요. 분석·해석 단계에는 최종 보고서 분량을 강제하지 마세요.\n작업: 설문 통계 분석\n자료: 기존 XLSX 설문 결과\n조사 대상·표본 수: [확인한 대상과 표본 수를 입력하세요]\n자료 형식: XLSX\n연구 질문\n[분석할 연구 질문을 입력하세요]\n\n단계 목표: 독자에게 전달할 핵심 내용과 글의 흐름을 설계합니다.\n\n작업 원문\n기존 XLSX 설문 결과를 분석하고 발표자료를 만들고 발표 대본을 작성해줘\n\n최종 형식: 발표 대본\n\n단계 목표: 독자에게 전달할 핵심 내용과 글의 흐름을 설계합니다.\n\n[글·대본의 주제·목적·독자·사용할 사실과 필수 문구를 붙여넣으세요]\n\n독자와 글의 목적을 정리하고 핵심 메시지·근거·행동 유도를 구성해 주세요. 홍보 글이면 이름·대상·일정·참여 방법이 부족할 때 필요한 내용만 요청해 주세요. 없는 혜택·성과·출처를 만들지 마세요.\n\n결과 형식: 핵심 메시지·문단별 개요·추가로 필요한 정보\n검토 기준: 주장과 제공 사실 일치 / 독자와 목적에 맞는 흐름\n\n이 단계의 결과 형식: 핵심 메시지·문단별 개요·추가로 필요한 정보"
+        },
+        {
+          "id": "writing-compose",
+          "workId": "writing",
+          "title": "글·대본 초안",
+          "text": "작업 원문 (그대로 보존)\n기존 XLSX 설문 결과를 분석하고 발표자료를 만들고 발표 대본을 작성해줘\n\n원문의 조사 배경·추가 조건도 반영하되, 아래 정리·수정한 조건을 우선 적용하세요. 분석·해석 단계에는 최종 보고서 분량을 강제하지 마세요.\n작업: 설문 통계 분석\n자료: 기존 XLSX 설문 결과\n조사 대상·표본 수: [확인한 대상과 표본 수를 입력하세요]\n자료 형식: XLSX\n연구 질문\n[분석할 연구 질문을 입력하세요]\n\n단계 목표: 확인한 개요에 따라 바로 사용할 글을 작성합니다.\n\n작업 원문\n기존 XLSX 설문 결과를 분석하고 발표자료를 만들고 발표 대본을 작성해줘\n\n최종 형식: 발표 대본\n\n단계 목표: 확인한 개요에 따라 바로 사용할 글을 작성합니다.\n\n[앞 단계의 확인한 사실·메시지·개요를 여기에 붙여넣으세요]\n\n원래 요청과 수정 조건에 맞는 완성 초안을 작성해 주세요. 도입에서 핵심 매력을 전달하고 필요한 정보를 자연스럽게 연결해 주세요. 홍보 목적이면 참여 방법을 명확히 제시하고 확인되지 않은 내용은 빈칸으로 표시해 주세요.\n\n결과 형식: 요청한 분량 분량의 발표 대본 초안 및 확인할 빈칸\n검토 기준: 분량·말투·독자 조건 반영 / 근거 없는 과장 금지\n\n이 단계의 결과 형식: 요청한 분량 분량의 발표 대본 초안 및 확인할 빈칸"
+        },
+        {
+          "id": "writing-polish",
+          "workId": "writing",
+          "title": "검토·다듬기",
+          "text": "작업 원문 (그대로 보존)\n기존 XLSX 설문 결과를 분석하고 발표자료를 만들고 발표 대본을 작성해줘\n\n원문의 조사 배경·추가 조건도 반영하되, 아래 정리·수정한 조건을 우선 적용하세요. 분석·해석 단계에는 최종 보고서 분량을 강제하지 마세요.\n작업: 설문 통계 분석\n자료: 기존 XLSX 설문 결과\n조사 대상·표본 수: [확인한 대상과 표본 수를 입력하세요]\n자료 형식: XLSX\n연구 질문\n[분석할 연구 질문을 입력하세요]\n\n단계 목표: 초안의 조건·사실·가독성을 대조하고 최종본을 만듭니다.\n\n작업 원문\n기존 XLSX 설문 결과를 분석하고 발표자료를 만들고 발표 대본을 작성해줘\n\n최종 형식: 발표 대본\n\n단계 목표: 초안의 조건·사실·가독성을 대조하고 최종본을 만듭니다.\n\n[앞 단계의 초안·확인한 사실·원래 작성 기준을 여기에 붙여넣으세요]\n\n요구사항 누락, 모호한 표현, 사실 불일치와 과장을 찾아 수정 이유를 적고 최종본을 작성해 주세요. 새 사실이나 출처는 추가하지 마세요.\n\n결과 형식: 수정 이유와 요청한 분량 최종본\n검토 기준: 원래 사실·일정·참여 방법 대조 / 분량·말투·오탈자 확인\n\n이 단계의 결과 형식: 수정 이유와 요청한 분량 최종본"
+        }
+      ],
+      "checks": {
+        "reactSSR": true,
+        "originalPreserved": true,
+        "draftPreserved": true,
+        "regenerationAndRecovery": true,
+        "copyWriterExact": true,
+        "copyFailureHandled": true,
+        "additionalInitiallyFolded": true,
+        "browser": false,
+        "osClipboard": false
+      }
+    }
+  ]
+}

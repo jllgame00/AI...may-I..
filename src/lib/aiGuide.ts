@@ -1,71 +1,54 @@
-import { recommendationSnapshot } from '../data/recommendationSnapshot.ts'
-import { officialRoutes } from '../data/serviceRoutes.ts'
-import { mappingLabel } from './currentEvidence.ts'
-import { interpretRequest, recommendForTask, referenceCandidatesForTask } from './recommend.ts'
+import { compareProviders } from './providerRecommendation.ts'
+import { analyzeRequirements } from './providerRequirements.ts'
+import { providerCatalog } from '../data/providerCatalog.ts'
 import { normalizeRequest } from './request.ts'
 import { buildPromptBundle } from './promptEngine.ts'
 import { structureSurveyTask, surveyContext } from './surveyTask.ts'
-import { taskRecommendations } from './taskRanking.ts'
-import { inferCodingIntent } from './codingIntent.ts'
 import { workStages } from './workStages.ts'
-import { assessCandidate, taskCandidateOrder } from './taskReadiness.ts'
-import type { Recommendation, RecommendationSnapshot, ScoringTask, FeatureId, Source } from '../recommendationTypes'
 import type { Comparison, GuideStage, PromptBundle, PromptRequest, PromptTemplate, Session, StageSelection, TaskAnalysis } from '../types'
+import type { PlanAssessment, ProviderCatalog } from '../providerTypes'
 
-export const DEMO_REQUEST = '전공 수업에서 대학생 120명의 설문 결과를 분석해서 A4 4장짜리 보고서를 써야 해. 데이터는 엑셀에 있고, 학년별 만족도 차이와 공부 시간·성적의 관계를 보고 싶어. 통계를 잘 몰라서 분석 방법과 결과 해석도 쉽게 설명받고 싶어.'
-export function interpretTask(request: PromptRequest): TaskAnalysis {
-  const detected = interpretRequest(request.text)
-  const comparisonTarget = /ChatGPT|Claude|Gemini|(?:모델|서비스)(?:의)?\s*(?:기능|성능|요금|가격|플랜)/i.test(request.text)
-  const hasDataset = /CSV|xlsx|엑셀|원자료|설문\s*(?:파일|자료|결과)|응답\s*(?:파일|자료|결과)/i.test(request.text)
-  const serviceComparison = comparisonTarget && /비교|차이/.test(request.text) && !hasDataset
-  const conceptQuestion = /(?:개념|원리|기초).*(?:설명|알려|배우)|(?:설명|알려).*(?:개념|원리|기초)/.test(request.text)
-  const survey = /설문|통계|평균|표준편차|상관|빈도|응답률/.test(request.text) && !serviceComparison && !conceptQuestion
-  const inferredTasks: ScoringTask[] = [...detected.tasks]
-  if (/알고리즘|문제\s*풀이|코딩\s*테스트|장바구니.*구현|앱.*구현|웹.*개발/i.test(request.text) && !inferredTasks.includes('coding')) inferredTasks.unshift('coding')
-  if (survey && !inferredTasks.includes('analysis')) inferredTasks.unshift('analysis')
-  if (/보고서/.test(request.text) && !inferredTasks.includes('writing')) inferredTasks.push('writing')
-  const tasks = [...new Set(request.tasks ?? inferredTasks)]
-  const needsInputMode = request.inputMode==='file' || /파일|pdf|엑셀|xlsx|csv|첨부/i.test(request.text) || (tasks.includes('analysis') && /설문|통계|자료|논문|문서/i.test(request.text))
-  const inferredMode = /직접\s*입력|요약\s*통계|붙여\s*넣|붙여넣/.test(request.text) ? 'summary' : /파일|엑셀|xlsx|csv|pdf/i.test(request.text) ? 'file' : 'unknown'
-  const inputMode = request.inputMode ?? (needsInputMode ? inferredMode : 'summary')
-  let features = detected.requiredFeatures
-  if (inputMode === 'summary' && (request.inputMode === 'summary' || inferredMode === 'summary')) features = features.filter(f => !['upload','pdf','spreadsheet','imageInput'].includes(f))
-  if (inputMode === 'file') features = [...features,'upload']
-  if (survey && tasks.includes('analysis') && inputMode==='file') features=[...features,'code']
-  const requiredFeatures: FeatureId[] = [...new Set(request.requiredFeatures ?? features)]
-  return { tasks, survey, requiredFeatures, inputMode, needsInputMode, codingIntent:tasks.includes('coding') ? request.codingIntent ?? inferCodingIntent(request.text) : null,
-    notes: ['입력의 표현을 바탕으로 정리한 규칙 기반 해석입니다. 작업과 필수 기능을 직접 수정할 수 있어요.', requiredFeatures.includes('imageInput') ? '이미지 이해가 필요한 요청입니다. 해당 경로의 이미지 입력 방식·권한·한도를 확인하세요. 이미지 생성과는 별개예요.' : inputMode === 'summary' ? '요약 통계값·텍스트를 직접 넣는 경로입니다. 파일 첨부·코드 실행을 필수로 가정하지 않아요.' : inputMode === 'file' ? '파일은 사용자가 외부 서비스에서 직접 제공해요. 해당 플랜의 파일 형식·용량·분석 한도를 확인해야 해요.' : '자료를 넣을 형태가 미정이에요. 기능 적합성을 확정하기 전에 확인해 주세요.'] }
+export const DEMO_REQUEST='전공 수업에서 대학생 120명의 설문 결과를 분석해서 A4 4장짜리 보고서를 써야 해. 데이터는 엑셀에 있고, 학년별 만족도 차이와 공부 시간·성적의 관계를 보고 싶어. 통계를 잘 몰라서 분석 방법과 결과 해석도 쉽게 설명받고 싶어.'
+export function interpretTask(request:PromptRequest):TaskAnalysis {
+ const r=analyzeRequirements(request),tasks=r.works.map(w=>w.category)
+ return {tasks,requiredFeatures:r.required,inputMode:request.inputMode??(r.required.includes('fileUpload')?'file':'summary'),needsInputMode:tasks.includes('analysis'),survey:tasks.includes('analysis')&&/설문|통계|상관|만족도/.test(request.text),notes:r.notes,codingIntent:tasks.includes('coding')?request.codingIntent??'unspecified':null}
 }
-export function compareCandidates(request: PromptRequest, data: RecommendationSnapshot = recommendationSnapshot): Comparison {
-  request = normalizeRequest(request)
-  const analysis = interpretTask(request)
-  const context=JSON.stringify(request)
-  if (!analysis.tasks.length) return { analysis, recommendations: [], excluded: [],context }
-  const input = { text: request.text }
-  const result = recommendForTask(analysis.tasks[0],input,analysis.requiredFeatures,data)
-  result.recommendations=result.recommendations.map(c=>({...c,inputStatus:analysis.needsInputMode&&analysis.inputMode==='unknown'?'unknown':'confirmed'}))
-  if (analysis.needsInputMode && analysis.inputMode === 'unknown') result.recommendations = result.recommendations.map(c => ({ ...c,suitability:'확인 후 선택',eligibility:'conditional',holds:['입력 자료 형태 미정 · 요약 통계 직접 입력인지 파일인지 확인 필요',...c.holds] }))
-  const references=referenceCandidatesForTask(analysis.tasks[0],input,[],data).recommendations
-  const decision=taskRecommendations(analysis.tasks[0],request.text,analysis.requiredFeatures,result.recommendations,data,references,analysis.codingIntent)
-  const ranks=new Map(decision.mode==='ranked'?decision.entries.map(e=>[e.candidate.model?.id,e.rank??Infinity]):[])
-  result.recommendations.sort((a,b)=>(ranks.get(a.model?.id)??Infinity)-(ranks.get(b.model?.id)??Infinity)||taskCandidateOrder(a,b,analysis.requiredFeatures))
-  result.recommendations=result.recommendations.map(c=>({...c,assessment:assessCandidate(c,analysis.requiredFeatures,ranks.get(c.model?.id)??null)}))
-  return { ...result,analysis,context,decision,references }
-}
-export function comparisonMatches(request:PromptRequest,comparison:Comparison):boolean { return JSON.stringify(normalizeRequest(request))===comparison.context }
+export function compareCandidates(request:PromptRequest,data:ProviderCatalog=providerCatalog):Comparison {return compareProviders(request,data)}
+export function comparisonMatches(request:PromptRequest,comparison:Comparison):boolean {return JSON.stringify(normalizeRequest(request))===comparison.context}
 export function updateGuideRequest(session:Session,request:PromptRequest):Session {
-  request = normalizeRequest(request)
-  if(JSON.stringify(session.request)===JSON.stringify(request))return session
-  return {...session,request,reviewed:Object.fromEntries(Object.keys(session.reviewed??{}).map(id=>[id,false])),needsReview:session.bundle?.guideStages?.map(s=>s.id)??session.needsReview}
+ request=normalizeRequest(request)
+ if(JSON.stringify(session.request)===JSON.stringify(request))return session
+ return {...session,request,reviewed:Object.fromEntries(Object.keys(session.reviewed??{}).map(id=>[id,false])),needsReview:session.bundle?.guideStages?.map(s=>s.id)??session.needsReview}
 }
-export function selectForStages(selection: StageSelection, stageId: string, candidateId: string): StageSelection { return { ...selection,byStage:{ ...selection.byStage,[stageId]:candidateId } } }
-export function stageCandidate(selection: StageSelection, id: string, candidates: Recommendation[]): Recommendation | null { return candidates.find(c => c.id === (selection.byStage[id] ?? selection.default)) ?? null }
-export function guideContext(template:PromptTemplate,bundleContext?:string):string { return JSON.stringify([template.id,template.text,bundleContext]) }
-export interface AlternateRoute { kind:'chatkhu'; url:string; planId:string; modelId:string; version:string; mode:string; sources:Source[] }
-export function executionRoutes(candidate: Recommendation, alternatives: AlternateRoute[] = []) {
-  const confirmed = alternatives.filter(r => candidate.mapping.status === 'confirmed' && candidate.mapping.selectable && candidate.model?.id === r.modelId && candidate.model.version === r.version && candidate.mapping.mode === r.mode && candidate.plan.id === r.planId && r.sources.some(s => s.url && s.checkedAt) && /^https:\/\//.test(r.url))
-  return [{ kind:'official' as const,label:`${candidate.service.name} ${mappingLabel(candidate.mapping)} 공식 경로 (새 창)`,url:candidate.mapping.url ?? officialRoutes[candidate.service.id] },...confirmed.map(r => ({ kind:r.kind,label:'확인된 ChatKHU 경로 (새 창)',url:r.url }))]
+export function selectForStages(selection:StageSelection,stageId:string,id:string):StageSelection {return {...selection,byStage:{...selection.byStage,[stageId]:id}}}
+export function selectForWork(selection:StageSelection,steps:GuideStage[],workId:string,id:string):StageSelection {return {...selection,byStage:{...selection.byStage,...Object.fromEntries(steps.filter(s=>s.workId===workId).map(s=>[s.id,id]))}}}
+export function stageOptions(comparison:Comparison,stage:GuideStage):PlanAssessment[] {
+ const work=comparison.requirements.works.find(w=>w.id===stage.workId)
+ if(!work)return []
+ return (comparison.byWork[work.id]??[]).flatMap(o=>[o,...o.alternatives]).filter(o=>o.status!=='excluded')
 }
+export function stageCandidate(selection:StageSelection,stage:GuideStage,comparison:Comparison):PlanAssessment|null {
+ const id=selection.byStage[stage.id]??selection.default
+ return stageOptions(comparison,stage).find(o=>o.id===id&&(selection.byStage[stage.id]!==undefined||o.status==='eligible'))??null
+}
+export function guideContext(template:PromptTemplate,bundleContext?:string):string {return JSON.stringify([template.id,template.text,bundleContext])}
+export function executionRoutes(candidate:PlanAssessment) {return [{kind:'official',label:`${candidate.service.name} 공식 웹 서비스`,url:candidate.plan.url}]}
+function stagesForRequest(request:PromptRequest):GuideStage[] {
+ const r=analyzeRequirements(request),base=buildPromptBundle(request)
+ return r.works.flatMap(work=>{
+  const make=(id:string,title:string,action:string):GuideStage=>({id,title,workId:work.id,purpose:action,inputs:['관련 자료·앞 단계에서 직접 확인한 결과'],output:work.label,checks:base.checklist,handoff:['직접 검토한 결과·출처·미확인 항목'],text:`작업 원문\n${request.text}\n\n단계 목표: ${action}\n\n${base.main.text}\n\n제공된 자료만 사용하고 실제로 실행하거나 파일을 만들지 않았다면 수행했다고 말하지 마세요.`})
+  let stages:GuideStage[]
+  if(work.category==='coding')stages=workStages(request,true)
+  else if(work.category==='writing'&&work.required.includes('surveyDraft'))stages=[make('survey-outline','설문 설계','조사 목적·대상·측정할 개념을 정리하고 문항 형식과 응답 척도를 설계하세요. 실제 설문 폼 생성과 문항 초안을 구분하세요.'),make('survey-compose','설문 문항 초안','중립적인 문항과 선택지·응답 척도·분기 안내를 작성하세요. 조사 목적을 모르면 먼저 확인하세요.'),make('survey-review','문항 검토','유도·이중 질문·중복·모호한 척도와 불필요한 개인정보 수집을 점검하고 수정안을 제시하세요.')]
+  else if(work.category==='writing')stages=workStages(request,false).map(s=>({...s,title:s.id==='compose'&&!/홍보|모집|광고/.test(request.text)?'글·대본 초안':s.title}))
+  else if(work.category==='analysis')stages=[make('analyze','자료 분석','자료를 읽고 요청한 질문에 답하며 수치·출처·분석 한계를 정리하세요.'),make('verify','결과 검토','원자료와 분석 결과를 대조해 오류·추론 한계·추가 확인 사항을 정리하세요.')]
+  else if(work.category==='image')stages=[make('generate-image','이미지 생성','선택한 서비스의 이미지 생성 기능에서 실제 이미지를 생성하고 구도·문구·비율을 검토하세요.')]
+  else if(work.category==='slides')stages=[make('create-slides','발표자료 만들기','앞 단계의 확인한 자료로 발표자료를 만들고 요구한 파일 형식으로 제공하세요. 대본만 작성하는 작업과 구분하세요.')]
+  else stages=[make('generate-video','영상 생성','선택한 서비스에서 영상의 길이·비율·크레딧을 확인한 뒤 생성하세요.')]
+  return stages.map(s=>({...s,id:r.composite?`${work.id}-${s.id}`:s.id,workId:work.id}))
+ })
+}
+
 function surveyStages(request: PromptRequest): GuideStage[] {
   const outputLength = buildPromptBundle(request).conditions.length.value
   const stages:GuideStage[] = [
@@ -77,12 +60,13 @@ function surveyStages(request: PromptRequest): GuideStage[] {
   if(interpretTask(request).inputMode==='file')stages[0]={...stages[0],inputs:['설문 파일·문항·변수 정의·단위·집단 구분'],text:stages[0].text.replace('[설문 문항·변수 정의·집단 구분과 원자료 또는 요약 통계값을 붙여넣으세요]','[문항·변수 정의·집단 구분과 설문 자료를 제공하세요. 첨부가 가능한 경우 CSV·엑셀 파일을 제공하거나 표·요약 통계를 여기에 붙여넣으세요]')+'\n파일을 읽거나 계산을 실행할 수 없으면 그 한계를 밝히고, 텍스트·요약 통계 입력 또는 재현 가능한 분석 코드로 진행할 방법을 제안해 주세요.'}
   return stages
 }
-// User-facing task text is independent of model selection and entitlement metadata.
-export function buildGuideBundle(request: PromptRequest, selection: StageSelection): PromptBundle & { steps: GuideStage[] } {
+export function buildGuideBundle(request: PromptRequest, selection: StageSelection): Omit<PromptBundle,'steps'> & { steps: GuideStage[] } {
   request = normalizeRequest(request)
   const base = buildPromptBundle(request), analysis = interpretTask(request)
   const isSurvey = analysis.survey && analysis.tasks.includes('analysis')
-  let stages: GuideStage[] = isSurvey ? surveyStages(request).filter(s => analysis.tasks.includes('writing') || !['report','review'].includes(s.id)) : analysis.tasks.includes('coding') ? workStages(request,true) : analysis.tasks.includes('writing')&&!base.steps.length ? workStages(request,false).map(s=>/홍보|모집|광고/.test(request.text)?s:{...s,title:s.id==='compose'?'글 초안':s.title}) : (base.steps.length ? base.steps : [base.main]).map(p => ({ ...p,purpose:'요청한 작업을 이 단계에서 직접 진행합니다.',inputs:['작업 조건과 필요한 자료 또는 앞 단계 결과'],output:base.conditions.format.value || '요청한 결과',checks:base.checklist,handoff:['확인한 결과·근거·남은 수정 사항'] }))
+  const surveyReport=isSurvey&&analysis.tasks.includes('writing')&&/보고서/.test(request.text)
+  let stages:GuideStage[]=isSurvey?[...surveyStages(request).filter(s=>surveyReport||!['report','review'].includes(s.id)).map(s=>({...s,workId:['report','review'].includes(s.id)?'writing':'analysis'})),...stagesForRequest(request).filter(s=>s.workId!=='analysis'&&(!surveyReport||s.workId!=='writing'))]:stagesForRequest(request)
+  if(isSurvey)stages.sort((a,b)=>analysis.tasks.indexOf(a.workId as typeof analysis.tasks[number])-analysis.tasks.indexOf(b.workId as typeof analysis.tasks[number]))
   if (isSurvey) {
     const task = structureSurveyTask(request,base.conditions)
     const audience = base.conditions.audience.value, tone = base.conditions.tone.value
@@ -98,5 +82,5 @@ export function buildGuideBundle(request: PromptRequest, selection: StageSelecti
       return {...s,text:[context,`단계 목표: ${s.purpose}`,text,`이 단계의 결과 형식: ${s.output}`,presentation,constraints,edited?`직접 수정한 조건 (원문보다 우선)\n${edited}`:''].filter(Boolean).join('\n\n')}
     })
   }
-  return { ...base,context:JSON.stringify([base.context,analysis,selection]),steps:stages,guideStages:stages,improvements:['요청한 작업과 산출물을 단계별로 준비했어요.','모델 이용 안내는 복사 본문과 별도로 확인할 수 있어요.'] }
+  return { ...base,context:JSON.stringify([base.context,analysis,selection]),steps:stages,guideStages:stages,improvements:['요청한 작업과 산출물을 단계별로 준비했어요.','회사·서비스 이용 안내는 복사 본문과 별도로 확인할 수 있어요.'] }
 }

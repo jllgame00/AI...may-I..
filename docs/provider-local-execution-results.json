@@ -1,0 +1,102 @@
+{
+  "verifiedAt": "2026-10-29T06:52:12.828Z",
+  "baselineTests": {
+    "executed": 79,
+    "passed": 79
+  },
+  "finalTests": {
+    "executed": 80,
+    "passed": 80,
+    "failed": 0,
+    "skipped": 0
+  },
+  "commands": [
+    {
+      "command": "npm test",
+      "exitCode": 0,
+      "log": ".qa/provider-execution-tests.log"
+    },
+    {
+      "command": "npm run typecheck",
+      "exitCode": 0,
+      "log": ".qa/provider-execution-app-typecheck.log"
+    },
+    {
+      "command": "npm run evaluation:typecheck",
+      "exitCode": 0,
+      "log": ".qa/provider-execution-evaluation-typecheck.log"
+    },
+    {
+      "command": "npm run data:validate",
+      "exitCode": 0,
+      "log": ".qa/provider-execution-catalog.log"
+    },
+    {
+      "command": "npm run evaluation:validate",
+      "exitCode": 0,
+      "log": ".qa/provider-execution-evaluation.log"
+    }
+  ],
+  "build": {
+    "attempted": true,
+    "status": "failed",
+    "exitCode": 1,
+    "reason": "esbuild spawn EPERM"
+  },
+  "minimalProbes": {
+    "projectImported": false,
+    "esbuild": {
+      "status": "failed",
+      "code": "EPERM",
+      "message": "spawn EPERM",
+      "stack": "Error: spawn EPERM\n    at ChildProcess.spawn (node:internal/child_process:421:11)\n    at Object.spawn (node:child_process:796:9)\n    at ensureServiceIsRunning (D:\\univ\\3-1\\contest\\2026_KHU_AI_Challenge\\node_modules\\esbuild\\lib\\main.js:2272:29)\n    at transform (D:\\univ\\3-1\\contest\\2026_KHU_AI_Challenge\\node_modules\\esbuild\\lib\\main.js:2172:37)\n    at file:///D:/univ/3-1/contest/2026_KHU_AI_Challenge/[eval1]:7:11\n    at ModuleJob.run (node:internal/modules/esm/module_job:413:25)\n    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)\n    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:268:26)\n    at async ModuleLoader.executeModuleJob (node:internal/modules/esm/loader:265:20)\n    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5)"
+    },
+    "nodeChild": {
+      "status": "failed",
+      "code": "EPERM",
+      "message": "spawn EPERM"
+    },
+    "matchesPrevious": true
+  },
+  "dependencyInstallation": {
+    "attempted": true,
+    "status": "failed",
+    "exitCode": 1,
+    "reason": "ENOTCACHED: npm only-if-cached mode; package unavailable",
+    "devDependencyAdded": false,
+    "lockfileChanged": false,
+    "browserDownloaded": false
+  },
+  "e2e": {
+    "attempted": true,
+    "plannedScenarios": 16,
+    "executed": 0,
+    "status": "not-run",
+    "passed": 0,
+    "reason": "playwright-package-unavailable: Playwright is not installed; no package or browser download attempted"
+  },
+  "manualPilot": {
+    "services": 4,
+    "cases": 3,
+    "repetitionsPerServiceCase": 2,
+    "preparationSlots": 24,
+    "registeredRuns": 0,
+    "registeredScores": 0,
+    "externalAIExecuted": false
+  },
+  "preservation": {
+    "preexistingFiles": 282,
+    "unchanged": 277,
+    "changed": [
+      "README.md",
+      "docs/README.md",
+      "docs/provider-evaluation-guide.md",
+      "package.json",
+      "src/lib/providerEvaluation.test.ts"
+    ],
+    "missing": [],
+    "unchangedRecommendationCases": 8
+  },
+  "productionScore": null,
+  "productionRanking": null
+}

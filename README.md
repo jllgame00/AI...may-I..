@@ -1,74 +1,69 @@
 # AI..may I..?
 
-팀 **Ai...Khu**. 어떤 AI를 선택하고 어떻게 요청해야 할지 모르는 사용자를 위한 AI 선택·활용 안내 서비스입니다.
+팀 **Ai...Khu**. 자연어 작업을 정리하고, 공식 근거로 AI 회사와 서비스를 선택한 뒤 맞춤 프롬프트를 편집·복사하는 안내 앱입니다.
 
-작업 입력 → 요청 해석 확인·수정 → 모델 비교·선택 → 단계별 프롬프트 편집·복사 → 외부 이용·결과 검토로 이어집니다. React + Vite + TypeScript + Tailwind CSS를 사용합니다.
+**작업 입력 → 해석·조건·예산 수정 → 회사 최대3개 공동 후보 → 서비스 선택 → 단계별 프롬프트 편집·복사**로 진행합니다. 회사 상세보기는 기능·사용법·무료/유료 조건을 안내하며, 모델 정보와 상세 가격표는 표시하지 않습니다. 내부 플랜 데이터와 공식 근거는 유지합니다.
 
-## 현재 구현
+## 현재 추천 정책
 
-- 세 단계 화면: 작업 입력·해석 / 모델 비교·선택 / 프롬프트·활용. 밝은 배경·네이비 본문·보라 강조색, 모바일 한 열 구성입니다.
-- 원문과 추출 조건을 분리합니다. 설문 연구 질문·자료·설명 수준, 작업 종류·필수 기능, 독자·분량·말투를 직접 수정할 수 있습니다. 수정·해제·미정 값이 자동 추정보다 우선합니다.
-- 원문·조건·선택·단계별 편집 초안은 현재 세션 메모리에 보존합니다. 뒤로 이동하거나 모델·조건을 변경해도 편집 내용을 덮어쓰지 않습니다. 새 초안 생성과 이전 초안 복구를 제공합니다. 새로고침하면 초기화됩니다.
-- 복사 버튼은 편집 본문 그대로 복사합니다. 실패하면 편집 내용을 선택하고 수동 복사를 안내합니다. 복사·외부 이동은 작업 완료 표시가 아닙니다.
-- 설문은 통계 분석 → 결과 해석 → 보고서 초안 → 검토, 코딩은 원인 분석 → 코드 수정 → 테스트·검토, 홍보 글은 메시지 구성 → 초안 → 검토·다듬기로 구성합니다.
-- 규칙·템플릿 기반입니다. AI 호출·자동 작업 실행·로그인·결제·원본 파일 업로드는 구현하지 않습니다. 입력 원문을 URL·영구 저장소·분석 로그로 보내지 않습니다.
+- 12개 회사·13개 서비스·18개 플랜/미확인 경로를 등록합니다. Google의 Gemini와 NotebookLM은 별도 서비스이고 회사는 한 번만 등장합니다. 모델이 추가·삭제되어도 회사 등록은 유지됩니다.
+- 실제 플랜별 필수 기능과 무료·예산 조건을 먼저 검사합니다. PDF 업로드/분석/생성, XLSX 분석/생성, 문항 초안/실제 폼, 코드 생성/실행, 이미지 입력/생성, 검색/사실 검증을 구분합니다.
+- 공식 근거가 없거나 제한 조건이 해결되지 않으면 조건부입니다. 명시적 불일치·확인된 한도 초과는 제외합니다. 무료 플랜에 유료 기능을 적용하지 않습니다.
+- 회사별 직접 작업 품질과 비교 가능한 비용·편의 평가가 부족해 **종합점수와 확정 성능 순위는 산정하지 않습니다.** 제안 가중치 40/30/20/10은 신규 정책이며 실증 보정되지 않았습니다. 부분 항목을 재가중해 100점을 만들지 않습니다.
+- 필수 조건이 확인된 공동 후보를 회사명 중립 순서로 최대3개 먼저 보여줍니다. 나머지 공동 후보·조건부·제외 후보는 접어서 제공합니다. 표시 순서는 품질 순위가 아닙니다.
+- 사용자의 원문·조건·회사/플랜 선택·단계별 편집 초안은 세션 메모리에 보존합니다. 단계별 회사 변경은 다른 작업의 선택을 지우지 않습니다. 초안 재생성/이전 초안 복구와 정확한 본문 복사를 유지합니다.
+- 파일은 이 앱에 업로드하지 않습니다. AI API 호출·자동 작업 실행·로그인·결제·메시지 전송은 제공하지 않습니다.
 
-예산·무료 여부·가격은 추천 순위에 반영하지 않으며 예산·우선순위·이용 경로 선택창을 제공하지 않습니다. ChatKHU 이용을 전제로 하지 않습니다.
+[새 정책·데이터 구조](docs/provider-recommendation-policy.md), [변경 전 전수 조사](docs/provider-recommendation-audit.md), [최초 리팩토링 보고서](docs/provider-refactor-report.md), [최종 제품 화면·빌드 진단·검증 보고서](docs/provider-product-validation-report.md), [최초 7개 함수/React 실행 사례와 프롬프트](docs/provider-recommendation-cases.json).
 
-## 실제 데이터와 추천
+## 데이터와 역사 자료
 
-기존 **25개 모델·111건 평가 관측값**을 보존했습니다. 공식 Hugging Face API에서 식별·commit·라이선스 조건을 확인한 **3개 저장소**를 추가해 현재 **28개 모델·111건 관측값**입니다. 새 모델의 기능·웹 제공·플랜·성능은 추정하지 않습니다.
+현재 회사 데이터의 단일 입력은 `src/data/provider-catalog.json`, 정책은 `src/data/providerPolicy.ts`입니다. 공식 출처·확인일·적용 서비스/플랜을 각각 기록합니다. 기능 미확인을 지원 또는 미지원으로 바꾸지 않습니다. 최신 숫자 가격을 읽지 못한 곳에는 과거 가격을 자동 이월하지 않습니다.
 
-모델·버전·모드·서비스·플랜·실행 구성을 분리합니다. API·설치 전용 자료는 읽기 전용 평가 근거이며 웹 선택 버튼으로 제공하지 않습니다. 정확한 웹 버전과 필요한 첨부·분석 기능의 미확인은 기본 카드에도 표시합니다.
+원본 **28개 모델·111개 평가**와 기존 추천/추정 엔진·테스트·미커밋 작업은 [역사 스냅샷 안내](archive/model-recommendation-2026-10-29/ARCHIVE-NOTES.md)에 보존했습니다. 106개 보존 파일의 SHA-256을 테스트합니다. 과거 벤치마크·모델 점수·이전 가중치·구형 fallback은 현재 앱 import 그래프에 없습니다. 이전 연구/설계 문서는 해당 시점의 기록이며 현재 추천 설명은 위 문서를 기준으로 합니다.
 
-모든 유효 비교 집합을 검토한 뒤 작업 관련성에 따라 대표 평가를 고릅니다. 집합 안에서만 원점수와 공동 순위를 계산하며, 누락을 0점으로 취급하거나 다른 지표를 평균 내지 않습니다.
+운영 추천과 분리한 [Provider 근거·작업 평가 기반](docs/provider-evidence-evaluation-report.md)을 추가했습니다. 19개 기능의 서비스/경로별 감사, 합성 XLSX/PDF 과제와 알려진 정답, 자동/수동 채점, 두 회차 준비·익명 독립 리뷰 절차를 제공합니다. **실제 AI 서비스 실행과 등록 점수는 0건**이며 운영 회사 점수·순위는 도입하지 않았습니다. [수동 실행 가이드](docs/provider-evaluation-guide.md)를 따라 `npm run evaluation:validate`, `npm run evaluation:typecheck`, `npm run evaluation:audit`로 검사할 수 있습니다.
 
-| 작업 | 실제 비교 범위와 처리 |
-| --- | --- |
-| 알고리즘 풀이 | Qwen 게시 LiveCodeBench v6, 2025.02~05, 등록된 3개 열. Qwen3 235B 2507 51.8, Kimi K2 48.9, DeepSeek V3 0324 45.2. 이 집합 안의 순위입니다. |
-| 앱·웹 개발 | CursorBench 4.0의 Grok 4.6/4.7 실행 구성 비교. 제공사 게시 표이며 일반 웹 채팅의 직접 측정값이 아닙니다. |
-| 기존 코드 수정 | DeepSWE 1.1의 Grok 4.6/4.7 실행 구성 비교. 다른 모델의 다른 평가를 하위 순위로 붙이지 않습니다. |
-| 설문·한국어 글쓰기 | 작업의 직접 비교 근거가 부족해 동등한 우선 검토 후보를 표시합니다. 수학·추론 또는 글 생성 평가는 간접 근거이며 임의의 1·2·3위를 만들지 않습니다. |
+[Playwright 수집 오류 수정·최신 실행 결과](docs/provider-playwright-repair-report.md), [로컬 실행·평가 준비 기록](docs/provider-local-execution-report.md), [ChatGPT·Claude·Gemini·Grok 평가 체크리스트](docs/provider-consumer-pilot-checklist.md)를 제공합니다. E2E는 `@playwright/test`를 사용하며 패키지와 Chromium은 별도로 설치합니다.
 
-전체 계산 결과는 [실제 추천 예시](docs/recommendation-examples.json), 선정 방법·한계는 [현재 구현 기록](docs/core-implementation.md)에 있습니다. [설문 4단계와 코딩·홍보 글 프롬프트 전문](docs/generated-prompt-examples.md)은 생성 코드에서 출력한 본문입니다.
+## 실행·검증
 
-## 자동 갱신
-
-`외부 출처 → 정규화 → 검증 → 정상 스냅샷 → 요청별 추천 계산` 순서입니다.
-
-- 공식 Qwen 235B/30B 모델 카드: 실제 응답의 검토된 비교 열 **10건 + 6건**을 확인·갱신합니다. 기존 관측값의 갱신이며 16건을 새 평가로 중복 추가하지 않습니다.
-- 공식 Hugging Face Qwen 모델 API: 최근 5건 중 식별자·commit·Apache-2.0 조건을 만족한 3건을 확인했습니다. 기능과 웹 제공은 미확인입니다.
-- AA: 인증·공개 이용 범위 미확인으로 별도 비활성화합니다. 다른 출처의 갱신은 계속됩니다. 기존 `scripts/aa-data.mts`와 검증 로직은 보존했습니다.
-- 그 외 제공사·운영기관 평가는 확보한 수동 검토 스냅샷을 유지합니다. 모든 출처의 자동화가 완료됐다는 뜻은 아닙니다.
-
-실패·빈 응답·표 구조 변경·이상값은 출처별로 격리하고 마지막 정상 값을 유지합니다. 기본 스냅샷과 `.refresh-cache/last-good.json` 복구본에서 유효하고 최신인 자료를 선택하며, 불완전한 성공 상태를 거부합니다. 확인 시각과 데이터 변경 시각은 분리합니다.
-
-기존 Pages 워크플로에 **매일 06:20 KST** 예약과 수동 실행을 연결했습니다. 수집·검증·테스트·빌드 성공 후 복구 캐시를 저장하고 Pages artifact를 배포합니다. 이번 작업에서는 워크플로·commit·push·배포를 실행하지 않았습니다. Pages base `/AI...may-I../`를 유지합니다.
-
-## 실행과 검증
-
-Node.js 22.18 이상, 워크플로 Node.js 24입니다. 활성 자동 수집에는 키가 필요하지 않습니다.
+Node.js 22.18 이상, Pages workflow는 Node.js 24입니다.
 
 ```powershell
-npm.cmd ci
-npm.cmd run data:refresh
-npm.cmd run data:validate
-npm.cmd test
-npm.cmd run typecheck
-npm.cmd run build
-npm.cmd run dev
+npm ci
+npm test
+npm run typecheck
+npm run data:validate
+npm run build
+npm run dev
 ```
 
-복구: `npm.cmd run data:restore`. 생성 예시 갱신: `node scripts/document-examples.mts`.
+제품 화면 검증 당시 정책/SSR/격리 테스트 58개, 근거·평가 기반 추가 후79개, 실행 준비 단계의 반입 조건 검사 추가 후 **80개**가 통과했습니다. 앱/평가 스크립트 타입 검사와 카탈로그/평가 데이터 검증도 통과했습니다. 이번 도구 환경의 프로덕션 빌드는 esbuild 자식 프로세스의 `spawn EPERM`으로 실패했습니다. 프로젝트를 읽지 않는 최소 esbuild 변환과 단순 Node 자식 프로세스도 같은 오류였습니다. 사용자가 별도 로컬 환경에서 알려 준 프로덕션 빌드·Playwright E2E 성공과 구분하며, 이번 환경에서는 실제 브라우저·모바일·OS 클립보드 재검증을 완료하지 못했습니다.
 
-이번 환경에서 테스트 **165건 통과**, 타입·스냅샷 검사 통과, 공식 출처 실수집 성공을 확인했습니다. `npm run build`는 관리형 Windows 환경의 자식 프로세스 실행 제한(`spawn EPERM`)으로 실패했습니다. 타입 오류나 테스트 실패로 보고하지 않습니다. 환경별 우회 빌드는 배포 산출물로 남기지 않았습니다.
+Playwright는 `tests/e2e/*.spec.ts`만 수집합니다. `tests/e2e/provider-flow.spec.ts`의 8개 작업을 Chromium PC 1440px·모바일 320px에서 각각 실행하는 **16개 등록 테스트**입니다. `src/lib/*.test.ts`, `tests/*.test.mjs`와 `archive/`는 수집하지 않습니다. 현재 캐시된 공식 runner를 통한 수집 진단은 **16개 발견**이며, 일반 `npx` 실행은 패키지 설치 제한으로 막혔습니다. Chromium·서버의 프로세스 생성도 `spawn EPERM`으로 거부되어 **브라우저 시나리오 실행 0건**입니다. 수집 성공을 E2E 통과로 보지 않습니다.
 
-브라우저 연결 호스트가 없고 Chrome 제어도 승인 거부되어 실제 PC·320px·키보드·클립보드·화면 캡처는 미검증입니다. 별도 환경에서 `npm run preview`와 격리된 Chromium 디버깅 세션 `:9222`를 준비한 뒤 `npm run test:browser`로 확인하세요. [정확한 수동 실행 명령과 검증 범위](docs/core-implementation.md)를 참고하세요.
+네트워크와 자식 프로세스 실행이 허용되는 로컬 PowerShell에서:
 
-제한 환경의 `npm run qa:preview`는 TypeScript/Rollup으로 현재 소스를 묶어 `:4175/AI...may-I../`에 제공하는 검증 보조 도구입니다. Vite 배포 빌드 성공을 대신하지 않습니다.
+```powershell
+npm install --offline=false
+npm run setup:chromium
+npx playwright test --list
+npx playwright test
+```
 
-## 제작 도구와 기록
+E2E 실행 시 설정이 빌드와 preview를 자동으로 시작·종료합니다. 별도 preview를 실행하지 마세요. 결과는 `.qa/provider-product-playwright.json`(Playwright 표준 JSON), 스크린샷·실패 trace는 `.qa/playwright-results/`에 저장됩니다. 기존 `npm run test:browser`는 준비된 preview와 Chromium `:9222`를 사용하는 수동 도구로 유지했습니다. `qa:preview`는 기존 소스 QA 보조 도구이며 프로덕션 빌드가 아닙니다.
 
-ChatKHU는 이전 제작 과정의 기획·조사 도구, Codex는 이번 소스 점검·구현·테스트·실수집·문서화 도구로 활용했습니다. ChatKHU와 Codex를 제품 안의 자동 AI 실행 경로로 구현하지 않았습니다. 효과·정확도 향상을 실험으로 검증했다는 주장도 하지 않습니다.
+## 갱신·복구
 
-[문서 구분](docs/README.md)과 [보존한 이전 화면·README](archive/2026-10-core-rebuild/README.md)를 참고하세요. 과거 연구·제작·중단된 변경 기록과 사용자 DOCX·Git 기록을 유지했습니다. 실행 진입점은 `src/main.tsx` → `src/App.tsx` 하나입니다.
+```powershell
+npm run data:refresh
+npm run data:restore
+npm run report:providers
+# 새로 검토한 전체 데이터 반입
+node scripts/refresh-data.mts --import reviewed-provider-catalog.json
+```
+
+현재 `data:refresh`는 공식 검토 스냅샷을 검증·보존합니다. 외부 수집을 실행하거나 출처 확인일을 오늘로 덮지 않습니다. 저장 성공 시각과 해시는 별도로 남기며 자동 수집 성공 시각은 null입니다. 잘못된 반입은 마지막 정상 데이터를 덮지 않고, 복구는 Provider 전용 backup/seed만 사용합니다. 과거 모델 수집기는 역사 자료로 분리했습니다.
+
+기존 GitHub Pages base `/AI...may-I../`, 예약 시각·권한·배포 설정은 유지합니다. 이번 작업에서는 commit·push·워크플로 실행·배포·유료 평가를 하지 않았습니다.

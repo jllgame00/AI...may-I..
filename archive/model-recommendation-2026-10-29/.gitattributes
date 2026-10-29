@@ -1,0 +1,2 @@
+# Preserve the pre-refactor byte hashes on Windows and Linux checkouts.
+* -text

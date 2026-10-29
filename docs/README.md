@@ -1,8 +1,22 @@
+# Current Provider recommendation documentation
+
+Latest test repair: [Playwright discovery isolation, 16 registered E2E tests, and execution limits](provider-playwright-repair-report.md). This supersedes the older standalone-library-runner commands below.
+
+Current implementation: [Provider policy](provider-recommendation-policy.md), [pre-change audit](provider-recommendation-audit.md), [refactor results](provider-refactor-report.md), [product UI and validation follow-up](provider-product-validation-report.md), [initial executed examples](provider-recommendation-cases.json).
+
+Evidence and evaluation foundation: [implementation and verification report](provider-evidence-evaluation-report.md), [manual execution and grading guide](provider-evaluation-guide.md), [complete evidence matrix and research backlog](provider-evidence-audit.json). No real AI service runs or scores have been recorded. These offline tools do not change production recommendations.
+
+Execution readiness: [Windows build/Playwright revalidation](provider-local-execution-report.md), [four consumer-service pilot checklist](provider-consumer-pilot-checklist.md), [blank preparation slots](../evaluations/preparation/consumer-pilot.json). Scheduled slots are not evaluation results.
+
+The model-centered design, weighting, benchmark, estimation and earlier implementation documents listed below are historical records. They do not define the active recommendation policy. Their original data/code is preserved in `archive/model-recommendation-2026-10-29`.
+
+---
+
 # 문서 구분
 
-현재 제품 기준은 2026-10-28~29 핵심 앱 재구성입니다. 아래 과거 문서의 당시 수량·정책·검증 결과를 현재 성과로 해석하지 않습니다.
+현재 제품 기준은 위 Provider 정책과 제품 UI 후속 검증 문서입니다. 아래 과거 문서의 당시 수량·정책·검증 결과를 현재 성과로 해석하지 않습니다.
 
-## 현재 구현
+## 이전 핵심 앱 구현 기록
 
 - [핵심 앱 구조·추천·실수집·검증·남은 실행](core-implementation.md)
 - [설문 4단계와 코딩·홍보 글의 실제 프롬프트 전문](generated-prompt-examples.md)
@@ -12,7 +26,7 @@
 
 ## 보존한 연구와 이전 구현 기록
 
-모델·평가·접근·출처 자료와 유효한 비교·수집·검증 코드는 현재 구현에 재사용합니다. 연구 기록의 시점과 현재 서비스 제공 여부는 구분합니다.
+모델·평가·접근·출처 자료와 당시 비교·수집·검증 코드는 역사 자료로 보존합니다. 현재 회사 추천 경로에서 과거 모델 점수나 수집기를 사용하지 않습니다.
 
 - [모델 카탈로그와 당시 평가 목록](model-catalog-snapshot.md), [모델 이용 경로 조사](model-access-review.md)
 - [AA 인증·권한 조사와 전용 도구](aa-data-integration.md)

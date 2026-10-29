@@ -1,0 +1,935 @@
+{
+  "kind": "manual-pilot-preparation-not-evaluation-results",
+  "version": "consumer-pilot-preparation-v1",
+  "preparedAt": "2026-10-29T06:46:41.581Z",
+  "externalServiceExecuted": false,
+  "registryReference": "evaluations/results/registry.json",
+  "fixtureHash": "379f6ed7d4f108c9110ea76dc0f34e6e95a4ab19ce322c21c2525c1904dc813e",
+  "accountPreflight": [
+    {
+      "providerId": "openai",
+      "providerName": "OpenAI",
+      "serviceId": "chatgpt",
+      "serviceName": "ChatGPT",
+      "consumerUrl": "https://chatgpt.com/",
+      "catalogPlanIds": [
+        "chatgpt-free",
+        "chatgpt-plus"
+      ],
+      "referenceUrl": "https://help.openai.com/en/articles/8555545-uploading-files-and-audio-to-chatgpt",
+      "documentLimitNote": "Document guidance: 512 MB documents, approximately 50 MB spreadsheets, plan/account limits including Free daily quota. Not account verification.",
+      "documentCheckedAt": "2026-10-29",
+      "accountVerifiedAt": null,
+      "verifiedBy": null,
+      "actualPlanLabel": null,
+      "confirmedCatalogPlanId": null,
+      "channel": "web",
+      "region": null,
+      "accountKind": null,
+      "mode": null,
+      "tools": null,
+      "quotaRemaining": null,
+      "inputLimits": {
+        "maxFileSizeMB": null,
+        "maxFilesPerConversation": null,
+        "maxPdfPages": null,
+        "dailyUploadAllowance": null
+      },
+      "capabilities": {
+        "textEditing": {
+          "status": "unknown",
+          "evidenceReference": null,
+          "confirmedAt": null,
+          "limitations": null
+        },
+        "surveyDraft": {
+          "status": "unknown",
+          "evidenceReference": null,
+          "confirmedAt": null,
+          "limitations": null
+        },
+        "xlsxInput": {
+          "status": "unknown",
+          "evidenceReference": null,
+          "confirmedAt": null,
+          "limitations": null
+        },
+        "xlsxAnalysis": {
+          "status": "unknown",
+          "evidenceReference": null,
+          "confirmedAt": null,
+          "limitations": null
+        },
+        "chartCreation": {
+          "status": "unknown",
+          "evidenceReference": null,
+          "confirmedAt": null,
+          "limitations": null
+        },
+        "fileDownload": {
+          "status": "unknown",
+          "evidenceReference": null,
+          "confirmedAt": null,
+          "limitations": null
+        },
+        "pdfInput": {
+          "status": "unknown",
+          "evidenceReference": null,
+          "confirmedAt": null,
+          "limitations": null
+        },
+        "pdfAnalysis": {
+          "status": "unknown",
+          "evidenceReference": null,
+          "confirmedAt": null,
+          "limitations": null
+        },
+        "multiStepWork": {
+          "status": "unknown",
+          "evidenceReference": null,
+          "confirmedAt": null,
+          "limitations": null
+        }
+      },
+      "caseReadiness": {
+        "survey-v1": {
+          "status": "unknown",
+          "reason": "Account and exact route not yet checked."
+        },
+        "xlsx-v1": {
+          "status": "unknown",
+          "reason": "Account and exact route not yet checked."
+        },
+        "pdf-v1": {
+          "status": "unknown",
+          "reason": "Account and exact route not yet checked."
+        }
+      }
+    },
+    {
+      "providerId": "anthropic",
+      "providerName": "Anthropic",
+      "serviceId": "claude",
+      "serviceName": "Claude",
+      "consumerUrl": "https://claude.ai/",
+      "catalogPlanIds": [
+        "claude-free",
+        "claude-pro"
+      ],
+      "referenceUrl": "https://support.claude.com/en/articles/8241126-upload-files-to-claude",
+      "documentLimitNote": "Chat upload guidance: 500 MB/file, 20 files/chat, PDF <=1000 pages; visual PDF processing <=100 pages. XLSX needs code execution/file creation enabled. Verify account.",
+      "documentCheckedAt": "2026-10-29",
+      "accountVerifiedAt": null,
+      "verifiedBy": null,
+      "actualPlanLabel": null,
+      "confirmedCatalogPlanId": null,
+      "channel": "web",
+      "region": null,
+      "accountKind": null,
+      "mode": null,
+      "tools": null,
+      "quotaRemaining": null,
+      "inputLimits": {
+        "maxFileSizeMB": null,
+        "maxFilesPerConversation": null,
+        "maxPdfPages": null,
+        "dailyUploadAllowance": null
+      },
+      "capabilities": {
+        "textEditing": {
+          "status": "unknown",
+          "evidenceReference": null,
+          "confirmedAt": null,
+          "limitations": null
+        },
+        "surveyDraft": {
+          "status": "unknown",
+          "evidenceReference": null,
+          "confirmedAt": null,
+          "limitations": null
+        },
+        "xlsxInput": {
+          "status": "unknown",
+          "evidenceReference": null,
+          "confirmedAt": null,
+          "limitations": null
+        },
+        "xlsxAnalysis": {
+          "status": "unknown",
+          "evidenceReference": null,
+          "confirmedAt": null,
+          "limitations": null
+        },
+        "chartCreation": {
+          "status": "unknown",
+          "evidenceReference": null,
+          "confirmedAt": null,
+          "limitations": null
+        },
+        "fileDownload": {
+          "status": "unknown",
+          "evidenceReference": null,
+          "confirmedAt": null,
+          "limitations": null
+        },
+        "pdfInput": {
+          "status": "unknown",
+          "evidenceReference": null,
+          "confirmedAt": null,
+          "limitations": null
+        },
+        "pdfAnalysis": {
+          "status": "unknown",
+          "evidenceReference": null,
+          "confirmedAt": null,
+          "limitations": null
+        },
+        "multiStepWork": {
+          "status": "unknown",
+          "evidenceReference": null,
+          "confirmedAt": null,
+          "limitations": null
+        }
+      },
+      "caseReadiness": {
+        "survey-v1": {
+          "status": "unknown",
+          "reason": "Account and exact route not yet checked."
+        },
+        "xlsx-v1": {
+          "status": "unknown",
+          "reason": "Account and exact route not yet checked."
+        },
+        "pdf-v1": {
+          "status": "unknown",
+          "reason": "Account and exact route not yet checked."
+        }
+      }
+    },
+    {
+      "providerId": "google",
+      "providerName": "Google",
+      "serviceId": "gemini",
+      "serviceName": "Gemini",
+      "consumerUrl": "https://gemini.google.com/",
+      "catalogPlanIds": [
+        "gemini-free",
+        "gemini-pro"
+      ],
+      "referenceUrl": "https://support.google.com/gemini/answer/14903178?hl=en",
+      "documentLimitNote": "Guidance: up to 10 available files per prompt; non-video files <=100 MB. Native XLSX and current account entitlement require actual verification.",
+      "documentCheckedAt": "2026-10-29",
+      "accountVerifiedAt": null,
+      "verifiedBy": null,
+      "actualPlanLabel": null,
+      "confirmedCatalogPlanId": null,
+      "channel": "web",
+      "region": null,
+      "accountKind": null,
+      "mode": null,
+      "tools": null,
+      "quotaRemaining": null,
+      "inputLimits": {
+        "maxFileSizeMB": null,
+        "maxFilesPerConversation": null,
+        "maxPdfPages": null,
+        "dailyUploadAllowance": null
+      },
+      "capabilities": {
+        "textEditing": {
+          "status": "unknown",
+          "evidenceReference": null,
+          "confirmedAt": null,
+          "limitations": null
+        },
+        "surveyDraft": {
+          "status": "unknown",
+          "evidenceReference": null,
+          "confirmedAt": null,
+          "limitations": null
+        },
+        "xlsxInput": {
+          "status": "unknown",
+          "evidenceReference": null,
+          "confirmedAt": null,
+          "limitations": null
+        },
+        "xlsxAnalysis": {
+          "status": "unknown",
+          "evidenceReference": null,
+          "confirmedAt": null,
+          "limitations": null
+        },
+        "chartCreation": {
+          "status": "unknown",
+          "evidenceReference": null,
+          "confirmedAt": null,
+          "limitations": null
+        },
+        "fileDownload": {
+          "status": "unknown",
+          "evidenceReference": null,
+          "confirmedAt": null,
+          "limitations": null
+        },
+        "pdfInput": {
+          "status": "unknown",
+          "evidenceReference": null,
+          "confirmedAt": null,
+          "limitations": null
+        },
+        "pdfAnalysis": {
+          "status": "unknown",
+          "evidenceReference": null,
+          "confirmedAt": null,
+          "limitations": null
+        },
+        "multiStepWork": {
+          "status": "unknown",
+          "evidenceReference": null,
+          "confirmedAt": null,
+          "limitations": null
+        }
+      },
+      "caseReadiness": {
+        "survey-v1": {
+          "status": "unknown",
+          "reason": "Account and exact route not yet checked."
+        },
+        "xlsx-v1": {
+          "status": "unknown",
+          "reason": "Account and exact route not yet checked."
+        },
+        "pdf-v1": {
+          "status": "unknown",
+          "reason": "Account and exact route not yet checked."
+        }
+      }
+    },
+    {
+      "providerId": "xai",
+      "providerName": "xAI",
+      "serviceId": "grok",
+      "serviceName": "Grok",
+      "consumerUrl": "https://grok.com/",
+      "catalogPlanIds": [
+        "grok-unreviewed"
+      ],
+      "referenceUrl": "https://docs.x.ai/grok/faq",
+      "documentLimitNote": "Consumer FAQ lists PDF/XLSX, most files <=150 MB, web batch around 100. Platform/subscription limits vary. grok-unreviewed is not a confirmed plan.",
+      "documentCheckedAt": "2026-10-29",
+      "accountVerifiedAt": null,
+      "verifiedBy": null,
+      "actualPlanLabel": null,
+      "confirmedCatalogPlanId": null,
+      "channel": "web",
+      "region": null,
+      "accountKind": null,
+      "mode": null,
+      "tools": null,
+      "quotaRemaining": null,
+      "inputLimits": {
+        "maxFileSizeMB": null,
+        "maxFilesPerConversation": null,
+        "maxPdfPages": null,
+        "dailyUploadAllowance": null
+      },
+      "capabilities": {
+        "textEditing": {
+          "status": "unknown",
+          "evidenceReference": null,
+          "confirmedAt": null,
+          "limitations": null
+        },
+        "surveyDraft": {
+          "status": "unknown",
+          "evidenceReference": null,
+          "confirmedAt": null,
+          "limitations": null
+        },
+        "xlsxInput": {
+          "status": "unknown",
+          "evidenceReference": null,
+          "confirmedAt": null,
+          "limitations": null
+        },
+        "xlsxAnalysis": {
+          "status": "unknown",
+          "evidenceReference": null,
+          "confirmedAt": null,
+          "limitations": null
+        },
+        "chartCreation": {
+          "status": "unknown",
+          "evidenceReference": null,
+          "confirmedAt": null,
+          "limitations": null
+        },
+        "fileDownload": {
+          "status": "unknown",
+          "evidenceReference": null,
+          "confirmedAt": null,
+          "limitations": null
+        },
+        "pdfInput": {
+          "status": "unknown",
+          "evidenceReference": null,
+          "confirmedAt": null,
+          "limitations": null
+        },
+        "pdfAnalysis": {
+          "status": "unknown",
+          "evidenceReference": null,
+          "confirmedAt": null,
+          "limitations": null
+        },
+        "multiStepWork": {
+          "status": "unknown",
+          "evidenceReference": null,
+          "confirmedAt": null,
+          "limitations": null
+        }
+      },
+      "caseReadiness": {
+        "survey-v1": {
+          "status": "unknown",
+          "reason": "Account and exact route not yet checked."
+        },
+        "xlsx-v1": {
+          "status": "unknown",
+          "reason": "Account and exact route not yet checked."
+        },
+        "pdf-v1": {
+          "status": "unknown",
+          "reason": "Account and exact route not yet checked."
+        }
+      }
+    }
+  ],
+  "cases": [
+    {
+      "caseId": "survey-v1",
+      "taskCategory": "survey",
+      "promptVersion": "survey-p1",
+      "rubricVersion": "survey-r1",
+      "prompt": "가상 대학 도서관의 이용 경험을 조사하는 한국어 설문 문항 6개를 작성하세요. 개인정보는 묻지 마세요. 목적은 시설 개선 우선순위 파악입니다. 필수 질문 ID: year(학년), frequency(이용 빈도), purpose(주요 이용 목적), satisfaction(만족도 5점 척도), barrier(이용 장벽, 이용하지 않음 포함), improvement(개선 제안, 선택 서술형). 중립적 표현과 겹치지 않는 선택지를 사용하고 해당 없음/응답 거절을 적절히 제공하세요. Google Forms 등 실제 폼을 만들었다고 주장하지 마세요. JSON 객체 {questions:[{id,text,type,options:[]}],formCreated:false}로 답하세요. type은 single, multiple 또는 text입니다.",
+      "inputFixture": [],
+      "requiredCapabilities": [
+        "textEditing",
+        "surveyDraft"
+      ],
+      "manualMetricIds": [
+        "clarity",
+        "neutrality",
+        "usability"
+      ]
+    },
+    {
+      "caseId": "xlsx-v1",
+      "taskCategory": "xlsx-analysis",
+      "promptVersion": "xlsx-p1",
+      "rubricVersion": "xlsx-r1",
+      "prompt": "첨부한 sales-v1.xlsx의 Sales 시트를 직접 읽어 분석하세요. revenue=units*unitPrice입니다. 행 수, 전체 revenue 합계·평균, South이면서 units>=10인 행의 revenue 합계, North/South별 합계를 계산하세요. 월별 revenue 합계의 세로 막대 차트를 생성하고 실제 차트 산출물을 제공하세요. 외삽이나 인과 추정을 하지 마세요. JSON {inputFileName,inputSheet,rowCount,totalRevenue,averageRevenue,filteredRevenue,groupRevenue:{North,South},chart:{type:\"bar\",labels:[],values:[]},interpretation:\"\"}를 반환하고 차트를 첨부하세요. 수치는 소수점 6자리 이내로 쓰세요. 파일을 읽지 못하면 실패했다고 명시하세요.",
+      "inputFixture": [
+        {
+          "path": "evaluations/fixtures/sales-v1.xlsx",
+          "bytes": 4018,
+          "sha256": "ebea45fed2e722de1c3460d737b11c2807f41e2867557ac5633afa1e6989d209"
+        }
+      ],
+      "requiredCapabilities": [
+        "xlsxInput",
+        "xlsxAnalysis",
+        "chartCreation"
+      ],
+      "manualMetricIds": [
+        "file-and-chart",
+        "interpretation"
+      ]
+    },
+    {
+      "caseId": "pdf-v1",
+      "taskCategory": "pdf-script",
+      "promptVersion": "pdf-p1",
+      "rubricVersion": "pdf-r1",
+      "prompt": "첨부한 library-pilot-v1.pdf만 근거로 분석하고 한국어 핵심 요약과 5분 발표용 대본을 작성하세요. 참가자 수(participants), 완료자 수(completed), 완료율(completionRate), 이전 주당 시간(hoursBefore), 이후 시간(hoursAfter), 사용 예산(pilotSpend)을 실제 PDF 페이지 번호와 함께 기록하세요. 비무작위·단일 캠퍼스·4주·미완료자 편향의 한계와 후속 검증을 설명하세요. 학점 상승이나 전국적 절감 효과를 주장하지 마세요. 대본은 공백으로 구분한 어절 450~650개로 쓰고 도입/결과/한계/마무리를 포함하세요. 이 어절 범위는 형식 기준이며 5분의 증명이 아닙니다. JSON {inputFileName,summaryFacts:[{factId,value,page}],scriptFacts:[{factId,value,page}],script:\"...\",limitations:[]}로 반환하세요. scriptFacts는 대본에 실제로 포함한 사실만 기록하세요. 읽지 못하면 명시하세요.",
+      "inputFixture": [
+        {
+          "path": "evaluations/fixtures/library-pilot-v1.pdf",
+          "bytes": 3395,
+          "sha256": "d9f1e8c18d79c53700a984fff0c8eb47f71a084f5daa9134600d9fdf01f1327f"
+        }
+      ],
+      "requiredCapabilities": [
+        "pdfInput",
+        "pdfAnalysis",
+        "textEditing",
+        "multiStepWork"
+      ],
+      "manualMetricIds": [
+        "grounding",
+        "structure",
+        "delivery"
+      ]
+    }
+  ],
+  "scheduledSlots": [
+    {
+      "slotId": "chatgpt-survey-v1-1",
+      "providerId": "openai",
+      "serviceId": "chatgpt",
+      "caseId": "survey-v1",
+      "repetition": 1,
+      "channel": "web",
+      "actualPlanId": null,
+      "preparationStatus": "awaiting-account-preflight",
+      "runId": null,
+      "testedAt": null,
+      "outputReference": null,
+      "automaticGrades": null,
+      "independentReviewerScores": null,
+      "taskCompleted": null,
+      "elapsedSeconds": null,
+      "errors": null,
+      "limitations": null
+    },
+    {
+      "slotId": "chatgpt-survey-v1-2",
+      "providerId": "openai",
+      "serviceId": "chatgpt",
+      "caseId": "survey-v1",
+      "repetition": 2,
+      "channel": "web",
+      "actualPlanId": null,
+      "preparationStatus": "awaiting-account-preflight",
+      "runId": null,
+      "testedAt": null,
+      "outputReference": null,
+      "automaticGrades": null,
+      "independentReviewerScores": null,
+      "taskCompleted": null,
+      "elapsedSeconds": null,
+      "errors": null,
+      "limitations": null
+    },
+    {
+      "slotId": "chatgpt-xlsx-v1-1",
+      "providerId": "openai",
+      "serviceId": "chatgpt",
+      "caseId": "xlsx-v1",
+      "repetition": 1,
+      "channel": "web",
+      "actualPlanId": null,
+      "preparationStatus": "awaiting-account-preflight",
+      "runId": null,
+      "testedAt": null,
+      "outputReference": null,
+      "automaticGrades": null,
+      "independentReviewerScores": null,
+      "taskCompleted": null,
+      "elapsedSeconds": null,
+      "errors": null,
+      "limitations": null
+    },
+    {
+      "slotId": "chatgpt-xlsx-v1-2",
+      "providerId": "openai",
+      "serviceId": "chatgpt",
+      "caseId": "xlsx-v1",
+      "repetition": 2,
+      "channel": "web",
+      "actualPlanId": null,
+      "preparationStatus": "awaiting-account-preflight",
+      "runId": null,
+      "testedAt": null,
+      "outputReference": null,
+      "automaticGrades": null,
+      "independentReviewerScores": null,
+      "taskCompleted": null,
+      "elapsedSeconds": null,
+      "errors": null,
+      "limitations": null
+    },
+    {
+      "slotId": "chatgpt-pdf-v1-1",
+      "providerId": "openai",
+      "serviceId": "chatgpt",
+      "caseId": "pdf-v1",
+      "repetition": 1,
+      "channel": "web",
+      "actualPlanId": null,
+      "preparationStatus": "awaiting-account-preflight",
+      "runId": null,
+      "testedAt": null,
+      "outputReference": null,
+      "automaticGrades": null,
+      "independentReviewerScores": null,
+      "taskCompleted": null,
+      "elapsedSeconds": null,
+      "errors": null,
+      "limitations": null
+    },
+    {
+      "slotId": "chatgpt-pdf-v1-2",
+      "providerId": "openai",
+      "serviceId": "chatgpt",
+      "caseId": "pdf-v1",
+      "repetition": 2,
+      "channel": "web",
+      "actualPlanId": null,
+      "preparationStatus": "awaiting-account-preflight",
+      "runId": null,
+      "testedAt": null,
+      "outputReference": null,
+      "automaticGrades": null,
+      "independentReviewerScores": null,
+      "taskCompleted": null,
+      "elapsedSeconds": null,
+      "errors": null,
+      "limitations": null
+    },
+    {
+      "slotId": "claude-survey-v1-1",
+      "providerId": "anthropic",
+      "serviceId": "claude",
+      "caseId": "survey-v1",
+      "repetition": 1,
+      "channel": "web",
+      "actualPlanId": null,
+      "preparationStatus": "awaiting-account-preflight",
+      "runId": null,
+      "testedAt": null,
+      "outputReference": null,
+      "automaticGrades": null,
+      "independentReviewerScores": null,
+      "taskCompleted": null,
+      "elapsedSeconds": null,
+      "errors": null,
+      "limitations": null
+    },
+    {
+      "slotId": "claude-survey-v1-2",
+      "providerId": "anthropic",
+      "serviceId": "claude",
+      "caseId": "survey-v1",
+      "repetition": 2,
+      "channel": "web",
+      "actualPlanId": null,
+      "preparationStatus": "awaiting-account-preflight",
+      "runId": null,
+      "testedAt": null,
+      "outputReference": null,
+      "automaticGrades": null,
+      "independentReviewerScores": null,
+      "taskCompleted": null,
+      "elapsedSeconds": null,
+      "errors": null,
+      "limitations": null
+    },
+    {
+      "slotId": "claude-xlsx-v1-1",
+      "providerId": "anthropic",
+      "serviceId": "claude",
+      "caseId": "xlsx-v1",
+      "repetition": 1,
+      "channel": "web",
+      "actualPlanId": null,
+      "preparationStatus": "awaiting-account-preflight",
+      "runId": null,
+      "testedAt": null,
+      "outputReference": null,
+      "automaticGrades": null,
+      "independentReviewerScores": null,
+      "taskCompleted": null,
+      "elapsedSeconds": null,
+      "errors": null,
+      "limitations": null
+    },
+    {
+      "slotId": "claude-xlsx-v1-2",
+      "providerId": "anthropic",
+      "serviceId": "claude",
+      "caseId": "xlsx-v1",
+      "repetition": 2,
+      "channel": "web",
+      "actualPlanId": null,
+      "preparationStatus": "awaiting-account-preflight",
+      "runId": null,
+      "testedAt": null,
+      "outputReference": null,
+      "automaticGrades": null,
+      "independentReviewerScores": null,
+      "taskCompleted": null,
+      "elapsedSeconds": null,
+      "errors": null,
+      "limitations": null
+    },
+    {
+      "slotId": "claude-pdf-v1-1",
+      "providerId": "anthropic",
+      "serviceId": "claude",
+      "caseId": "pdf-v1",
+      "repetition": 1,
+      "channel": "web",
+      "actualPlanId": null,
+      "preparationStatus": "awaiting-account-preflight",
+      "runId": null,
+      "testedAt": null,
+      "outputReference": null,
+      "automaticGrades": null,
+      "independentReviewerScores": null,
+      "taskCompleted": null,
+      "elapsedSeconds": null,
+      "errors": null,
+      "limitations": null
+    },
+    {
+      "slotId": "claude-pdf-v1-2",
+      "providerId": "anthropic",
+      "serviceId": "claude",
+      "caseId": "pdf-v1",
+      "repetition": 2,
+      "channel": "web",
+      "actualPlanId": null,
+      "preparationStatus": "awaiting-account-preflight",
+      "runId": null,
+      "testedAt": null,
+      "outputReference": null,
+      "automaticGrades": null,
+      "independentReviewerScores": null,
+      "taskCompleted": null,
+      "elapsedSeconds": null,
+      "errors": null,
+      "limitations": null
+    },
+    {
+      "slotId": "gemini-survey-v1-1",
+      "providerId": "google",
+      "serviceId": "gemini",
+      "caseId": "survey-v1",
+      "repetition": 1,
+      "channel": "web",
+      "actualPlanId": null,
+      "preparationStatus": "awaiting-account-preflight",
+      "runId": null,
+      "testedAt": null,
+      "outputReference": null,
+      "automaticGrades": null,
+      "independentReviewerScores": null,
+      "taskCompleted": null,
+      "elapsedSeconds": null,
+      "errors": null,
+      "limitations": null
+    },
+    {
+      "slotId": "gemini-survey-v1-2",
+      "providerId": "google",
+      "serviceId": "gemini",
+      "caseId": "survey-v1",
+      "repetition": 2,
+      "channel": "web",
+      "actualPlanId": null,
+      "preparationStatus": "awaiting-account-preflight",
+      "runId": null,
+      "testedAt": null,
+      "outputReference": null,
+      "automaticGrades": null,
+      "independentReviewerScores": null,
+      "taskCompleted": null,
+      "elapsedSeconds": null,
+      "errors": null,
+      "limitations": null
+    },
+    {
+      "slotId": "gemini-xlsx-v1-1",
+      "providerId": "google",
+      "serviceId": "gemini",
+      "caseId": "xlsx-v1",
+      "repetition": 1,
+      "channel": "web",
+      "actualPlanId": null,
+      "preparationStatus": "awaiting-account-preflight",
+      "runId": null,
+      "testedAt": null,
+      "outputReference": null,
+      "automaticGrades": null,
+      "independentReviewerScores": null,
+      "taskCompleted": null,
+      "elapsedSeconds": null,
+      "errors": null,
+      "limitations": null
+    },
+    {
+      "slotId": "gemini-xlsx-v1-2",
+      "providerId": "google",
+      "serviceId": "gemini",
+      "caseId": "xlsx-v1",
+      "repetition": 2,
+      "channel": "web",
+      "actualPlanId": null,
+      "preparationStatus": "awaiting-account-preflight",
+      "runId": null,
+      "testedAt": null,
+      "outputReference": null,
+      "automaticGrades": null,
+      "independentReviewerScores": null,
+      "taskCompleted": null,
+      "elapsedSeconds": null,
+      "errors": null,
+      "limitations": null
+    },
+    {
+      "slotId": "gemini-pdf-v1-1",
+      "providerId": "google",
+      "serviceId": "gemini",
+      "caseId": "pdf-v1",
+      "repetition": 1,
+      "channel": "web",
+      "actualPlanId": null,
+      "preparationStatus": "awaiting-account-preflight",
+      "runId": null,
+      "testedAt": null,
+      "outputReference": null,
+      "automaticGrades": null,
+      "independentReviewerScores": null,
+      "taskCompleted": null,
+      "elapsedSeconds": null,
+      "errors": null,
+      "limitations": null
+    },
+    {
+      "slotId": "gemini-pdf-v1-2",
+      "providerId": "google",
+      "serviceId": "gemini",
+      "caseId": "pdf-v1",
+      "repetition": 2,
+      "channel": "web",
+      "actualPlanId": null,
+      "preparationStatus": "awaiting-account-preflight",
+      "runId": null,
+      "testedAt": null,
+      "outputReference": null,
+      "automaticGrades": null,
+      "independentReviewerScores": null,
+      "taskCompleted": null,
+      "elapsedSeconds": null,
+      "errors": null,
+      "limitations": null
+    },
+    {
+      "slotId": "grok-survey-v1-1",
+      "providerId": "xai",
+      "serviceId": "grok",
+      "caseId": "survey-v1",
+      "repetition": 1,
+      "channel": "web",
+      "actualPlanId": null,
+      "preparationStatus": "awaiting-account-preflight",
+      "runId": null,
+      "testedAt": null,
+      "outputReference": null,
+      "automaticGrades": null,
+      "independentReviewerScores": null,
+      "taskCompleted": null,
+      "elapsedSeconds": null,
+      "errors": null,
+      "limitations": null
+    },
+    {
+      "slotId": "grok-survey-v1-2",
+      "providerId": "xai",
+      "serviceId": "grok",
+      "caseId": "survey-v1",
+      "repetition": 2,
+      "channel": "web",
+      "actualPlanId": null,
+      "preparationStatus": "awaiting-account-preflight",
+      "runId": null,
+      "testedAt": null,
+      "outputReference": null,
+      "automaticGrades": null,
+      "independentReviewerScores": null,
+      "taskCompleted": null,
+      "elapsedSeconds": null,
+      "errors": null,
+      "limitations": null
+    },
+    {
+      "slotId": "grok-xlsx-v1-1",
+      "providerId": "xai",
+      "serviceId": "grok",
+      "caseId": "xlsx-v1",
+      "repetition": 1,
+      "channel": "web",
+      "actualPlanId": null,
+      "preparationStatus": "awaiting-account-preflight",
+      "runId": null,
+      "testedAt": null,
+      "outputReference": null,
+      "automaticGrades": null,
+      "independentReviewerScores": null,
+      "taskCompleted": null,
+      "elapsedSeconds": null,
+      "errors": null,
+      "limitations": null
+    },
+    {
+      "slotId": "grok-xlsx-v1-2",
+      "providerId": "xai",
+      "serviceId": "grok",
+      "caseId": "xlsx-v1",
+      "repetition": 2,
+      "channel": "web",
+      "actualPlanId": null,
+      "preparationStatus": "awaiting-account-preflight",
+      "runId": null,
+      "testedAt": null,
+      "outputReference": null,
+      "automaticGrades": null,
+      "independentReviewerScores": null,
+      "taskCompleted": null,
+      "elapsedSeconds": null,
+      "errors": null,
+      "limitations": null
+    },
+    {
+      "slotId": "grok-pdf-v1-1",
+      "providerId": "xai",
+      "serviceId": "grok",
+      "caseId": "pdf-v1",
+      "repetition": 1,
+      "channel": "web",
+      "actualPlanId": null,
+      "preparationStatus": "awaiting-account-preflight",
+      "runId": null,
+      "testedAt": null,
+      "outputReference": null,
+      "automaticGrades": null,
+      "independentReviewerScores": null,
+      "taskCompleted": null,
+      "elapsedSeconds": null,
+      "errors": null,
+      "limitations": null
+    },
+    {
+      "slotId": "grok-pdf-v1-2",
+      "providerId": "xai",
+      "serviceId": "grok",
+      "caseId": "pdf-v1",
+      "repetition": 2,
+      "channel": "web",
+      "actualPlanId": null,
+      "preparationStatus": "awaiting-account-preflight",
+      "runId": null,
+      "testedAt": null,
+      "outputReference": null,
+      "automaticGrades": null,
+      "independentReviewerScores": null,
+      "taskCompleted": null,
+      "elapsedSeconds": null,
+      "errors": null,
+      "limitations": null
+    }
+  ],
+  "executionRecordTemplate": "evaluations/preparation/execution-record-template.json"
+}

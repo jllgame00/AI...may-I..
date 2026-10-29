@@ -1,0 +1,1011 @@
+{
+  "schemaVersion": 1,
+  "modelVersion": "ordinal-bt-v1",
+  "scaleVersion": "sigmoid-centered-v1",
+  "protocolVersion": "protocol-v1",
+  "datasetVersion": "task-evidence-ranked-2026-10-28",
+  "datasetKey": "dae73327",
+  "datasetHash": "a9fdf7e5e2fbda6a8cc9db37cc5bba5bed4af9dd29195cba87ec44ee0fa50b13",
+  "computedAt": "2026-10-29T04:26:34.361Z",
+  "lastExternalCollectionAt": null,
+  "attempts": [
+    {
+      "id": "[\"coding\",\"model\",[\"[\\\"Qwen/Qwen3-235B-A22B-Instruct-2507\\\",\\\"Qwen3-235B-A22B-Instruct-2507\\\",\\\"model\\\",\\\"non-thinking\\\",null,null,null,null,null,null,\\\"https://huggingface.co/Qwen/Qwen3-235B-A22B-Instruct-2507\\\",null]\",\"[\\\"deepseek-ai/DeepSeek-V3-0324\\\",\\\"DeepSeek-V3-0324\\\",\\\"model\\\",null,null,null,null,null,null,null,\\\"https://huggingface.co/Qwen/Qwen3-235B-A22B-Instruct-2507\\\",[\\\"LiveCodeBench\\\",\\\"v6\\\",\\\"2025-02 — 2025-05\\\"]]\",\"[\\\"moonshotai/Kimi-K2-Instruct\\\",\\\"Kimi-K2-Instruct\\\",\\\"model\\\",\\\"non-thinking\\\",null,null,null,null,null,null,\\\"https://huggingface.co/Qwen/Qwen3-235B-A22B-Instruct-2507\\\",null]\"]]",
+      "scope": "coding",
+      "type": "model",
+      "configIds": [
+        "[\"Qwen/Qwen3-235B-A22B-Instruct-2507\",\"Qwen3-235B-A22B-Instruct-2507\",\"model\",\"non-thinking\",null,null,null,null,null,null,\"https://huggingface.co/Qwen/Qwen3-235B-A22B-Instruct-2507\",null]",
+        "[\"deepseek-ai/DeepSeek-V3-0324\",\"DeepSeek-V3-0324\",\"model\",null,null,null,null,null,null,null,\"https://huggingface.co/Qwen/Qwen3-235B-A22B-Instruct-2507\",[\"LiveCodeBench\",\"v6\",\"2025-02 — 2025-05\"]]",
+        "[\"moonshotai/Kimi-K2-Instruct\",\"Kimi-K2-Instruct\",\"model\",\"non-thinking\",null,null,null,null,null,null,\"https://huggingface.co/Qwen/Qwen3-235B-A22B-Instruct-2507\",null]"
+      ],
+      "tableIds": [
+        "qwen-lcb-v6-feb-may"
+      ],
+      "sources": [
+        {
+          "url": "https://huggingface.co/Qwen/Qwen3-235B-A22B-Instruct-2507",
+          "checkedAt": "2026-10-28"
+        }
+      ],
+      "passed": false,
+      "reasons": [
+        "서로 다른 평가 노드 3개 미만",
+        "검증 가능한 관측 부족 또는 연결 단절",
+        "기준선 대비 Brier 10% 개선 미달",
+        "순서 정확도 65% 미달",
+        "평가 제거 시 연결·순위 안정성 부족"
+      ],
+      "scores": [
+        {
+          "configId": "[\"Qwen/Qwen3-235B-A22B-Instruct-2507\",\"Qwen3-235B-A22B-Instruct-2507\",\"model\",\"non-thinking\",null,null,null,null,null,null,\"https://huggingface.co/Qwen/Qwen3-235B-A22B-Instruct-2507\",null]",
+          "modelId": "Qwen/Qwen3-235B-A22B-Instruct-2507",
+          "modelVersion": "Qwen3-235B-A22B-Instruct-2507",
+          "effort": "non-thinking",
+          "type": "model",
+          "theta": 0.7035927052921541,
+          "score": null,
+          "rank": null,
+          "nearTie": false,
+          "sensitivity": [
+            67,
+            67
+          ],
+          "observations": 1,
+          "tables": 1,
+          "evaluators": [
+            "Alibaba Qwen"
+          ],
+          "sourceConcentrated": true,
+          "uncertain": true,
+          "execution": {
+            "agentName": null,
+            "agentVersion": null,
+            "tools": null,
+            "harness": null,
+            "environment": null,
+            "fallbacks": null
+          }
+        },
+        {
+          "configId": "[\"deepseek-ai/DeepSeek-V3-0324\",\"DeepSeek-V3-0324\",\"model\",null,null,null,null,null,null,null,\"https://huggingface.co/Qwen/Qwen3-235B-A22B-Instruct-2507\",[\"LiveCodeBench\",\"v6\",\"2025-02 — 2025-05\"]]",
+          "modelId": "deepseek-ai/DeepSeek-V3-0324",
+          "modelVersion": "DeepSeek-V3-0324",
+          "effort": null,
+          "type": "model",
+          "theta": -0.7035927052921541,
+          "score": null,
+          "rank": null,
+          "nearTie": false,
+          "sensitivity": [
+            33,
+            33
+          ],
+          "observations": 1,
+          "tables": 1,
+          "evaluators": [
+            "Alibaba Qwen"
+          ],
+          "sourceConcentrated": true,
+          "uncertain": true,
+          "execution": {
+            "agentName": null,
+            "agentVersion": null,
+            "tools": null,
+            "harness": null,
+            "environment": null,
+            "fallbacks": null
+          }
+        },
+        {
+          "configId": "[\"moonshotai/Kimi-K2-Instruct\",\"Kimi-K2-Instruct\",\"model\",\"non-thinking\",null,null,null,null,null,null,\"https://huggingface.co/Qwen/Qwen3-235B-A22B-Instruct-2507\",null]",
+          "modelId": "moonshotai/Kimi-K2-Instruct",
+          "modelVersion": "Kimi-K2-Instruct",
+          "effort": "non-thinking",
+          "type": "model",
+          "theta": 0,
+          "score": null,
+          "rank": null,
+          "nearTie": false,
+          "sensitivity": [
+            50,
+            50
+          ],
+          "observations": 1,
+          "tables": 1,
+          "evaluators": [
+            "Alibaba Qwen"
+          ],
+          "sourceConcentrated": true,
+          "uncertain": true,
+          "execution": {
+            "agentName": null,
+            "agentVersion": null,
+            "tools": null,
+            "harness": null,
+            "environment": null,
+            "fallbacks": null
+          }
+        }
+      ],
+      "validation": {
+        "totalFolds": 3,
+        "evaluableFolds": 0,
+        "disconnectedFolds": 3,
+        "predictions": 0,
+        "brier": null,
+        "baselineBrier": null,
+        "winRateBrier": null,
+        "accuracy": null,
+        "leaveOutAgreement": null,
+        "leaveOutConnected": 0,
+        "perturbAgreement": 1
+      }
+    },
+    {
+      "id": "[\"coding\",\"agent\",[\"[\\\"Grok 4.6\\\",\\\"4.6\\\",\\\"agent\\\",\\\"high\\\",null,null,null,null,null,null,\\\"grok47-cursor4\\\",[\\\"CursorBench\\\",\\\"4.0\\\",null]]\",\"[\\\"grok-4.7\\\",\\\"4.7\\\",\\\"agent\\\",\\\"xhigh\\\",null,null,null,null,null,null,\\\"grok47-cursor4\\\",[\\\"CursorBench\\\",\\\"4.0\\\",null]]\"]]",
+      "scope": "coding",
+      "type": "agent",
+      "configIds": [
+        "[\"Grok 4.6\",\"4.6\",\"agent\",\"high\",null,null,null,null,null,null,\"grok47-cursor4\",[\"CursorBench\",\"4.0\",null]]",
+        "[\"grok-4.7\",\"4.7\",\"agent\",\"xhigh\",null,null,null,null,null,null,\"grok47-cursor4\",[\"CursorBench\",\"4.0\",null]]"
+      ],
+      "tableIds": [
+        "grok47-cursor4"
+      ],
+      "sources": [
+        {
+          "url": "https://x.ai/news/grok-4-7",
+          "checkedAt": "2026-10-28"
+        }
+      ],
+      "passed": false,
+      "reasons": [
+        "구성 3개 미만",
+        "서로 다른 평가 노드 3개 미만",
+        "검증 가능한 관측 부족 또는 연결 단절",
+        "기준선 대비 Brier 10% 개선 미달",
+        "순서 정확도 65% 미달",
+        "평가 제거 시 연결·순위 안정성 부족"
+      ],
+      "scores": [
+        {
+          "configId": "[\"Grok 4.6\",\"4.6\",\"agent\",\"high\",null,null,null,null,null,null,\"grok47-cursor4\",[\"CursorBench\",\"4.0\",null]]",
+          "modelId": "Grok 4.6",
+          "modelVersion": "4.6",
+          "effort": "high",
+          "type": "agent",
+          "theta": -0.7407743925176563,
+          "score": null,
+          "rank": null,
+          "nearTie": false,
+          "sensitivity": [
+            32,
+            32
+          ],
+          "observations": 1,
+          "tables": 1,
+          "evaluators": [
+            "SpaceXSI (xAI)"
+          ],
+          "sourceConcentrated": true,
+          "uncertain": true,
+          "execution": {
+            "agentName": null,
+            "agentVersion": null,
+            "tools": null,
+            "harness": null,
+            "environment": null,
+            "fallbacks": null
+          }
+        },
+        {
+          "configId": "[\"grok-4.7\",\"4.7\",\"agent\",\"xhigh\",null,null,null,null,null,null,\"grok47-cursor4\",[\"CursorBench\",\"4.0\",null]]",
+          "modelId": "grok-4.7",
+          "modelVersion": "4.7",
+          "effort": "xhigh",
+          "type": "agent",
+          "theta": 0.7407743925176563,
+          "score": null,
+          "rank": null,
+          "nearTie": false,
+          "sensitivity": [
+            68,
+            68
+          ],
+          "observations": 1,
+          "tables": 1,
+          "evaluators": [
+            "SpaceXSI (xAI)"
+          ],
+          "sourceConcentrated": true,
+          "uncertain": true,
+          "execution": {
+            "agentName": null,
+            "agentVersion": null,
+            "tools": null,
+            "harness": null,
+            "environment": null,
+            "fallbacks": null
+          }
+        }
+      ],
+      "validation": {
+        "totalFolds": 2,
+        "evaluableFolds": 0,
+        "disconnectedFolds": 2,
+        "predictions": 0,
+        "brier": null,
+        "baselineBrier": null,
+        "winRateBrier": null,
+        "accuracy": null,
+        "leaveOutAgreement": null,
+        "leaveOutConnected": 0,
+        "perturbAgreement": 1
+      }
+    },
+    {
+      "id": "[\"coding\",\"agent\",[\"[\\\"Grok 4.6\\\",\\\"4.6\\\",\\\"agent\\\",\\\"high\\\",null,null,null,null,null,null,\\\"grok47-terminal4\\\",[\\\"Terminal-Bench\\\",\\\"4.0\\\",null]]\",\"[\\\"grok-4.7\\\",\\\"4.7\\\",\\\"agent\\\",\\\"xhigh\\\",null,null,null,null,null,null,\\\"grok47-terminal4\\\",[\\\"Terminal-Bench\\\",\\\"4.0\\\",null]]\"]]",
+      "scope": "coding",
+      "type": "agent",
+      "configIds": [
+        "[\"Grok 4.6\",\"4.6\",\"agent\",\"high\",null,null,null,null,null,null,\"grok47-terminal4\",[\"Terminal-Bench\",\"4.0\",null]]",
+        "[\"grok-4.7\",\"4.7\",\"agent\",\"xhigh\",null,null,null,null,null,null,\"grok47-terminal4\",[\"Terminal-Bench\",\"4.0\",null]]"
+      ],
+      "tableIds": [
+        "grok47-terminal4"
+      ],
+      "sources": [
+        {
+          "url": "https://x.ai/news/grok-4-7",
+          "checkedAt": "2026-10-28"
+        }
+      ],
+      "passed": false,
+      "reasons": [
+        "구성 3개 미만",
+        "서로 다른 평가 노드 3개 미만",
+        "검증 가능한 관측 부족 또는 연결 단절",
+        "기준선 대비 Brier 10% 개선 미달",
+        "순서 정확도 65% 미달",
+        "평가 제거 시 연결·순위 안정성 부족"
+      ],
+      "scores": [
+        {
+          "configId": "[\"Grok 4.6\",\"4.6\",\"agent\",\"high\",null,null,null,null,null,null,\"grok47-terminal4\",[\"Terminal-Bench\",\"4.0\",null]]",
+          "modelId": "Grok 4.6",
+          "modelVersion": "4.6",
+          "effort": "high",
+          "type": "agent",
+          "theta": -0.7407743925176563,
+          "score": null,
+          "rank": null,
+          "nearTie": false,
+          "sensitivity": [
+            32,
+            32
+          ],
+          "observations": 1,
+          "tables": 1,
+          "evaluators": [
+            "SpaceXSI (xAI)"
+          ],
+          "sourceConcentrated": true,
+          "uncertain": true,
+          "execution": {
+            "agentName": null,
+            "agentVersion": null,
+            "tools": null,
+            "harness": null,
+            "environment": null,
+            "fallbacks": null
+          }
+        },
+        {
+          "configId": "[\"grok-4.7\",\"4.7\",\"agent\",\"xhigh\",null,null,null,null,null,null,\"grok47-terminal4\",[\"Terminal-Bench\",\"4.0\",null]]",
+          "modelId": "grok-4.7",
+          "modelVersion": "4.7",
+          "effort": "xhigh",
+          "type": "agent",
+          "theta": 0.7407743925176563,
+          "score": null,
+          "rank": null,
+          "nearTie": false,
+          "sensitivity": [
+            68,
+            68
+          ],
+          "observations": 1,
+          "tables": 1,
+          "evaluators": [
+            "SpaceXSI (xAI)"
+          ],
+          "sourceConcentrated": true,
+          "uncertain": true,
+          "execution": {
+            "agentName": null,
+            "agentVersion": null,
+            "tools": null,
+            "harness": null,
+            "environment": null,
+            "fallbacks": null
+          }
+        }
+      ],
+      "validation": {
+        "totalFolds": 2,
+        "evaluableFolds": 0,
+        "disconnectedFolds": 2,
+        "predictions": 0,
+        "brier": null,
+        "baselineBrier": null,
+        "winRateBrier": null,
+        "accuracy": null,
+        "leaveOutAgreement": null,
+        "leaveOutConnected": 0,
+        "perturbAgreement": 1
+      }
+    },
+    {
+      "id": "[\"writing\",\"model\",[\"[\\\"Qwen/Qwen3-235B-A22B-Instruct-2507\\\",\\\"Qwen3-235B-A22B-Instruct-2507\\\",\\\"model\\\",\\\"non-thinking\\\",null,null,null,null,null,null,\\\"https://huggingface.co/Qwen/Qwen3-235B-A22B-Instruct-2507\\\",null]\",\"[\\\"deepseek-ai/DeepSeek-V3-0324\\\",\\\"DeepSeek-V3-0324\\\",\\\"model\\\",null,null,null,null,null,null,null,\\\"https://huggingface.co/Qwen/Qwen3-235B-A22B-Instruct-2507\\\",[\\\"Creative Writing\\\",\\\"v3\\\",null]]\",\"[\\\"moonshotai/Kimi-K2-Instruct\\\",\\\"Kimi-K2-Instruct\\\",\\\"model\\\",\\\"non-thinking\\\",null,null,null,null,null,null,\\\"https://huggingface.co/Qwen/Qwen3-235B-A22B-Instruct-2507\\\",null]\"]]",
+      "scope": "writing",
+      "type": "model",
+      "configIds": [
+        "[\"Qwen/Qwen3-235B-A22B-Instruct-2507\",\"Qwen3-235B-A22B-Instruct-2507\",\"model\",\"non-thinking\",null,null,null,null,null,null,\"https://huggingface.co/Qwen/Qwen3-235B-A22B-Instruct-2507\",null]",
+        "[\"deepseek-ai/DeepSeek-V3-0324\",\"DeepSeek-V3-0324\",\"model\",null,null,null,null,null,null,null,\"https://huggingface.co/Qwen/Qwen3-235B-A22B-Instruct-2507\",[\"Creative Writing\",\"v3\",null]]",
+        "[\"moonshotai/Kimi-K2-Instruct\",\"Kimi-K2-Instruct\",\"model\",\"non-thinking\",null,null,null,null,null,null,\"https://huggingface.co/Qwen/Qwen3-235B-A22B-Instruct-2507\",null]"
+      ],
+      "tableIds": [
+        "qwen-creative-v3"
+      ],
+      "sources": [
+        {
+          "url": "https://huggingface.co/Qwen/Qwen3-235B-A22B-Instruct-2507",
+          "checkedAt": "2026-10-28"
+        }
+      ],
+      "passed": false,
+      "reasons": [
+        "서로 다른 평가 노드 3개 미만",
+        "검증 가능한 관측 부족 또는 연결 단절",
+        "기준선 대비 Brier 10% 개선 미달",
+        "순서 정확도 65% 미달",
+        "평가 제거 시 연결·순위 안정성 부족"
+      ],
+      "scores": [
+        {
+          "configId": "[\"Qwen/Qwen3-235B-A22B-Instruct-2507\",\"Qwen3-235B-A22B-Instruct-2507\",\"model\",\"non-thinking\",null,null,null,null,null,null,\"https://huggingface.co/Qwen/Qwen3-235B-A22B-Instruct-2507\",null]",
+          "modelId": "Qwen/Qwen3-235B-A22B-Instruct-2507",
+          "modelVersion": "Qwen3-235B-A22B-Instruct-2507",
+          "effort": "non-thinking",
+          "type": "model",
+          "theta": -3.700743415417189e-17,
+          "score": null,
+          "rank": null,
+          "nearTie": false,
+          "sensitivity": [
+            50,
+            50
+          ],
+          "observations": 1,
+          "tables": 1,
+          "evaluators": [
+            "Alibaba Qwen"
+          ],
+          "sourceConcentrated": true,
+          "uncertain": true,
+          "execution": {
+            "agentName": null,
+            "agentVersion": null,
+            "tools": null,
+            "harness": null,
+            "environment": null,
+            "fallbacks": null
+          }
+        },
+        {
+          "configId": "[\"deepseek-ai/DeepSeek-V3-0324\",\"DeepSeek-V3-0324\",\"model\",null,null,null,null,null,null,null,\"https://huggingface.co/Qwen/Qwen3-235B-A22B-Instruct-2507\",[\"Creative Writing\",\"v3\",null]]",
+          "modelId": "deepseek-ai/DeepSeek-V3-0324",
+          "modelVersion": "DeepSeek-V3-0324",
+          "effort": null,
+          "type": "model",
+          "theta": -0.7035927052921541,
+          "score": null,
+          "rank": null,
+          "nearTie": false,
+          "sensitivity": [
+            33,
+            33
+          ],
+          "observations": 1,
+          "tables": 1,
+          "evaluators": [
+            "Alibaba Qwen"
+          ],
+          "sourceConcentrated": true,
+          "uncertain": true,
+          "execution": {
+            "agentName": null,
+            "agentVersion": null,
+            "tools": null,
+            "harness": null,
+            "environment": null,
+            "fallbacks": null
+          }
+        },
+        {
+          "configId": "[\"moonshotai/Kimi-K2-Instruct\",\"Kimi-K2-Instruct\",\"model\",\"non-thinking\",null,null,null,null,null,null,\"https://huggingface.co/Qwen/Qwen3-235B-A22B-Instruct-2507\",null]",
+          "modelId": "moonshotai/Kimi-K2-Instruct",
+          "modelVersion": "Kimi-K2-Instruct",
+          "effort": "non-thinking",
+          "type": "model",
+          "theta": 0.7035927052921541,
+          "score": null,
+          "rank": null,
+          "nearTie": false,
+          "sensitivity": [
+            67,
+            67
+          ],
+          "observations": 1,
+          "tables": 1,
+          "evaluators": [
+            "Alibaba Qwen"
+          ],
+          "sourceConcentrated": true,
+          "uncertain": true,
+          "execution": {
+            "agentName": null,
+            "agentVersion": null,
+            "tools": null,
+            "harness": null,
+            "environment": null,
+            "fallbacks": null
+          }
+        }
+      ],
+      "validation": {
+        "totalFolds": 3,
+        "evaluableFolds": 0,
+        "disconnectedFolds": 3,
+        "predictions": 0,
+        "brier": null,
+        "baselineBrier": null,
+        "winRateBrier": null,
+        "accuracy": null,
+        "leaveOutAgreement": null,
+        "leaveOutConnected": 0,
+        "perturbAgreement": 1
+      }
+    },
+    {
+      "id": "[\"workflow\",\"agent\",[\"[\\\"claude-opus-5-5\\\",\\\"5.5\\\",\\\"agent\\\",\\\"max\\\",\\\"search (BM25 상위 5개 API 스키마) / execute; 47개 모의 앱 · 6개 업무 분야\\\",null,\\\"격리된 모의 회사 · API 모드 · task당 최대 50단계 · 비공개 held-out 평가 세트\\\",\\\"제공사 기본 fallback 라우팅\\\",\\\"AutomationBench API 모드 (에이전트 이름 미공개)\\\",null,\\\"zapier-automationbench-1.0.6\\\",[\\\"AutomationBench\\\",\\\"1.0.6\\\",\\\"전체\\\"]]\",\"[\\\"claude-opus-5-5\\\",\\\"5.5\\\",\\\"agent\\\",\\\"xhigh\\\",\\\"search (BM25 상위 5개 API 스키마) / execute; 47개 모의 앱 · 6개 업무 분야\\\",null,\\\"격리된 모의 회사 · API 모드 · task당 최대 50단계 · 비공개 held-out 평가 세트\\\",\\\"제공사 기본 fallback 라우팅\\\",\\\"AutomationBench API 모드 (에이전트 이름 미공개)\\\",null,\\\"zapier-automationbench-1.0.6\\\",[\\\"AutomationBench\\\",\\\"1.0.6\\\",\\\"전체\\\"]]\",\"[\\\"claude-sonnet-5-5\\\",\\\"5.5\\\",\\\"agent\\\",\\\"max\\\",\\\"search (BM25 상위 5개 API 스키마) / execute; 47개 모의 앱 · 6개 업무 분야\\\",null,\\\"격리된 모의 회사 · API 모드 · task당 최대 50단계 · 비공개 held-out 평가 세트\\\",\\\"제공사 기본 fallback 라우팅\\\",\\\"AutomationBench API 모드 (에이전트 이름 미공개)\\\",null,\\\"zapier-automationbench-1.0.6\\\",[\\\"AutomationBench\\\",\\\"1.0.6\\\",\\\"전체\\\"]]\",\"[\\\"claude-sonnet-5-5\\\",\\\"5.5\\\",\\\"agent\\\",\\\"xhigh\\\",\\\"search (BM25 상위 5개 API 스키마) / execute; 47개 모의 앱 · 6개 업무 분야\\\",null,\\\"격리된 모의 회사 · API 모드 · task당 최대 50단계 · 비공개 held-out 평가 세트\\\",\\\"제공사 기본 fallback 라우팅\\\",\\\"AutomationBench API 모드 (에이전트 이름 미공개)\\\",null,\\\"zapier-automationbench-1.0.6\\\",[\\\"AutomationBench\\\",\\\"1.0.6\\\",\\\"전체\\\"]]\",\"[\\\"gemini-4-argon\\\",\\\"gemini-4-argon\\\",\\\"agent\\\",\\\"high\\\",\\\"search (BM25 상위 5개 API 스키마) / execute; 47개 모의 앱 · 6개 업무 분야\\\",null,\\\"격리된 모의 회사 · API 모드 · task당 최대 50단계 · 비공개 held-out 평가 세트\\\",null,\\\"AutomationBench API 모드 (에이전트 이름 미공개)\\\",null,\\\"zapier-automationbench-1.0.6\\\",[\\\"AutomationBench\\\",\\\"1.0.6\\\",\\\"전체\\\"]]\",\"[\\\"gemini-4-argon\\\",\\\"gemini-4-argon\\\",\\\"agent\\\",\\\"medium\\\",\\\"search (BM25 상위 5개 API 스키마) / execute; 47개 모의 앱 · 6개 업무 분야\\\",null,\\\"격리된 모의 회사 · API 모드 · task당 최대 50단계 · 비공개 held-out 평가 세트\\\",null,\\\"AutomationBench API 모드 (에이전트 이름 미공개)\\\",null,\\\"zapier-automationbench-1.0.6\\\",[\\\"AutomationBench\\\",\\\"1.0.6\\\",\\\"전체\\\"]]\",\"[\\\"gpt-6-astra\\\",\\\"6\\\",\\\"agent\\\",\\\"high\\\",\\\"search (BM25 상위 5개 API 스키마) / execute; 47개 모의 앱 · 6개 업무 분야\\\",null,\\\"격리된 모의 회사 · API 모드 · task당 최대 50단계 · 비공개 held-out 평가 세트\\\",null,\\\"AutomationBench API 모드 (에이전트 이름 미공개)\\\",null,\\\"zapier-automationbench-1.0.6\\\",[\\\"AutomationBench\\\",\\\"1.0.6\\\",\\\"전체\\\"]]\",\"[\\\"gpt-6-astra\\\",\\\"6\\\",\\\"agent\\\",\\\"max\\\",\\\"search (BM25 상위 5개 API 스키마) / execute; 47개 모의 앱 · 6개 업무 분야\\\",null,\\\"격리된 모의 회사 · API 모드 · task당 최대 50단계 · 비공개 held-out 평가 세트\\\",null,\\\"AutomationBench API 모드 (에이전트 이름 미공개)\\\",null,\\\"zapier-automationbench-1.0.6\\\",[\\\"AutomationBench\\\",\\\"1.0.6\\\",\\\"전체\\\"]]\",\"[\\\"gpt-6-astra\\\",\\\"6\\\",\\\"agent\\\",\\\"medium\\\",\\\"search (BM25 상위 5개 API 스키마) / execute; 47개 모의 앱 · 6개 업무 분야\\\",null,\\\"격리된 모의 회사 · API 모드 · task당 최대 50단계 · 비공개 held-out 평가 세트\\\",null,\\\"AutomationBench API 모드 (에이전트 이름 미공개)\\\",null,\\\"zapier-automationbench-1.0.6\\\",[\\\"AutomationBench\\\",\\\"1.0.6\\\",\\\"전체\\\"]]\",\"[\\\"gpt-6-astra\\\",\\\"6\\\",\\\"agent\\\",\\\"xhigh\\\",\\\"search (BM25 상위 5개 API 스키마) / execute; 47개 모의 앱 · 6개 업무 분야\\\",null,\\\"격리된 모의 회사 · API 모드 · task당 최대 50단계 · 비공개 held-out 평가 세트\\\",null,\\\"AutomationBench API 모드 (에이전트 이름 미공개)\\\",null,\\\"zapier-automationbench-1.0.6\\\",[\\\"AutomationBench\\\",\\\"1.0.6\\\",\\\"전체\\\"]]\"]]",
+      "scope": "workflow",
+      "type": "agent",
+      "configIds": [
+        "[\"claude-opus-5-5\",\"5.5\",\"agent\",\"max\",\"search (BM25 상위 5개 API 스키마) / execute; 47개 모의 앱 · 6개 업무 분야\",null,\"격리된 모의 회사 · API 모드 · task당 최대 50단계 · 비공개 held-out 평가 세트\",\"제공사 기본 fallback 라우팅\",\"AutomationBench API 모드 (에이전트 이름 미공개)\",null,\"zapier-automationbench-1.0.6\",[\"AutomationBench\",\"1.0.6\",\"전체\"]]",
+        "[\"claude-opus-5-5\",\"5.5\",\"agent\",\"xhigh\",\"search (BM25 상위 5개 API 스키마) / execute; 47개 모의 앱 · 6개 업무 분야\",null,\"격리된 모의 회사 · API 모드 · task당 최대 50단계 · 비공개 held-out 평가 세트\",\"제공사 기본 fallback 라우팅\",\"AutomationBench API 모드 (에이전트 이름 미공개)\",null,\"zapier-automationbench-1.0.6\",[\"AutomationBench\",\"1.0.6\",\"전체\"]]",
+        "[\"claude-sonnet-5-5\",\"5.5\",\"agent\",\"max\",\"search (BM25 상위 5개 API 스키마) / execute; 47개 모의 앱 · 6개 업무 분야\",null,\"격리된 모의 회사 · API 모드 · task당 최대 50단계 · 비공개 held-out 평가 세트\",\"제공사 기본 fallback 라우팅\",\"AutomationBench API 모드 (에이전트 이름 미공개)\",null,\"zapier-automationbench-1.0.6\",[\"AutomationBench\",\"1.0.6\",\"전체\"]]",
+        "[\"claude-sonnet-5-5\",\"5.5\",\"agent\",\"xhigh\",\"search (BM25 상위 5개 API 스키마) / execute; 47개 모의 앱 · 6개 업무 분야\",null,\"격리된 모의 회사 · API 모드 · task당 최대 50단계 · 비공개 held-out 평가 세트\",\"제공사 기본 fallback 라우팅\",\"AutomationBench API 모드 (에이전트 이름 미공개)\",null,\"zapier-automationbench-1.0.6\",[\"AutomationBench\",\"1.0.6\",\"전체\"]]",
+        "[\"gemini-4-argon\",\"gemini-4-argon\",\"agent\",\"high\",\"search (BM25 상위 5개 API 스키마) / execute; 47개 모의 앱 · 6개 업무 분야\",null,\"격리된 모의 회사 · API 모드 · task당 최대 50단계 · 비공개 held-out 평가 세트\",null,\"AutomationBench API 모드 (에이전트 이름 미공개)\",null,\"zapier-automationbench-1.0.6\",[\"AutomationBench\",\"1.0.6\",\"전체\"]]",
+        "[\"gemini-4-argon\",\"gemini-4-argon\",\"agent\",\"medium\",\"search (BM25 상위 5개 API 스키마) / execute; 47개 모의 앱 · 6개 업무 분야\",null,\"격리된 모의 회사 · API 모드 · task당 최대 50단계 · 비공개 held-out 평가 세트\",null,\"AutomationBench API 모드 (에이전트 이름 미공개)\",null,\"zapier-automationbench-1.0.6\",[\"AutomationBench\",\"1.0.6\",\"전체\"]]",
+        "[\"gpt-6-astra\",\"6\",\"agent\",\"high\",\"search (BM25 상위 5개 API 스키마) / execute; 47개 모의 앱 · 6개 업무 분야\",null,\"격리된 모의 회사 · API 모드 · task당 최대 50단계 · 비공개 held-out 평가 세트\",null,\"AutomationBench API 모드 (에이전트 이름 미공개)\",null,\"zapier-automationbench-1.0.6\",[\"AutomationBench\",\"1.0.6\",\"전체\"]]",
+        "[\"gpt-6-astra\",\"6\",\"agent\",\"max\",\"search (BM25 상위 5개 API 스키마) / execute; 47개 모의 앱 · 6개 업무 분야\",null,\"격리된 모의 회사 · API 모드 · task당 최대 50단계 · 비공개 held-out 평가 세트\",null,\"AutomationBench API 모드 (에이전트 이름 미공개)\",null,\"zapier-automationbench-1.0.6\",[\"AutomationBench\",\"1.0.6\",\"전체\"]]",
+        "[\"gpt-6-astra\",\"6\",\"agent\",\"medium\",\"search (BM25 상위 5개 API 스키마) / execute; 47개 모의 앱 · 6개 업무 분야\",null,\"격리된 모의 회사 · API 모드 · task당 최대 50단계 · 비공개 held-out 평가 세트\",null,\"AutomationBench API 모드 (에이전트 이름 미공개)\",null,\"zapier-automationbench-1.0.6\",[\"AutomationBench\",\"1.0.6\",\"전체\"]]",
+        "[\"gpt-6-astra\",\"6\",\"agent\",\"xhigh\",\"search (BM25 상위 5개 API 스키마) / execute; 47개 모의 앱 · 6개 업무 분야\",null,\"격리된 모의 회사 · API 모드 · task당 최대 50단계 · 비공개 held-out 평가 세트\",null,\"AutomationBench API 모드 (에이전트 이름 미공개)\",null,\"zapier-automationbench-1.0.6\",[\"AutomationBench\",\"1.0.6\",\"전체\"]]"
+      ],
+      "tableIds": [
+        "zapier-automationbench-1.0.6"
+      ],
+      "sources": [
+        {
+          "url": "https://zapier.com/benchmarks",
+          "checkedAt": "2026-10-28"
+        }
+      ],
+      "passed": false,
+      "reasons": [
+        "서로 다른 평가 노드 3개 미만",
+        "검증 가능한 관측 부족 또는 연결 단절",
+        "기준선 대비 Brier 10% 개선 미달",
+        "순서 정확도 65% 미달",
+        "평가 제거 시 연결·순위 안정성 부족"
+      ],
+      "scores": [
+        {
+          "configId": "[\"claude-opus-5-5\",\"5.5\",\"agent\",\"max\",\"search (BM25 상위 5개 API 스키마) / execute; 47개 모의 앱 · 6개 업무 분야\",null,\"격리된 모의 회사 · API 모드 · task당 최대 50단계 · 비공개 held-out 평가 세트\",\"제공사 기본 fallback 라우팅\",\"AutomationBench API 모드 (에이전트 이름 미공개)\",null,\"zapier-automationbench-1.0.6\",[\"AutomationBench\",\"1.0.6\",\"전체\"]]",
+          "modelId": "claude-opus-5-5",
+          "modelVersion": "5.5",
+          "effort": "max",
+          "type": "agent",
+          "theta": 0.10932522822354786,
+          "score": null,
+          "rank": null,
+          "nearTie": false,
+          "sensitivity": [
+            53,
+            53
+          ],
+          "observations": 1,
+          "tables": 1,
+          "evaluators": [
+            "Zapier"
+          ],
+          "sourceConcentrated": true,
+          "uncertain": true,
+          "execution": {
+            "agentName": "AutomationBench API 모드 (에이전트 이름 미공개)",
+            "agentVersion": null,
+            "tools": "search (BM25 상위 5개 API 스키마) / execute; 47개 모의 앱 · 6개 업무 분야",
+            "harness": null,
+            "environment": "격리된 모의 회사 · API 모드 · task당 최대 50단계 · 비공개 held-out 평가 세트",
+            "fallbacks": "제공사 기본 fallback 라우팅"
+          }
+        },
+        {
+          "configId": "[\"claude-opus-5-5\",\"5.5\",\"agent\",\"xhigh\",\"search (BM25 상위 5개 API 스키마) / execute; 47개 모의 앱 · 6개 업무 분야\",null,\"격리된 모의 회사 · API 모드 · task당 최대 50단계 · 비공개 held-out 평가 세트\",\"제공사 기본 fallback 라우팅\",\"AutomationBench API 모드 (에이전트 이름 미공개)\",null,\"zapier-automationbench-1.0.6\",[\"AutomationBench\",\"1.0.6\",\"전체\"]]",
+          "modelId": "claude-opus-5-5",
+          "modelVersion": "5.5",
+          "effort": "xhigh",
+          "type": "agent",
+          "theta": -0.2552882432904655,
+          "score": null,
+          "rank": null,
+          "nearTie": false,
+          "sensitivity": [
+            44,
+            44
+          ],
+          "observations": 1,
+          "tables": 1,
+          "evaluators": [
+            "Zapier"
+          ],
+          "sourceConcentrated": true,
+          "uncertain": true,
+          "execution": {
+            "agentName": "AutomationBench API 모드 (에이전트 이름 미공개)",
+            "agentVersion": null,
+            "tools": "search (BM25 상위 5개 API 스키마) / execute; 47개 모의 앱 · 6개 업무 분야",
+            "harness": null,
+            "environment": "격리된 모의 회사 · API 모드 · task당 최대 50단계 · 비공개 held-out 평가 세트",
+            "fallbacks": "제공사 기본 fallback 라우팅"
+          }
+        },
+        {
+          "configId": "[\"claude-sonnet-5-5\",\"5.5\",\"agent\",\"max\",\"search (BM25 상위 5개 API 스키마) / execute; 47개 모의 앱 · 6개 업무 분야\",null,\"격리된 모의 회사 · API 모드 · task당 최대 50단계 · 비공개 held-out 평가 세트\",\"제공사 기본 fallback 라우팅\",\"AutomationBench API 모드 (에이전트 이름 미공개)\",null,\"zapier-automationbench-1.0.6\",[\"AutomationBench\",\"1.0.6\",\"전체\"]]",
+          "modelId": "claude-sonnet-5-5",
+          "modelVersion": "5.5",
+          "effort": "max",
+          "type": "agent",
+          "theta": 0.18226481860110386,
+          "score": null,
+          "rank": null,
+          "nearTie": false,
+          "sensitivity": [
+            55,
+            55
+          ],
+          "observations": 1,
+          "tables": 1,
+          "evaluators": [
+            "Zapier"
+          ],
+          "sourceConcentrated": true,
+          "uncertain": true,
+          "execution": {
+            "agentName": "AutomationBench API 모드 (에이전트 이름 미공개)",
+            "agentVersion": null,
+            "tools": "search (BM25 상위 5개 API 스키마) / execute; 47개 모의 앱 · 6개 업무 분야",
+            "harness": null,
+            "environment": "격리된 모의 회사 · API 모드 · task당 최대 50단계 · 비공개 held-out 평가 세트",
+            "fallbacks": "제공사 기본 fallback 라우팅"
+          }
+        },
+        {
+          "configId": "[\"claude-sonnet-5-5\",\"5.5\",\"agent\",\"xhigh\",\"search (BM25 상위 5개 API 스키마) / execute; 47개 모의 앱 · 6개 업무 분야\",null,\"격리된 모의 회사 · API 모드 · task당 최대 50단계 · 비공개 held-out 평가 세트\",\"제공사 기본 fallback 라우팅\",\"AutomationBench API 모드 (에이전트 이름 미공개)\",null,\"zapier-automationbench-1.0.6\",[\"AutomationBench\",\"1.0.6\",\"전체\"]]",
+          "modelId": "claude-sonnet-5-5",
+          "modelVersion": "5.5",
+          "effort": "xhigh",
+          "type": "agent",
+          "theta": -0.18226481860110383,
+          "score": null,
+          "rank": null,
+          "nearTie": false,
+          "sensitivity": [
+            45,
+            47
+          ],
+          "observations": 1,
+          "tables": 1,
+          "evaluators": [
+            "Zapier"
+          ],
+          "sourceConcentrated": true,
+          "uncertain": true,
+          "execution": {
+            "agentName": "AutomationBench API 모드 (에이전트 이름 미공개)",
+            "agentVersion": null,
+            "tools": "search (BM25 상위 5개 API 스키마) / execute; 47개 모의 앱 · 6개 업무 분야",
+            "harness": null,
+            "environment": "격리된 모의 회사 · API 모드 · task당 최대 50단계 · 비공개 held-out 평가 세트",
+            "fallbacks": "제공사 기본 fallback 라우팅"
+          }
+        },
+        {
+          "configId": "[\"gemini-4-argon\",\"gemini-4-argon\",\"agent\",\"high\",\"search (BM25 상위 5개 API 스키마) / execute; 47개 모의 앱 · 6개 업무 분야\",null,\"격리된 모의 회사 · API 모드 · task당 최대 50단계 · 비공개 held-out 평가 세트\",null,\"AutomationBench API 모드 (에이전트 이름 미공개)\",null,\"zapier-automationbench-1.0.6\",[\"AutomationBench\",\"1.0.6\",\"전체\"]]",
+          "modelId": "gemini-4-argon",
+          "modelVersion": "gemini-4-argon",
+          "effort": "high",
+          "type": "agent",
+          "theta": 0.32842839068407964,
+          "score": null,
+          "rank": null,
+          "nearTie": false,
+          "sensitivity": [
+            58,
+            58
+          ],
+          "observations": 1,
+          "tables": 1,
+          "evaluators": [
+            "Zapier"
+          ],
+          "sourceConcentrated": true,
+          "uncertain": true,
+          "execution": {
+            "agentName": "AutomationBench API 모드 (에이전트 이름 미공개)",
+            "agentVersion": null,
+            "tools": "search (BM25 상위 5개 API 스키마) / execute; 47개 모의 앱 · 6개 업무 분야",
+            "harness": null,
+            "environment": "격리된 모의 회사 · API 모드 · task당 최대 50단계 · 비공개 held-out 평가 세트",
+            "fallbacks": null
+          }
+        },
+        {
+          "configId": "[\"gemini-4-argon\",\"gemini-4-argon\",\"agent\",\"medium\",\"search (BM25 상위 5개 API 스키마) / execute; 47개 모의 앱 · 6개 업무 분야\",null,\"격리된 모의 회사 · API 모드 · task당 최대 50단계 · 비공개 held-out 평가 세트\",null,\"AutomationBench API 모드 (에이전트 이름 미공개)\",null,\"zapier-automationbench-1.0.6\",[\"AutomationBench\",\"1.0.6\",\"전체\"]]",
+          "modelId": "gemini-4-argon",
+          "modelVersion": "gemini-4-argon",
+          "effort": "medium",
+          "type": "agent",
+          "theta": 0.2552882432904655,
+          "score": null,
+          "rank": null,
+          "nearTie": false,
+          "sensitivity": [
+            56,
+            56
+          ],
+          "observations": 1,
+          "tables": 1,
+          "evaluators": [
+            "Zapier"
+          ],
+          "sourceConcentrated": true,
+          "uncertain": true,
+          "execution": {
+            "agentName": "AutomationBench API 모드 (에이전트 이름 미공개)",
+            "agentVersion": null,
+            "tools": "search (BM25 상위 5개 API 스키마) / execute; 47개 모의 앱 · 6개 업무 분야",
+            "harness": null,
+            "environment": "격리된 모의 회사 · API 모드 · task당 최대 50단계 · 비공개 held-out 평가 세트",
+            "fallbacks": null
+          }
+        },
+        {
+          "configId": "[\"gpt-6-astra\",\"6\",\"agent\",\"high\",\"search (BM25 상위 5개 API 스키마) / execute; 47개 모의 앱 · 6개 업무 분야\",null,\"격리된 모의 회사 · API 모드 · task당 최대 50단계 · 비공개 held-out 평가 세트\",null,\"AutomationBench API 모드 (에이전트 이름 미공개)\",null,\"zapier-automationbench-1.0.6\",[\"AutomationBench\",\"1.0.6\",\"전체\"]]",
+          "modelId": "gpt-6-astra",
+          "modelVersion": "6",
+          "effort": "high",
+          "type": "agent",
+          "theta": -0.10932522822354787,
+          "score": null,
+          "rank": null,
+          "nearTie": false,
+          "sensitivity": [
+            45,
+            47
+          ],
+          "observations": 1,
+          "tables": 1,
+          "evaluators": [
+            "Zapier"
+          ],
+          "sourceConcentrated": true,
+          "uncertain": true,
+          "execution": {
+            "agentName": "AutomationBench API 모드 (에이전트 이름 미공개)",
+            "agentVersion": null,
+            "tools": "search (BM25 상위 5개 API 스키마) / execute; 47개 모의 앱 · 6개 업무 분야",
+            "harness": null,
+            "environment": "격리된 모의 회사 · API 모드 · task당 최대 50단계 · 비공개 held-out 평가 세트",
+            "fallbacks": null
+          }
+        },
+        {
+          "configId": "[\"gpt-6-astra\",\"6\",\"agent\",\"max\",\"search (BM25 상위 5개 API 스키마) / execute; 47개 모의 앱 · 6개 업무 분야\",null,\"격리된 모의 회사 · API 모드 · task당 최대 50단계 · 비공개 held-out 평가 세트\",null,\"AutomationBench API 모드 (에이전트 이름 미공개)\",null,\"zapier-automationbench-1.0.6\",[\"AutomationBench\",\"1.0.6\",\"전체\"]]",
+          "modelId": "gpt-6-astra",
+          "modelVersion": "6",
+          "effort": "max",
+          "type": "agent",
+          "theta": 0.036436123016647455,
+          "score": null,
+          "rank": null,
+          "nearTie": false,
+          "sensitivity": [
+            51,
+            51
+          ],
+          "observations": 1,
+          "tables": 1,
+          "evaluators": [
+            "Zapier"
+          ],
+          "sourceConcentrated": true,
+          "uncertain": true,
+          "execution": {
+            "agentName": "AutomationBench API 모드 (에이전트 이름 미공개)",
+            "agentVersion": null,
+            "tools": "search (BM25 상위 5개 API 스키마) / execute; 47개 모의 앱 · 6개 업무 분야",
+            "harness": null,
+            "environment": "격리된 모의 회사 · API 모드 · task당 최대 50단계 · 비공개 held-out 평가 세트",
+            "fallbacks": null
+          }
+        },
+        {
+          "configId": "[\"gpt-6-astra\",\"6\",\"agent\",\"medium\",\"search (BM25 상위 5개 API 스키마) / execute; 47개 모의 앱 · 6개 업무 분야\",null,\"격리된 모의 회사 · API 모드 · task당 최대 50단계 · 비공개 held-out 평가 세트\",null,\"AutomationBench API 모드 (에이전트 이름 미공개)\",null,\"zapier-automationbench-1.0.6\",[\"AutomationBench\",\"1.0.6\",\"전체\"]]",
+          "modelId": "gpt-6-astra",
+          "modelVersion": "6",
+          "effort": "medium",
+          "type": "agent",
+          "theta": -0.3284283906840796,
+          "score": null,
+          "rank": null,
+          "nearTie": false,
+          "sensitivity": [
+            42,
+            42
+          ],
+          "observations": 1,
+          "tables": 1,
+          "evaluators": [
+            "Zapier"
+          ],
+          "sourceConcentrated": true,
+          "uncertain": true,
+          "execution": {
+            "agentName": "AutomationBench API 모드 (에이전트 이름 미공개)",
+            "agentVersion": null,
+            "tools": "search (BM25 상위 5개 API 스키마) / execute; 47개 모의 앱 · 6개 업무 분야",
+            "harness": null,
+            "environment": "격리된 모의 회사 · API 모드 · task당 최대 50단계 · 비공개 held-out 평가 세트",
+            "fallbacks": null
+          }
+        },
+        {
+          "configId": "[\"gpt-6-astra\",\"6\",\"agent\",\"xhigh\",\"search (BM25 상위 5개 API 스키마) / execute; 47개 모의 앱 · 6개 업무 분야\",null,\"격리된 모의 회사 · API 모드 · task당 최대 50단계 · 비공개 held-out 평가 세트\",null,\"AutomationBench API 모드 (에이전트 이름 미공개)\",null,\"zapier-automationbench-1.0.6\",[\"AutomationBench\",\"1.0.6\",\"전체\"]]",
+          "modelId": "gpt-6-astra",
+          "modelVersion": "6",
+          "effort": "xhigh",
+          "type": "agent",
+          "theta": -0.036436123016647476,
+          "score": null,
+          "rank": null,
+          "nearTie": false,
+          "sensitivity": [
+            49,
+            49
+          ],
+          "observations": 1,
+          "tables": 1,
+          "evaluators": [
+            "Zapier"
+          ],
+          "sourceConcentrated": true,
+          "uncertain": true,
+          "execution": {
+            "agentName": "AutomationBench API 모드 (에이전트 이름 미공개)",
+            "agentVersion": null,
+            "tools": "search (BM25 상위 5개 API 스키마) / execute; 47개 모의 앱 · 6개 업무 분야",
+            "harness": null,
+            "environment": "격리된 모의 회사 · API 모드 · task당 최대 50단계 · 비공개 held-out 평가 세트",
+            "fallbacks": null
+          }
+        }
+      ],
+      "validation": {
+        "totalFolds": 10,
+        "evaluableFolds": 0,
+        "disconnectedFolds": 10,
+        "predictions": 0,
+        "brier": null,
+        "baselineBrier": null,
+        "winRateBrier": null,
+        "accuracy": null,
+        "leaveOutAgreement": null,
+        "leaveOutConnected": 0,
+        "perturbAgreement": 0.9977777777777778
+      }
+    },
+    {
+      "id": "[\"general\",\"model\",[\"[\\\"Qwen/Qwen3-235B-A22B-Instruct-2507\\\",\\\"Qwen3-235B-A22B-Instruct-2507\\\",\\\"model\\\",\\\"non-thinking\\\",null,null,null,null,null,null,\\\"https://huggingface.co/Qwen/Qwen3-235B-A22B-Instruct-2507\\\",null]\",\"[\\\"deepseek-ai/DeepSeek-V3-0324\\\",\\\"DeepSeek-V3-0324\\\",\\\"model\\\",null,null,null,null,null,null,null,\\\"https://huggingface.co/Qwen/Qwen3-235B-A22B-Instruct-2507\\\",[\\\"Creative Writing\\\",\\\"v3\\\",null]]\",\"[\\\"deepseek-ai/DeepSeek-V3-0324\\\",\\\"DeepSeek-V3-0324\\\",\\\"model\\\",null,null,null,null,null,null,null,\\\"https://huggingface.co/Qwen/Qwen3-235B-A22B-Instruct-2507\\\",[\\\"LiveCodeBench\\\",\\\"v6\\\",\\\"2025-02 — 2025-05\\\"]]\",\"[\\\"moonshotai/Kimi-K2-Instruct\\\",\\\"Kimi-K2-Instruct\\\",\\\"model\\\",\\\"non-thinking\\\",null,null,null,null,null,null,\\\"https://huggingface.co/Qwen/Qwen3-235B-A22B-Instruct-2507\\\",null]\"]]",
+      "scope": "general",
+      "type": "model",
+      "configIds": [
+        "[\"Qwen/Qwen3-235B-A22B-Instruct-2507\",\"Qwen3-235B-A22B-Instruct-2507\",\"model\",\"non-thinking\",null,null,null,null,null,null,\"https://huggingface.co/Qwen/Qwen3-235B-A22B-Instruct-2507\",null]",
+        "[\"deepseek-ai/DeepSeek-V3-0324\",\"DeepSeek-V3-0324\",\"model\",null,null,null,null,null,null,null,\"https://huggingface.co/Qwen/Qwen3-235B-A22B-Instruct-2507\",[\"Creative Writing\",\"v3\",null]]",
+        "[\"deepseek-ai/DeepSeek-V3-0324\",\"DeepSeek-V3-0324\",\"model\",null,null,null,null,null,null,null,\"https://huggingface.co/Qwen/Qwen3-235B-A22B-Instruct-2507\",[\"LiveCodeBench\",\"v6\",\"2025-02 — 2025-05\"]]",
+        "[\"moonshotai/Kimi-K2-Instruct\",\"Kimi-K2-Instruct\",\"model\",\"non-thinking\",null,null,null,null,null,null,\"https://huggingface.co/Qwen/Qwen3-235B-A22B-Instruct-2507\",null]"
+      ],
+      "tableIds": [
+        "qwen-lcb-v6-feb-may",
+        "qwen-creative-v3"
+      ],
+      "sources": [
+        {
+          "url": "https://huggingface.co/Qwen/Qwen3-235B-A22B-Instruct-2507",
+          "checkedAt": "2026-10-28"
+        }
+      ],
+      "passed": false,
+      "reasons": [
+        "서로 다른 평가 노드 3개 미만",
+        "검증 가능한 관측 부족 또는 연결 단절",
+        "기준선 대비 Brier 10% 개선 미달",
+        "순서 정확도 65% 미달",
+        "평가 제거 시 연결·순위 안정성 부족"
+      ],
+      "scores": [
+        {
+          "configId": "[\"Qwen/Qwen3-235B-A22B-Instruct-2507\",\"Qwen3-235B-A22B-Instruct-2507\",\"model\",\"non-thinking\",null,null,null,null,null,null,\"https://huggingface.co/Qwen/Qwen3-235B-A22B-Instruct-2507\",null]",
+          "modelId": "Qwen/Qwen3-235B-A22B-Instruct-2507",
+          "modelVersion": "Qwen3-235B-A22B-Instruct-2507",
+          "effort": "non-thinking",
+          "type": "model",
+          "theta": 0.6088812209845771,
+          "score": null,
+          "rank": null,
+          "nearTie": false,
+          "sensitivity": [
+            65,
+            65
+          ],
+          "observations": 2,
+          "tables": 2,
+          "evaluators": [
+            "Alibaba Qwen"
+          ],
+          "sourceConcentrated": true,
+          "uncertain": true,
+          "execution": {
+            "agentName": null,
+            "agentVersion": null,
+            "tools": null,
+            "harness": null,
+            "environment": null,
+            "fallbacks": null
+          }
+        },
+        {
+          "configId": "[\"deepseek-ai/DeepSeek-V3-0324\",\"DeepSeek-V3-0324\",\"model\",null,null,null,null,null,null,null,\"https://huggingface.co/Qwen/Qwen3-235B-A22B-Instruct-2507\",[\"Creative Writing\",\"v3\",null]]",
+          "modelId": "deepseek-ai/DeepSeek-V3-0324",
+          "modelVersion": "DeepSeek-V3-0324",
+          "effort": null,
+          "type": "model",
+          "theta": -0.6088812209845771,
+          "score": null,
+          "rank": null,
+          "nearTie": false,
+          "sensitivity": [
+            35,
+            35
+          ],
+          "observations": 1,
+          "tables": 1,
+          "evaluators": [
+            "Alibaba Qwen"
+          ],
+          "sourceConcentrated": true,
+          "uncertain": true,
+          "execution": {
+            "agentName": null,
+            "agentVersion": null,
+            "tools": null,
+            "harness": null,
+            "environment": null,
+            "fallbacks": null
+          }
+        },
+        {
+          "configId": "[\"deepseek-ai/DeepSeek-V3-0324\",\"DeepSeek-V3-0324\",\"model\",null,null,null,null,null,null,null,\"https://huggingface.co/Qwen/Qwen3-235B-A22B-Instruct-2507\",[\"LiveCodeBench\",\"v6\",\"2025-02 — 2025-05\"]]",
+          "modelId": "deepseek-ai/DeepSeek-V3-0324",
+          "modelVersion": "DeepSeek-V3-0324",
+          "effort": null,
+          "type": "model",
+          "theta": -0.6088812209845771,
+          "score": null,
+          "rank": null,
+          "nearTie": false,
+          "sensitivity": [
+            35,
+            35
+          ],
+          "observations": 1,
+          "tables": 1,
+          "evaluators": [
+            "Alibaba Qwen"
+          ],
+          "sourceConcentrated": true,
+          "uncertain": true,
+          "execution": {
+            "agentName": null,
+            "agentVersion": null,
+            "tools": null,
+            "harness": null,
+            "environment": null,
+            "fallbacks": null
+          }
+        },
+        {
+          "configId": "[\"moonshotai/Kimi-K2-Instruct\",\"Kimi-K2-Instruct\",\"model\",\"non-thinking\",null,null,null,null,null,null,\"https://huggingface.co/Qwen/Qwen3-235B-A22B-Instruct-2507\",null]",
+          "modelId": "moonshotai/Kimi-K2-Instruct",
+          "modelVersion": "Kimi-K2-Instruct",
+          "effort": "non-thinking",
+          "type": "model",
+          "theta": 0.6088812209845771,
+          "score": null,
+          "rank": null,
+          "nearTie": false,
+          "sensitivity": [
+            65,
+            65
+          ],
+          "observations": 2,
+          "tables": 2,
+          "evaluators": [
+            "Alibaba Qwen"
+          ],
+          "sourceConcentrated": true,
+          "uncertain": true,
+          "execution": {
+            "agentName": null,
+            "agentVersion": null,
+            "tools": null,
+            "harness": null,
+            "environment": null,
+            "fallbacks": null
+          }
+        }
+      ],
+      "validation": {
+        "totalFolds": 6,
+        "evaluableFolds": 4,
+        "disconnectedFolds": 2,
+        "predictions": 8,
+        "brier": 0.27558778983147164,
+        "baselineBrier": 0.25,
+        "winRateBrier": 0.3039909297052155,
+        "accuracy": 0.5,
+        "leaveOutAgreement": 0.8333333333333334,
+        "leaveOutConnected": 0,
+        "perturbAgreement": 1
+      }
+    }
+  ],
+  "published": [],
+  "history": [
+    {
+      "at": "2026-10-29T04:22:25.097Z",
+      "datasetHash": "a9fdf7e5e2fbda6a8cc9db37cc5bba5bed4af9dd29195cba87ec44ee0fa50b13",
+      "passed": 0,
+      "retained": 0,
+      "change": "데이터 또는 추정 입력 변경"
+    },
+    {
+      "at": "2026-10-29T04:26:34.361Z",
+      "datasetHash": "a9fdf7e5e2fbda6a8cc9db37cc5bba5bed4af9dd29195cba87ec44ee0fa50b13",
+      "passed": 0,
+      "retained": 0,
+      "change": "동일 데이터 재검증"
+    }
+  ]
+}

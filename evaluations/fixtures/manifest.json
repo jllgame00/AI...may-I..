@@ -1,0 +1,9 @@
+{
+  "version": "fixtures-v1",
+  "provenance": "synthetic",
+  "files": {
+    "sales-v1.xlsx": "ebea45fed2e722de1c3460d737b11c2807f41e2867557ac5633afa1e6989d209",
+    "library-pilot-v1.pdf": "d9f1e8c18d79c53700a984fff0c8eb47f71a084f5daa9134600d9fdf01f1327f"
+  },
+  "bundleSha256": "379f6ed7d4f108c9110ea76dc0f34e6e95a4ab19ce322c21c2525c1904dc813e"
+}

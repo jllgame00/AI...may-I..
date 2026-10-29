@@ -1,0 +1,7 @@
+import type { CapabilityId, WorkCategory } from '../providerTypes'
+export const PROVIDER_POLICY={version:'provider-evidence-v1',maxFeatured:3,weights:{fit:.4,quality:.3,cost:.2,ease:.1},scoring:'withheld-until-direct-quality-and-comparable-ease-evidence'} as const
+export const capabilityLabels:Record<CapabilityId,string>={textGeneration:'텍스트 작성',surveyDraft:'설문 문항 작성',formCreation:'실제 설문 폼 생성',fileUpload:'파일 업로드',pdfUpload:'PDF 업로드',pdfAnalysis:'PDF 내용 분석',pdfCreation:'PDF 파일 생성',spreadsheetAnalysis:'기존 XLSX·시트 분석',spreadsheetCreation:'XLSX 파일 생성',imageInput:'이미지 입력·이해',imageGeneration:'실제 이미지 생성',codeGeneration:'코드 작성·오류 분석',codeExecution:'코드 실행',webSearch:'웹 검색',sourceVerification:'출처 사실 검증',slidesCreation:'발표자료 파일 생성',videoGeneration:'영상 생성'}
+export const categoryLabels:Record<WorkCategory,string>={analysis:'자료 분석',writing:'글·발표 대본',coding:'코드 작업',image:'이미지 생성',slides:'발표자료 생성',video:'영상 생성'}
+export const REQUIRED_PROVIDER_IDS=['openai','anthropic','google','xai','deepseek','alibaba','moonshot','perplexity','microsoft','adobe','runway','mistral']
+export const REQUIRED_SERVICE_IDS=['chatgpt','claude','gemini','notebooklm','grok','deepseek','qwen','kimi','perplexity','copilot','firefly','runway','mistral']
+export const REQUIRED_SERVICE_OWNERS:Record<string,string>={chatgpt:'openai',claude:'anthropic',gemini:'google',notebooklm:'google',grok:'xai',deepseek:'deepseek',qwen:'alibaba',kimi:'moonshot',perplexity:'perplexity',copilot:'microsoft',firefly:'adobe',runway:'runway',mistral:'mistral'}

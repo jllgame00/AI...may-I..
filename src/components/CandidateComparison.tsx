@@ -1,62 +1,44 @@
-import { primaryAccessCandidates } from '../lib/modelAccess'
-import { EvaluationFact } from './CurrentModelEvidence'
-import { candidateSummary, sourceLabel } from '../lib/candidatePresentation'
-import { assessCandidate, candidateGroup, exactWebModel, taskCandidateOrder } from '../lib/taskReadiness'
-import { recommendationDisplay } from '../lib/recommendationDisplay'
-import WeightedComparison from './WeightedComparison'
+import { capabilityLabels, PROVIDER_POLICY } from '../data/providerPolicy'
+import { accessSummary, conditionNotes, featureStatus, supportStatus, usageSteps } from '../lib/providerPresentation'
+import type { ProviderRecommendation, PlanAssessment } from '../providerTypes'
 import type { Comparison, PromptRequest } from '../types'
-import type { Recommendation, TaskRecommendationEntry } from '../recommendationTypes'
-
-export default function CandidateComparison({comparison,request,selected,onSelect,onEdit,needsCheckOpen=false,onNeedsCheckToggle}:{comparison:Comparison;request:PromptRequest;selected:string|null;onSelect:(id:string)=>void;onEdit:()=>void;needsCheckOpen?:boolean;onNeedsCheckToggle?:(open:boolean)=>void}){
-  const d=comparison.decision
-  if(d?.weighted)return <WeightedComparison comparison={comparison} request={request} weighted={d.weighted} selected={selected} onSelect={onSelect} onEdit={onEdit} needsCheckOpen={needsCheckOpen} onNeedsCheckToggle={onNeedsCheckToggle}/>
-  const models=primaryAccessCandidates(comparison.recommendations,comparison.analysis.requiredFeatures,selected)
-  const entryFor=(c:Recommendation)=>c.model?[...(d?.entries??[]),...(d?.alternatives??[])].find(e=>e.candidate.model?.id===c.model?.id):undefined
-  const ordered=[...models].sort((a,b)=>(d?.mode==='ranked'?(entryFor(a)?.rank??Infinity)-(entryFor(b)?.rank??Infinity):0)||taskCandidateOrder(a,b,comparison.analysis.requiredFeatures))
-  const recommendations=recommendationDisplay(comparison,models)
-  const featured=recommendations.slice(0,3).map(e=>e.candidate)
-  const rest=recommendations.slice(3).map(e=>e.candidate)
-  const recommendationFor=(c:Recommendation)=>recommendations.find(e=>e.candidate.id===c.id)
-  const readyReason=featured.length?candidateSummary(featured[0],comparison.analysis.requiredFeatures).reason:null
-  const sharedReasons=new Set(ordered.map(c=>candidateSummary(c,comparison.analysis.requiredFeatures).reason).filter(reason=>ordered.filter(c=>candidateSummary(c,comparison.analysis.requiredFeatures).reason===reason).length>1))
-  const accountNotes=[...new Set(ordered.flatMap(c=>[...(c.plan.accountChecks??[]),...(c.mapping.accountChecks??[])]))]
-  const card=(c:Recommendation)=>{
-    const e=entryFor(c), summary=candidateSummary(c,comparison.analysis.requiredFeatures)
-    const assessment=c.assessment??assessCandidate(c,comparison.analysis.requiredFeatures)
-    const exact=exactWebModel(c)
-    const recommendation=recommendationFor(c)
-    return <article className="candidate-card" data-candidate-kind={assessment.start} key={c.id}>
-      {recommendation&&<p className="recommendation-rank">추천 {recommendation.tied?'공동 ':''}{recommendation.rank}위 <span>· 추천 판단</span></p>}
-      <p className="candidate-status">{assessment.start==='ready'?'기능·경로 확인':!c.model?'모델 미지정 · 서비스 후보':'추가 확인 필요'}{selected===c.id?' · 선택됨':''}</p>
-      <h2>{c.model?.name??`${c.service.name} ${c.plan.name}`}</h2>
-      <p className="minor-note">{c.service.name} · {c.plan.unassigned?'웹 제공 확인 필요':c.plan.name} · {c.mapping.routeKind==='work'?'Work 웹':'웹 채팅'}</p>
-      {recommendation?<p>{recommendation.reason}</p>:!sharedReasons.has(summary.reason)&&summary.reason!==readyReason&&<p>{summary.reason}</p>}
-      {summary.cardLimit&&<p className="candidate-limit"><strong>확인할 점</strong> {summary.cardLimit}</p>}
-      <button id={`choose-${encodeURIComponent(c.id)}`} className="button primary" onClick={()=>onSelect(c.id)}>{assessment.start==='ready'?'이 모델로 시작':!c.model?'이 서비스로 시작 · 모델 확인':exact?'기능 확인 후 선택':'확인 후 사용할 후보로 선택'}</button>
-      <details><summary>근거·상세 보기</summary><ul>{summary.requirements.map(f=><li key={f}>{f}</li>)}</ul><p>성능 비교: {assessment.performance.status==='comparable'?'해당 평가 집합에서 비교 가능':'미확인'}</p>{e?.rank&&<p>벤치마크 원점수 순위: 집합 내 {e.tied?'공동 ':''}{e.rank}위 · 추천 순위와 별개</p>}<p>{e?.relation}</p><p>{e?.limitation}</p><p>서비스: {c.service.name} · 플랜: {c.plan.name}<br/>모델 ID: {c.model?.id??'미확인'} · 버전: {c.model?.version??'미확인'} · 모드: {c.mapping.mode??'미확인'}</p><p>{c.mapping.note}</p>{c.model?.webReview&&<p>{c.model.webReview.note} · 검토 {c.model.webReview.checkedAt}</p>}{comparison.analysis.requiredFeatures.map(f=><p key={f}>{c.plan.features[f]?.note??'이 경로의 지원 근거 미확인'}</p>)}{e?.evaluation&&<EvaluationFact result={e.evaluation} selectedMode={c.mapping.mode}/>}<p>{c.holds.join(' · ')}</p>{[...new Map([...(c.model?.sources??[]),...(c.model?.webReview?.sources??[]),...c.mapping.sources,...(c.plan.webAccess?.sources??[]),...comparison.analysis.requiredFeatures.flatMap(f=>c.plan.features[f]?.sources??[])].map(s=>[s.url,s])).values()].map(s=><p key={s.url}><a href={s.url} target="_blank" rel="noreferrer">{sourceLabel(s)}</a> · 확인 {s.checkedAt}</p>)}</details>
+interface Props {comparison:Comparison;request:PromptRequest;selected:string|null;onSelect:(id:string,workId?:string)=>void;onEdit:()=>void;needsCheckOpen?:boolean;onNeedsCheckToggle?:(open:boolean)=>void}
+export default function CandidateComparison({comparison,request,selected,onSelect,onEdit,needsCheckOpen=false,onNeedsCheckToggle}:Props){
+  const stateLabel=(status:PlanAssessment['status'])=>({eligible:'공동 우선 후보',conditional:'조건부 후보',excluded:'필수 조건 불일치'}[status])
+  const card=(row:ProviderRecommendation,workId?:string)=>{
+    const access=accessSummary(row,row.alternatives),notes=conditionNotes(row)
+    return <article className="candidate-card" data-provider-id={row.provider.id} data-status={row.status} key={row.provider.id}>
+      <h2>{row.provider.name}</h2><p><strong>{row.service.name}</strong></p><p className="candidate-judgment">{stateLabel(row.status)}{selected===row.id?' · 선택됨':''}</p>
+      <p>{featureStatus(row)} · {row.checks.filter(c=>c.status==='supported').length}/{row.checks.length}개</p>
+      <p>{row.status==='eligible'?'이 작업에 필요한 기능과 이용 조건을 확인했습니다.':row.status==='conditional'?'필수 기능이나 이용 범위를 추가로 확인해야 합니다.':'요청한 기능 또는 무료·예산 조건과 맞지 않습니다.'}</p>
+      <p className="access-summary">{access.selected}</p><p>{access.free}</p>
+      {!!row.strengths.length&&<p>주요 기능: {row.strengths.join(' · ')}</p>}
+      {!!notes.length&&<p className="candidate-limit">{notes.slice(0,2).join(' / ')}</p>}
+      {row.status!=='excluded'&&<button id={`choose-${workId??'all'}-${row.id}`} className="button primary" onClick={()=>onSelect(row.id,workId)}>{row.status==='eligible'?'맞춤 프롬프트 준비하기':'조건 확인 후 프롬프트 준비'}</button>}
+      <details className="provider-details"><summary>회사 상세보기 · {row.provider.name}</summary>
+        <p>대표 서비스: {row.service.name}</p>
+        <h3>주요 기능과 추천 이유</h3>
+        {row.checks.map(c=><p key={c.id}><strong>{capabilityLabels[c.id]}</strong> · {supportStatus(c)}</p>)}
+        {row.preferredChecks.map(c=><p key={`preferred-${c.id}`}>선호 기능 {capabilityLabels[c.id]} · {supportStatus(c)}</p>)}
+        {notes.map(n=><p key={n}>{n}</p>)}
+        <p>{access.selected} · {access.free}</p>
+        <h3>실제 사용 방법</h3><ol>{usageSteps(row).map(step=><li key={step}>{step}</li>)}</ol>
+        <p><a href={row.service.url} target="_blank" rel="noreferrer">{row.service.name} 공식 서비스 열기 ↗</a></p>
+        <p>맞춤 프롬프트는 선택한 뒤 직접 편집·복사할 수 있습니다. 이 앱에서 외부 서비스로 내용을 자동 전송하지 않습니다.</p>
+        <details><summary>공식 이용 안내·확인일</summary>{row.evidence.map(e=><p key={e.id}><a href={e.url} target="_blank" rel="noreferrer">{row.service.name} 공식 이용 안내</a> · 확인 {e.checkedAt}</p>)}{!row.evidence.length&&<p>구체적인 공식 이용 조건을 추가로 확인해야 합니다.</p>}</details>
+      </details>
     </article>
   }
-  const evidenceTable=(entries:TaskRecommendationEntry[])=><div className="table-scroll"><table><thead><tr><th>집합 내 순위</th><th>모델</th><th>원점수</th></tr></thead><tbody>{entries.map(e=><tr key={e.evaluation?.id??e.candidate.id}><td>{e.rank?`${e.tied?'공동 ':''}${e.rank}위`:'순위 없음'}</td><td>{e.candidate.model?.name}</td><td>{e.evaluation?.rawScore??'미확인'} {e.evaluation?.unit}</td></tr>)}</tbody></table></div>
-  return <section className="comparison-page"><button id="back-to-conditions" className="text-button" onClick={onEdit}>← 작업·해석 수정</button><div className="page-heading"><h1 tabIndex={-1}>이 작업에 사용할 모델</h1><p className="task-summary">{request.text}</p></div>
-    <div className="comparison-basis"><p>필수 기능과 정확한 웹 이용 경로가 확인된 모델을 최대 3개 추천합니다. 작업 관련 비교 평가가 있으면 함께 참고하며, 추천 판단은 측정된 성능 순위와 별개입니다. 동등 후보는 이름순 중립 정렬이며 성능 순위를 뜻하지 않습니다.</p>{comparison.analysis.survey?<p>직접 비교 근거가 부족해 설문 분석 성능 순위는 제공하지 않습니다. AIME·HLE·코딩 점수는 설문 분석 순위에 사용하지 않습니다.</p>:<p>{d?.basis}</p>}<p className="minor-note">개인 계정의 도구 활성화·파일 한도·남은 사용량은 확인하지 않았습니다. 시작 전 사용할 계정에서 확인하세요.</p>{!!accountNotes.length&&<details><summary>서비스별 계정 확인 안내</summary><ul>{accountNotes.map(note=><li key={note}>{note}</li>)}</ul></details>}</div>
-    {!!ordered.length&&<div id="recommended-options">{([
-      ['ready','작업을 시작할 후보','필수 기능과 정확한 모델·웹 경로의 공식 근거가 확인됐습니다.'],
-      ['model-check','모델 확인이 필요한 서비스 후보','서비스 수준의 지원입니다. 모델이 확인되기 전에는 특정 모델의 평가값을 연결하지 않습니다.'],
-      ['needs-check','추가 확인이 필요한 후보','각 후보의 모델 제공 또는 필요한 기능을 확인한 뒤 선택하세요.'],
-    ] as const).map(([group,title,note])=>{
-      const candidates=group==='ready'?featured:ordered.filter(c=>candidateGroup(c,comparison.analysis.requiredFeatures)===group)
-      if(!candidates.length)return null
-      const reasons=[...new Set(candidates.map(c=>candidateSummary(c,comparison.analysis.requiredFeatures).reason))].filter(reason=>group==='ready'||sharedReasons.has(reason)&&reason!==readyReason)
-      const section=<section className="candidate-section" data-group={group} id={group==='needs-check'?'needs-check-options':undefined}><h2>{title} ({candidates.length})</h2><p>{note}</p>{reasons.map(reason=><p key={reason}>{reason}</p>)}<div className="candidate-grid">{candidates.map(card)}</div></section>
-      if(group==='needs-check')return <details className="other-services" id="needs-check-candidates" key={group} open={needsCheckOpen} onToggle={e=>onNeedsCheckToggle?.(e.currentTarget.open)}><summary id="needs-check-summary" aria-expanded={needsCheckOpen} aria-controls="needs-check-options">추가 확인이 필요한 후보 보기 ({candidates.length})</summary>{section}</details>
-      return group==='model-check'?<details className="other-services" key={group} open={candidates.some(c=>c.id===selected)||undefined}><summary id="other-services">다른 서비스에서 시작하기 ({candidates.length})</summary>{section}</details>:<div className="candidate-group" key={group}>{section}{group==='ready'&&!!rest.length&&<details className="remaining-models" open={rest.some(c=>c.id===selected)||undefined}><summary>나머지 모델 후보 ({rest.length}) · 공동 순위 포함</summary><p>상단에는 최대 3개만 표시합니다. 같은 추천 순위 안의 표시 순서는 우열을 뜻하지 않습니다.</p><div className="candidate-grid">{rest.map(card)}</div></details>}</div>
-    })}</div>}
-    {!!ordered.length&&!recommendations.length&&<p>필수 기능과 정확한 웹 경로를 모두 확인한 모델이 없어 추천 등수를 정하지 않았습니다.</p>}
-    {!ordered.length&&<p>필수 조건을 충족하는 웹 후보가 없습니다. 확인된 미지원과 미확인을 구분해 조건을 검토해 주세요.</p>}
-    {!!comparison.excluded.length&&<section className="evidence-section"><h2>필수 조건 미지원으로 제외</h2>{comparison.excluded.map(c=><p key={c.plan.id}>{c.plan.name}: {c.reasons.join(' · ')}</p>)}</section>}
-    {d?.representative&&<section className="evidence-section"><h2>벤치마크 원점수 비교: {d.representative.benchmark} {d.representative.version}</h2><p>{d.representative.publisher} · {d.representative.period??'평가 기간 미공개'} · {d.representative.modelCount}개 모델 비교</p><p>{d.representative.selectionReason} 추천 순위와 별개인 평가 집합 내부 순위입니다.</p>{evidenceTable(d.representative.entries)}<p className="minor-note">{d.representative.limitation} API·설치·에이전트 전용 결과는 읽기 전용 근거이며 웹에서 바로 실행할 수 있다는 뜻이 아닙니다.</p></section>}
-    <details className="evidence-section"><summary>전체 비교 범위·다른 평가·출처</summary><p>{d?.examinedCount}건 관측값 중 관련 {d?.relevantCount}건, 등록 모델 {d?.coverage.length}개를 검토했습니다. 누락은 0점이 아닙니다. 서로 다른 평가 집합을 합산하지 않습니다.</p>{d?.groups.filter(g=>g.id!==d.representative?.id).map(g=><details key={g.id}><summary>{g.benchmark} {g.version} · {g.publisher} · {g.modelCount}개 모델</summary><p>{g.selectionReason} · {g.limitation}</p>{evidenceTable(g.entries)}{g.entries.map(e=>e.evaluation&&<EvaluationFact key={e.evaluation.id} result={e.evaluation}/>)}</details>)}
-      {d?.coverage.map(m=><details key={m.modelId}><summary>{m.modelName} · {m.category==='representative'?'대표 집합':m.category==='alternative'?'다른 근거':'근거 부족'}</summary><p>{m.reason}</p>{m.evaluations.map(e=><EvaluationFact key={e.id} result={e}/>)}</details>)}
-    </details>
+  return <section className="comparison-page"><button id="back-to-conditions" className="text-button" onClick={onEdit}>← 작업·조건 수정</button><div className="page-heading"><h1 tabIndex={-1}>이 작업에 맞는 AI 회사</h1><p className="task-summary">{request.text}</p></div>
+    <div className="comparison-basis"><p>필수 기능과 무료·예산 조건을 확인했습니다. 공동 후보는 이름순으로 최대 {PROVIDER_POLICY.maxFeatured}개를 먼저 표시하며, 표시 순서는 품질 순위가 아닙니다.</p></div>
+    <div id="recommended-options"><h2>공동 우선 후보 ({comparison.recommendations.length})</h2>{!comparison.recommendations.length&&<p>모든 필수 조건이 확인된 회사가 없습니다. 조건부 후보나 단계별 선택을 확인하세요.</p>}<div className="candidate-grid">{comparison.recommendations.map(r=>card(r))}</div></div>
+    {!!comparison.remaining.length&&<details className="remaining-models"><summary>나머지 공동 후보 ({comparison.remaining.length})</summary><div className="candidate-grid">{comparison.remaining.map(r=>card(r))}</div></details>}
+    {comparison.requirements.composite&&<section className="candidate-section" id="work-provider-options"><h2>작업 단계별 회사·서비스</h2><p>이미 선택한 서비스가 해당 단계에도 맞으면 계속 사용할 수 있습니다. 추가 구독이나 결제를 자동으로 권하지 않습니다.</p>{comparison.requirements.works.map(work=>{
+      const rows=comparison.byWork[work.id],good=rows.filter(r=>r.status==='eligible'),pending=rows.filter(r=>r.status==='conditional'),max=PROVIDER_POLICY.maxFeatured
+      return <section key={work.id}><h3>{work.label}</h3><div className="candidate-grid">{good.slice(0,max).map(r=>card(r,work.id))}</div>{!good.length&&<p>이 단계의 필수 조건을 모두 확인한 회사가 없습니다.</p>}<details><summary>이 단계의 나머지·조건부 후보 ({good.slice(max).length+pending.length})</summary><div className="candidate-grid">{[...good.slice(max),...pending].map(r=>card(r,work.id))}</div></details></section>
+    })}</section>}
+    {!!comparison.conditional.length&&<details className="other-services" id="needs-check-candidates" open={needsCheckOpen} onToggle={e=>onNeedsCheckToggle?.(e.currentTarget.open)}><summary id="needs-check-summary" aria-expanded={needsCheckOpen} aria-controls="needs-check-options">추가 확인이 필요한 회사 ({comparison.conditional.length})</summary><div id="needs-check-options" className="candidate-grid">{comparison.conditional.map(r=>card(r))}</div></details>}
+    {!!comparison.excluded.length&&<details><summary>필수 조건이 맞지 않는 회사 ({comparison.excluded.length})</summary><div className="candidate-grid">{comparison.excluded.map(r=>card(r))}</div></details>}
+    <details><summary>추천 기준·조사 범위</summary><p>공식 근거로 기능과 이용 조건을 확인합니다. 미확인은 낮은 품질을 뜻하지 않으며, 직접적인 작업 품질 비교가 부족하면 점수·순위를 표시하지 않습니다.</p></details>
   </section>
 }

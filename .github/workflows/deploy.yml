@@ -42,7 +42,7 @@ jobs:
           key: model-data-v1-${{ github.run_id }}-${{ github.run_attempt }}
           restore-keys: model-data-v1-
 
-      - name: Collect official sources independently
+      - name: Validate and preserve reviewed provider snapshot (no collection)
         run: npm run data:refresh
 
       - name: Validate normalized snapshot
