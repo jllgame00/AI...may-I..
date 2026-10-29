@@ -1,0 +1,4 @@
+# Preserve archived originals byte-for-byte, including their original line endings.
+# These files are checked against recorded SHA-256 hashes on Windows and Linux.
+# Keep the default whitespace checks while recognizing preserved CRLF endings.
+archive/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
