@@ -3,7 +3,7 @@ import { PROVIDER_POLICY, capabilityLabels } from '../data/providerPolicy.ts'
 import { analyzeRequirements } from './providerRequirements.ts'
 import { validateCatalog } from './providerValidation.ts'
 import { normalizeRequest } from './request.ts'
-import type { CapabilityCheck, CapabilityId, Evidence, PlanAssessment, ProviderCatalog, ProviderComparison, ProviderPlan, ProviderRecommendation, ProviderRequirements, ScoreComponent, WorkRequirement } from '../providerTypes'
+import type { CapabilityCheck, CapabilityId, Evidence, PlanAssessment, ProviderCatalog, ProviderComparison, ProviderPlan, ProviderRecommendation, ProviderRequirements, WorkRequirement } from '../providerTypes'
 import type { PromptRequest } from '../types'
 const uniqueEvidence=(rows:Evidence[])=>[...new Map(rows.map(e=>[e.id,e])).values()]
 function evidenceFor(ids:string[],plan:ProviderPlan,data:ProviderCatalog):Evidence[] {return data.evidence.filter(e=>ids.includes(e.id)&&e.verification==='reviewed'&&e.serviceId===plan.serviceId&&e.planIds.includes(plan.id))}
@@ -42,21 +42,16 @@ function assess(req:ProviderRequirements,data:ProviderCatalog,required:Capabilit
     return {id:plan.id,provider,service,plan,status,checks,preferredChecks,budgetStatus:budget.status,gaps:[...checks.filter(c=>c.status!=='supported').map(c=>`${capabilityLabels[c.id]}: ${c.status==='unsupported'?'조건 불일치':c.status==='limited'?'제한 확인 필요':'미확인'} · ${c.note}`),...(budget.status!=='met'?[budget.note]:[]),...(!required.length?['작업 목표·필수 기능 미정']:[])],strengths:checks.filter(c=>c.status==='supported').map(c=>capabilityLabels[c.id]),evidence}
   })
 }
-function components(option:PlanAssessment):ScoreComponent[] {
-  // This is a new prospective policy, not converted model scores. A complete
-  // direct-quality/ease dataset is not available, so total and ranks stay null.
-  return (['fit','quality','cost','ease'] as const).map(id=>({id,label:{fit:'작업·기능 적합성',quality:'실제 작업 품질',cost:'비용 적합성',ease:'사용·전환 편의성'}[id],weight:PROVIDER_POLICY.weights[id],value:id==='fit'&&option.status==='eligible'?100:null,reason:id==='fit'?'필수 기능 통과의 정책 코딩이며 품질/성공률 점수가 아닙니다.':id==='quality'?'서비스·플랜·작업 조건이 일치하는 직접 품질 실측이 없습니다.':id==='cost'?'예산 조건은 통과 여부로 검사하며 비용 우열 점수는 보정되지 않았습니다.':'비교 가능한 사용/전환 시간 실측이 없습니다.',evidence:id==='fit'?option.checks.flatMap(c=>c.evidence):[]}))
-}
 const statusOrder={eligible:0,conditional:1,excluded:2}
 function groupCompanies(options:PlanAssessment[]):ProviderRecommendation[] {
   const ids=[...new Set(options.map(o=>o.provider.id))]
   return ids.map(id=>{
     const choices=options.filter(o=>o.provider.id===id).sort((a,b)=>statusOrder[a.status]-statusOrder[b.status]||a.checks.filter(c=>c.status!=='supported').length-b.checks.filter(c=>c.status!=='supported').length||b.preferredChecks.filter(c=>c.status==='supported').length-a.preferredChecks.filter(c=>c.status==='supported').length||Number(a.plan.tier!=='free')-Number(b.plan.tier!=='free')||a.id.localeCompare(b.id,'en'))
     const option=choices[0]
-    return {...option,score:null,rank:null,tied:option.status==='eligible',components:components(option),alternatives:choices.slice(1),reason:option.status==='eligible'?'이 서비스·플랜에서 요청한 필수 기능과 예산 조건을 확인했습니다. 작업 품질 우열은 미평가입니다.':option.status==='conditional'?'필수 기능·플랜 또는 예산의 미확인 조건을 먼저 확인하세요.':'확인된 필수 조건과 맞지 않아 이 작업의 우선 추천에서 제외합니다.'}
+    return {...option,alternatives:choices.slice(1),reason:option.status==='eligible'?'이 서비스·플랜에서 요청한 필수 기능과 예산 조건을 확인했습니다. 개인 계정의 활성화·남은 사용량은 직접 확인하세요.':option.status==='conditional'?'필수 기능·플랜 또는 예산의 미확인 조건을 먼저 확인하세요.':'확인된 필수 조건과 맞지 않아 이 작업의 우선 추천에서 제외합니다.'}
   }).sort((a,b)=>a.provider.name.localeCompare(b.provider.name,'en'))
 }
-export function optionsForWork(work:WorkRequirement,req:ProviderRequirements,data:ProviderCatalog=providerCatalog):PlanAssessment[]{return assess(req,data,work.required)}
+function optionsForWork(work:WorkRequirement,req:ProviderRequirements,data:ProviderCatalog=providerCatalog):PlanAssessment[]{return assess(req,data,work.required)}
 export function compareProviders(request:PromptRequest,data:ProviderCatalog=providerCatalog):ProviderComparison {
   request=normalizeRequest(request)
   const errors=validateCatalog(data);if(errors.length)throw new Error(`회사 데이터 검증 실패: ${errors.join('; ')}`)

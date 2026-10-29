@@ -46,7 +46,7 @@ it('company detail is about service, features, usage and prompts without plan pr
   const request={text:'이미지를 생성해줘',overrides:{}},comparison=structuredClone(compareCandidates(request))
   for(const row of [...comparison.recommendations,...comparison.remaining,...comparison.conditional,...comparison.excluded]){
     row.plan.name='INTERNAL_PLAN_NAME';row.plan.price.amount=98765
-    row.plan.limits=['SecretModel-X v9 · 98765원'];row.components[0].reason='SecretModel-X benchmark 99'
+    row.plan.limits=['SecretModel-X v9 · 98765원'];row.reason='SecretModel-X benchmark 99'
     row.checks.forEach(c=>{c.note='SecretModel-X v9 benchmark 99'})
     row.evidence.forEach(e=>{e.scope='SecretModel-X v9 · 가격 98765원'})
   }

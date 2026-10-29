@@ -1,0 +1,72 @@
+{
+  "source": "user-supplied code blocks",
+  "sourceSha256": "9cc04678dc23af759fed4280ec89bc271d63d4b17b1341904ffe5857cd13c0fc",
+  "rawCount": 8,
+  "uniqueContentHashes": 8,
+  "files": [
+    {
+      "filename": "SURVEY-01_chatgpt_run1.txt",
+      "serviceId": "chatgpt",
+      "repetition": 1,
+      "path": "evaluations/results/SURVEY-01/raw/SURVEY-01_chatgpt_run1.txt",
+      "bytes": 6977,
+      "sha256": "0df9edb75032fa383c3e8af65f7c88d3c2b2108f8b880a22217df81a1c5f67d3"
+    },
+    {
+      "filename": "SURVEY-01_chatgpt_run2.txt",
+      "serviceId": "chatgpt",
+      "repetition": 2,
+      "path": "evaluations/results/SURVEY-01/raw/SURVEY-01_chatgpt_run2.txt",
+      "bytes": 7524,
+      "sha256": "51421b0ee1f93f28d75afbd99a9f37eceab291128b9dd1c4b5393b95c65ef2b7"
+    },
+    {
+      "filename": "SURVEY-01_claude_run1.txt",
+      "serviceId": "claude",
+      "repetition": 1,
+      "path": "evaluations/results/SURVEY-01/raw/SURVEY-01_claude_run1.txt",
+      "bytes": 6570,
+      "sha256": "e02d6bb7af2e8395679f091bbe3712defe690255f076b7cc8696672e6907c5c8"
+    },
+    {
+      "filename": "SURVEY-01_claude_run2.txt",
+      "serviceId": "claude",
+      "repetition": 2,
+      "path": "evaluations/results/SURVEY-01/raw/SURVEY-01_claude_run2.txt",
+      "bytes": 5826,
+      "sha256": "37de5ffdf441aa0f0aaaf291da0d3702b7d14675e193707c74133e73d0304f0d"
+    },
+    {
+      "filename": "SURVEY-01_gemini_run1.txt",
+      "serviceId": "gemini",
+      "repetition": 1,
+      "path": "evaluations/results/SURVEY-01/raw/SURVEY-01_gemini_run1.txt",
+      "bytes": 4715,
+      "sha256": "21403962c8d5afce21b6e291b71cf8111bc5949386cd8cc856f743cbba712444"
+    },
+    {
+      "filename": "SURVEY-01_gemini_run2.txt",
+      "serviceId": "gemini",
+      "repetition": 2,
+      "path": "evaluations/results/SURVEY-01/raw/SURVEY-01_gemini_run2.txt",
+      "bytes": 5065,
+      "sha256": "4761894d03d653136a612e877a392d3bc317752212cd9284fab39290828ae0e8"
+    },
+    {
+      "filename": "SURVEY-01_grok_run1.txt",
+      "serviceId": "grok",
+      "repetition": 1,
+      "path": "evaluations/results/SURVEY-01/raw/SURVEY-01_grok_run1.txt",
+      "bytes": 3659,
+      "sha256": "a3a429d43a42ee6c66eb260da4e7ba097f1becc8435a272a0beaadf632777c71"
+    },
+    {
+      "filename": "SURVEY-01_grok_run2.txt",
+      "serviceId": "grok",
+      "repetition": 2,
+      "path": "evaluations/results/SURVEY-01/raw/SURVEY-01_grok_run2.txt",
+      "bytes": 3019,
+      "sha256": "c1da81136c10cf5f93b9fe0496db4c4b3c49d203b68f42ad4d0c196efe60fe09"
+    }
+  ]
+}

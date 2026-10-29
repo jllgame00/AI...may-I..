@@ -1,5 +1,5 @@
 {
-  "name": "prompt-mate",
+  "name": "ai-may-i",
   "private": true,
   "version": "0.1.0",
   "type": "module",
@@ -13,19 +13,10 @@
     "data:refresh": "node scripts/refresh-data.mts",
     "data:validate": "node scripts/refresh-data.mts --validate",
     "data:restore": "node scripts/refresh-data.mts --restore",
-    "evaluation:validate": "node scripts/provider-evaluation.mts validate",
-    "evaluation:typecheck": "tsc --project tsconfig.evaluation.json --pretty",
-    "evaluation:audit": "node scripts/provider-evaluation.mts audit",
-    "evaluation:prepare": "node scripts/provider-evaluation.mts prepare",
-    "evaluation:grade": "node scripts/provider-evaluation.mts grade",
-    "evaluation:blind": "node scripts/provider-evaluation.mts blind",
-    "report:providers": "node scripts/provider-report.mjs",
-    "test:browser": "node tests/browser-check.mjs",
     "test:playwright": "playwright test",
     "test:playwright:list": "playwright test --list",
     "setup:playwright": "npm install --save-dev --save-exact @playwright/test@1.64.1",
-    "setup:chromium": "playwright install chromium",
-    "qa:preview": "node tests/preview.mjs"
+    "setup:chromium": "playwright install chromium"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.1.0",

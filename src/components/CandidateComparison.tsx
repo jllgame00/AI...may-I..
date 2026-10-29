@@ -39,6 +39,6 @@ export default function CandidateComparison({comparison,request,selected,onSelec
     })}</section>}
     {!!comparison.conditional.length&&<details className="other-services" id="needs-check-candidates" open={needsCheckOpen} onToggle={e=>onNeedsCheckToggle?.(e.currentTarget.open)}><summary id="needs-check-summary" aria-expanded={needsCheckOpen} aria-controls="needs-check-options">추가 확인이 필요한 회사 ({comparison.conditional.length})</summary><div id="needs-check-options" className="candidate-grid">{comparison.conditional.map(r=>card(r))}</div></details>}
     {!!comparison.excluded.length&&<details><summary>필수 조건이 맞지 않는 회사 ({comparison.excluded.length})</summary><div className="candidate-grid">{comparison.excluded.map(r=>card(r))}</div></details>}
-    <details><summary>추천 기준·조사 범위</summary><p>공식 근거로 기능과 이용 조건을 확인합니다. 미확인은 낮은 품질을 뜻하지 않으며, 직접적인 작업 품질 비교가 부족하면 점수·순위를 표시하지 않습니다.</p></details>
+    <details><summary>추천 기준·조사 범위</summary><p>공식 근거로 기능과 이용 조건을 확인합니다. 미확인은 낮은 품질을 뜻하지 않으며, 표시 순서는 회사명 기준입니다. 회사별 성능 점수나 순위를 산정하지 않습니다.</p></details>
   </section>
 }

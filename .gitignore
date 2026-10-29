@@ -4,6 +4,9 @@ dist/
 .vite/
 .npm-cache/
 .qa/
+test-results/
+playwright-report/
+blob-report/
 .env
 .env.*
 !.env.example

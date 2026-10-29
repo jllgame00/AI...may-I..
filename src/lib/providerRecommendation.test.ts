@@ -8,12 +8,11 @@ import { PROVIDER_POLICY } from '../data/providerPolicy.ts'
 import type { PromptRequest } from '../types.ts'
 const request=(text:string,extra:Partial<PromptRequest>={}):PromptRequest=>({text,overrides:{},...extra})
 const all=(r:ReturnType<typeof compareProviders>)=>[...r.recommendations,...r.remaining,...r.conditional,...r.excluded]
-test('all companies use the same prospective weights and missing quality never becomes a total score',()=>{
-  assert.ok(Math.abs(Object.values(PROVIDER_POLICY.weights).reduce((n,w)=>n+w,0)-1)<1e-12)
+test('recommendations use confirmed conditions without performance weights, scores or ranks',()=>{
+  assert.ok(!('weights' in PROVIDER_POLICY));assert.ok(!('scoring' in PROVIDER_POLICY))
   for(const row of all(compareProviders(request('발표 대본 작성')))){
-    assert.deepEqual(Object.fromEntries(row.components.map(c=>[c.id,c.weight])),PROVIDER_POLICY.weights)
-    assert.equal(row.components.find(c=>c.id==='quality')!.value,null)
-    assert.equal(row.score,null);assert.equal(row.rank,null)
+    for(const field of ['score','rank','tied','components'])assert.ok(!(field in row),field)
+    assert.ok(row.checks.length>0);assert.ok(row.reason)
   }
 })
 test('catalog registers twelve companies and thirteen services including two Google services',()=>{
@@ -27,7 +26,7 @@ for(const [text,capability] of [
 ] as const)test(`requirements: ${text}`,()=>{
   const r=analyzeRequirements(request(text));assert.ok(r.required.includes(capability));assert.ok(r.questions.length<=3)
   const result=compareProviders(request(text));assert.ok(result.recommendations.length<=3)
-  for(const row of result.recommendations){assert.ok(row.checks.every(c=>c.status==='supported'));assert.equal(row.score,null);assert.equal(row.rank,null)}
+  for(const row of result.recommendations){assert.ok(row.checks.every(c=>c.status==='supported'));assert.ok(!('score' in row));assert.ok(!('rank' in row))}
 })
 test('different creation, input and execution operations never imply each other',()=>{
   assert.ok(analyzeRequirements(request('실제 설문 폼을 생성해줘')).required.includes('formCreation'))

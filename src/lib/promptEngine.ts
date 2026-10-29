@@ -1,4 +1,6 @@
 import type { ConditionField, Conditions, PromptBundle, PromptRequest, PromptTemplate, ResolvedConditions, TaskKind } from '../types'
+import { deliverableIntent, resolveDeliverables } from './deliverables.ts'
+import { renderDeliverable } from './deliverablePrompts.ts'
 
 export const fieldLabels: Record<ConditionField,string> = { purpose: '사용 목적', audience: '대상 독자', format: '결과 형식', length: '분량', tone: '말투', constraints: '꼭 지킬 조건' }
 export const fieldHints: Record<ConditionField,string> = { purpose: '예: 수업 발표, 고객 안내', audience: '예: 처음 배우는 대학생', format: '예: 이메일, 표, 발표 대본', length: '예: 5분, 500자, 3문장', tone: '예: 정중하게, 친근하게', constraints: '예: 전문 용어를 풀어 쓰기' }
@@ -70,17 +72,25 @@ export function buildPromptBundle(request: PromptRequest): PromptBundle {
   const constraints = [value('constraints'), ...(material && kind!=='coding' ? ['제공한 자료에 없는 사실·수치·인용을 만들지 마세요. 확인할 수 없는 내용은 구분해 주세요.'] : [])].filter(Boolean)
   if (constraints.length) sections.push(`지킬 조건\n${constraints.join('\n')}`)
   sections.push(`답변 전 확인\n${kind === 'coding' ? '수정 이유와 직접 실행할 테스트 방법을 포함해 주세요. 실행하지 않은 테스트를 통과했다고 말하지 마세요.' : '요청한 목적·형식·분량을 지켰는지 확인하고, 정보가 부족한 부분은 임의로 채우지 마세요.'}`)
-  const main: PromptTemplate = { id: 'main', title: '기본 프롬프트', text: sections.join('\n\n') }
+  const intents=resolveDeliverables(request)
+  const outputs=intents.map((intent,index)=>renderDeliverable(request,intent,conditions,{scope:'request',includeReference:index===0}))
+  const main: PromptTemplate = { id: 'main', title: '기본 프롬프트', text: intents.some(intent=>intent.kind!=='general_writing')?outputs.map(output=>output.text).join('\n\n'):sections.join('\n\n'), deliverable:outputs[0].contract }
   const steps: PromptTemplate[] = []
-  if (/논문|자료|문서/.test(text) && /발표|대본/.test(text)) {
-    steps.push({ id: 'analysis', title: '1. 자료의 핵심 정리', text: `다음 작업의 자료를 정리해 주세요: ${text}\n\n[원본 자료 또는 확인할 내용을 붙여넣으세요]\n\n핵심 주장·수치·한계·원문 위치·출처를 표로 정리해 주세요. 자료가 없으면 먼저 요청하고 출처를 만들지 마세요.` })
-    steps.push({ id: 'outline', title: '2. 발표 구성', text: `다음 목표에 맞는 발표 구성을 제안해 주세요: ${text}\n\n[앞 단계에서 확인한 핵심 주장·수치·출처를 붙여넣으세요]\n\n${value('audience') ? `대상: ${value('audience')}\n` : ''}${value('length') ? `분량: ${value('length')}\n` : ''}슬라이드별 메시지·순서·시각화 목적·출처를 정리해 주세요. 전달하지 않은 앞 단계 결과를 알고 있다고 가정하지 마세요.` })
-    if (/이미지|그림|포스터/.test(text)) steps.push({ id: 'image', title: '3. 이미지 제작용 프롬프트', text: `다음 발표에 사용할 실제 이미지를 제작해 주세요: ${text}\n\n[앞 단계에서 확인한 핵심 주장·수치·시각화 목적·출처와 원하는 구도를 붙여넣으세요]\n\n표현할 수치와 문구를 정확히 유지해 주세요. 실제 이미지 생성이 불가능하면 그 한계를 밝히고, 설명문을 이미지 파일이라고 말하지 마세요.` })
-    if (/대본/.test(text)) steps.push({ id: 'script', title: `${steps.length+1}. 대본 작성`, text: `다음 목표에 맞는 발표 대본을 작성해 주세요: ${text}\n\n[앞 단계에서 확인한 구성·핵심 내용·이미지 설명·출처를 붙여넣으세요]\n\n${value('length') ? `분량: ${value('length')}\n` : ''}${value('tone') ? `말투: ${value('tone')}\n` : ''}슬라이드 흐름과 설명이 일치하게 쓰고, 근거가 없는 주장은 추가하지 마세요.` })
+  if (/논문|자료|문서/.test(text) && /발표|대본/.test(text) && !intents.some(intent=>intent.origin==='explicit')) {
+    steps.push({ id: 'analysis', title: '1. 자료의 핵심 정리', text: '' })
+    steps.push({ id: 'outline', title: '2. 발표 구성', text: '' })
+    if (/이미지|그림|포스터/.test(text)) steps.push({ id: 'image', title: '3. 이미지 제작용 프롬프트', text: '' })
+    if (/대본/.test(text)) steps.push({ id: 'script', title: `${steps.length+1}. 대본 작성`, text: '' })
   }
   const stageConditions = fields.filter(f => f !== 'format' && f !== 'length' && value(f)).map(f => `- ${fieldLabels[f]}: ${value(f)}`).join('\n')
   const stageFormats: Record<string,string> = { analysis: '핵심 주장·수치·한계·출처 표', outline: '슬라이드별 메시지·순서·시각화 목적·출처 목록', image: '실제 이미지와 시각화 근거', script: value('format') || '발표 대본' }
-  for (const step of steps) step.text += `\n\n이 단계의 작성 조건\n- 결과 형식: ${stageFormats[step.id]}\n${[stageConditions,...(['outline','script'].includes(step.id) && value('length') ? [`- 전체 발표 분량: ${value('length')}`] : []),precedence].filter(Boolean).join('\n')}`
+  const stageKinds={analysis:'analysis',outline:'presentation_outline',image:'image',script:'presentation_script'} as const
+  const stageActions:Record<string,string>={analysis:'제공한 원본 자료의 핵심 주장·수치·한계·원문 위치·출처를 표로 분석해 주세요. 자료가 없으면 먼저 요청하고 수치·출처를 만들지 마세요.',outline:'앞 단계에서 확인한 내용으로 슬라이드별 메시지·순서·시각화 목적·출처를 정리해 주세요. 이 단계에서는 발표 구성을 제공하세요.',image:'앞 단계에서 확인한 시각화 목적·수치·문구·구도에 맞는 실제 이미지를 제작해 주세요. 실제 이미지 생성이 불가능하면 그 한계를 밝히고 설명문을 이미지 파일이라고 말하지 마세요.'}
+  for (const [index,step] of steps.entries()) {
+    const rendered=renderDeliverable(request,deliverableIntent(stageKinds[step.id as keyof typeof stageKinds]),conditions,{instruction:stageActions[step.id],previous:steps[index-1]?.deliverable})
+    step.deliverable=rendered.contract
+    step.text=rendered.text+`\n\n이 단계의 작성 조건\n- 결과 형식: ${stageFormats[step.id]}\n${[stageConditions,...(['outline','script'].includes(step.id) && value('length') ? [`- 전체 발표 분량: ${value('length')}`] : []),precedence].filter(Boolean).join('\n')}`
+  }
   const followups: PromptTemplate[] = [
     { id: 'shorter', title: '더 짧게', text: `앞선 답변을 ${value('length') ? `${value('length')} 범위 안에서 더 간결하게` : '핵심만 남겨 더 짧게'} 다듬어 주세요. 필수 조건과 중요한 주의사항은 유지해 주세요.` },
     { id: 'simpler', title: '쉽게 설명', text: `앞선 답변을 ${value('audience') || '읽는 사람'}이 이해하기 쉽게 풀어 주세요. 어려운 용어는 짧게 설명하고, 사실과 비유를 구분해 주세요.` },

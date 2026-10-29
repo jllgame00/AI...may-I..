@@ -1,41 +1,37 @@
-# Provider recommendation policy
+# 현재 Provider 추천 정책
 
-Version `provider-evidence-v1`. Data `src/data/provider-catalog.json`. The sole active path is `main → App → aiGuide → providerRequirements/providerRecommendation → providerCatalog`. Model evaluation engines, historical weights and benchmark tables are not imports or fallback dependencies.
+정책 ID `provider-evidence-v1`. 활성 데이터는 `src/data/provider-catalog.json`이며 12개 회사, 13개 서비스, 18개 플랜/미확인 경로를 포함합니다.
 
-## Data
+## 데이터와 공식 근거
 
-12 explicit Provider records own 13 Service records (Google owns Gemini and NotebookLM). Each Service has independently scoped Plan records; unknown plans remain registered. Each Plan has Capability records and Evidence references. Evidence specifies an official URL, date, reviewed/unverified status, service and exact plan IDs. No service-level claim is automatically a Free entitlement. Capabilities distinguish text/question drafting, real forms, upload/PDF upload/PDF analysis/PDF creation, existing spreadsheet analysis/new sheet creation, image input/generation, code generation/execution, web search/source verification, slides and video.
+회사는 서비스를 소유하고 각 서비스의 실제 이용 경로·플랜에 기능과 근거가 연결됩니다. 공식 HTTPS URL, 확인일, 검토 상태, 적용 서비스·플랜 범위가 맞아야 지원 근거로 인정합니다. 서비스 전체 소개를 모든 무료 계정의 사용 권한으로 확대하지 않습니다.
 
-`ProviderModel` is an optional descriptive plan reference type. Current exact-release availability is not newly verified, so the active `models` list is empty. All 28 original Model records, release/mode/access links and 111 Evaluation records are byte-preserved in the history snapshot. Removing or adding descriptive models does not change Provider registration or recommendation. Evaluations are not a field consumed by the new engine.
+`unknown`은 미확인이며 미지원·낮은 성능·더미 데이터를 뜻하지 않습니다. 가격·국가·통화·세금이 확인되지 않은 부분은 미정으로 보존합니다. 빈 `models` 배열과 관련 참조 스키마는 기존 카탈로그/복구 데이터 형식과의 호환을 위해 남아 있으나 추천이나 화면에 사용하지 않습니다.
 
-## Requirements and gate
+## 사용자 요구와 조건 판정
 
-Rules extract work categories, input and output roles independently, required/preferred capabilities, monthly budget/free-only/currency/country, format and explicit quantities. Missing values stay null/unknown. Up to three unresolved questions are shown; controls override inference. This is a transparent rule-based parser, not a paid LLM. The original request and prompt overrides remain separate.
+입력/출력 자료의 역할, 작업 종류, 필수/선호 기능, 무료 여부와 월 예산·통화·국가, 형식과 명시 처리량을 구분합니다. 명시한 사용자 조건이 자동 추론보다 우선합니다. 원문은 보존하고 해석만 수정할 수 있습니다. 질문은 최대 세 가지이며 분석은 규칙·템플릿 기반입니다.
 
-All required capabilities must be supported by reviewed evidence matching that Plan/Service. Missing sources, wrong scope, unknown features and unresolved limited conditions produce conditional candidates. A verified explicit mismatch or exceeded published bound excludes the Plan. A supported-file list records confirmed formats; absence of a format means unconfirmed, not an invented explicit prohibition. Explicit requested quantities without verified capacity also stay conditional. Generic feature availability never promises arbitrary volumes or remaining account quota.
+모든 필수 기능에 해당 서비스·플랜 범위의 근거가 있어야 공동 우선 후보가 됩니다. 근거 누락·잘못된 범위·해결되지 않은 limited·알 수 없는 예산 조건은 조건부로, 명시적 미지원·확인된 용량 초과·무료 조건과 유료 경로의 불일치는 제외로 구분합니다. 파일 생성 가능성으로 기존 파일 입력·분석 성공을 추정하지 않습니다.
 
-Free-only forbids paid routes. Free claims require a reviewed zero-cost plan record. For a numeric paid monthly budget, currency, known country, monthly billing amount and tax-inclusive total must all match; no implicit currency conversion or annual/monthly conflation. Missing price context is conditional. Country-specific prices remain scoped internal evidence. The product UI shows free/paid route status rather than a price or local quote.
+무료 판정에는 검토된 무료 경로의 근거가 필요합니다. 유료 월 예산은 금액·결제 주기·통화·국가·세금 포함 총액이 맞는 경우에만 비교합니다. 환율이나 연간 환산을 임의로 적용하지 않습니다. 개인 계정의 활성화·남은 할당량은 별도 확인 사항입니다.
 
-## Score and company grouping
+## 회사 표시와 대표 경로
 
-The new prospective weights are fit 40%, direct task quality 30%, cost 20%, ease/transition 10%. They are not inherited or empirically calibrated. The internal fit=100 codes a complete required-feature gate only; the UI displays confirmed features rather than a quality point score. Quality/cost/ease values are null because task/Plan-matched direct quality and comparable cost/ease scoring evidence are missing. Total and rank are always null in the present dataset. No missing-weight renormalization, model maximum/average, benchmark transfer or 100-point fallback is used.
+같은 회사의 실제 경로 중 조건 판정, 미해결 필수 조건 수, 확인된 선호 기능, 무료 경로, 안정적인 ID 순서로 대표를 고릅니다. 서로 다른 서비스의 기능을 합쳐 가상 플랜을 만들지 않습니다.
 
-Representatives are selected among a company's actual Plan options by gate, fewer unresolved required features, more verified preferred features, verified free route and stable Plan ID. This is route selection, not company quality. A user's explicit compatible selection is retained in session. Providers without a feasible whole-task route may still have appropriate individual-work routes; capabilities from different services are never merged into a fictitious Plan.
+조건이 확인된 회사를 회사명 기준으로 중립 정렬하고 최대 세 개를 먼저 보여줍니다. 나머지 공동 후보·조건부·제외 후보는 펼쳐 볼 수 있습니다. 회사/서비스가 많다는 이유로 가산점을 주지 않습니다. **표시 순서는 성능 순위가 아닙니다.**
 
-Eligible companies are joint candidates, displayed by neutral company name. At most three appear first; further joint candidates are folded. Conditional and excluded companies have separate folded sections. A company appears once in each comparison set even when it has many models/Plans/Services. Each work stage has its own comparison set.
+성능 가중치·fit=100·회사 총점·순위·벤치마크 계산 경로는 없습니다. 실측 평가 기록이 없어도 공식 기능과 사용자 조건에 따른 추천은 동작합니다. 자체 평가 자료를 채우는 것을 추천의 선행 조건으로 요구하지 않습니다.
 
-## Flow and preservation
+## 사용 안내와 프롬프트
 
-### Product display policy (2026-10-29 follow-up)
+화면은 회사·대표 서비스, 필요한 기능, 무료·유료 이용 조건, 제한사항·실제 사용 순서·공식 링크를 안내합니다. 개별 모델명·릴리스·벤치마크와 상세 요금제 비교표는 표시하지 않습니다. 내부의 확인된 플랜·가격·근거 데이터는 조건 판정에 유지합니다.
 
-The UI recommends Providers and representative Services. It shows required-feature status, free availability and whether the selected route requires paid access. It does not expose model names/releases/benchmarks, Plan names, detailed prices or alternative-Plan comparison tables. Full Plan, price and Evidence scope records remain internal and unchanged. Free labels require reviewed evidence scoped to the exact Service/Plan. A paid representative does not establish that every route at that company requires payment. Conditional free support remains separately labelled.
+Deliverable First 출력 계약은 큰 작업 카테고리와 구분합니다. 완성본/기획안을 구별하고 복합 작업의 각 단계는 해당 산출물과 필요한 인계만 요구합니다. 회사 변경·조건 수정으로 사용자 편집을 자동 덮어쓰지 않으며 재생성 후 이전 초안을 복구할 수 있습니다. 서비스 링크는 본문을 자동 전송하지 않습니다.
 
-Company details focus on features, reasons, practical use steps, the official service link and customized prompts. Official evidence links and checked dates remain available without rendering raw research scopes. The stage selector displays one option per Provider while retaining an existing compatible internal Plan selection. User-supplied original text and edited drafts remain intact. See [product validation](provider-product-validation-report.md) for executed checks and browser limitations.
+## 운영과 역사 자료
 
-Original text → editable interpretation/budget → company/Service/Plan → staged prompts/edit/copy. A work-specific change updates only that work's stages. A single-stage change updates only that stage. Existing edited drafts survive all changes and get a changed-context notice; regeneration keeps the prior draft recoverable. A default route is inherited only when that stage's required capabilities are verified; a conditional route needs explicit stage selection. No service substitution, extra subscription or payment occurs automatically.
+`data:refresh`는 Provider 스냅샷 검증·보존이며 자동 수집이나 확인일 갱신이 아닙니다. 반입은 전체 스키마·소유 관계·근거 검증 후에만 저장하고, 복구는 Provider 전용 backup/seed만 사용합니다.
 
-## Data maintenance
-
-`npm run data:refresh` validates and preserves the reviewed Provider snapshot; it does **not** collect external pages or refresh source dates. `--import <reviewed.json>` accepts a complete newly reviewed schema only after validation. `data:restore` restores the new Provider backup, with a new Provider-only seed as a final recovery source. It never loads model recommendations. The old model collectors and recovery files are historical, not fallback inputs. `storedAt` and source `checkedAt` are separate; automatic external-collection time remains null.
-
-Validation detects missing major Providers/Services, duplicate IDs, orphan relations, invalid Evidence/Plan scopes and invalid prices. The default tests traverse the app import graph and hash-check the preserved historical snapshot.
+과거 조사·모델 추천·중단한 평가 체계는 [아카이브](../archive/README.md)에 보존합니다. 제품에서 import·실행하지 않으며 정식 채점·순위 기능으로 소개하지 않습니다. 현재 테스트는 카탈로그, 조건 판정, 단계 선택·편집, 모델/평가 경로의 격리와 보존 원문의 해시를 검사합니다.

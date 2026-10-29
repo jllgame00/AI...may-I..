@@ -39,8 +39,8 @@ jobs:
         uses: actions/cache/restore@v4
         with:
           path: .refresh-cache
-          key: model-data-v1-${{ github.run_id }}-${{ github.run_attempt }}
-          restore-keys: model-data-v1-
+          key: provider-data-v1-${{ github.run_id }}-${{ github.run_attempt }}
+          restore-keys: provider-data-v1-
 
       - name: Validate and preserve reviewed provider snapshot (no collection)
         run: npm run data:refresh
@@ -61,7 +61,7 @@ jobs:
         uses: actions/cache/save@v4
         with:
           path: .refresh-cache
-          key: model-data-v1-${{ github.run_id }}-${{ github.run_attempt }}
+          key: provider-data-v1-${{ github.run_id }}-${{ github.run_attempt }}
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v4

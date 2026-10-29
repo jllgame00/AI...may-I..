@@ -39,7 +39,7 @@ export function structureSurveyTask(request: PromptRequest, conditions: Resolved
     finalOutput:Object.freeze({format:conditions.format.value,length:conditions.length.value})})
 }
 export function surveyContext(task: SurveyTask): string {
-  return [`작업 원문 (그대로 보존)\n${task.originalText}\n\n원문의 조사 배경·추가 조건도 반영하되, 아래 정리·수정한 조건을 우선 적용하세요. 분석·해석 단계에는 최종 보고서 분량을 강제하지 마세요.`,
+  return [`작업 원문 (그대로 보존한 참고 자료)\n<원문>\n${task.originalText}\n</원문>\n\n원문의 조사 배경·추가 조건도 반영하되, 아래 정리·수정한 조건과 현재 단계 실행 지시를 우선 적용하세요. 다른 단계의 산출물은 이 단계에서 생성하지 마세요. 분석·해석 단계에는 최종 보고서 분량을 강제하지 마세요.`,
     `작업: ${task.task}`,
     `자료: ${task.material || '[설문 자료의 주제와 수집 대상을 입력하세요]'}`,
     task.sample?`요청에 제시된 조사 대상: ${task.sample}. 실제 응답 수와 분석별 유효 표본 수는 자료에서 확인해 주세요.`:'조사 대상·표본 수: [확인한 대상과 표본 수를 입력하세요]',

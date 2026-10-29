@@ -1,5 +1,6 @@
 import { resolveConditions } from './promptEngine.ts'
 import { categoryLabels } from '../data/providerPolicy.ts'
+import { resolveDeliverables } from './deliverables.ts'
 import type { Budget, CapabilityId, ProviderRequirements, WorkCategory, WorkRequirement } from '../providerTypes'
 import type { PromptRequest } from '../types'
 const unique=<T,>(values:T[])=>[...new Set(values)]
@@ -16,17 +17,19 @@ export function analyzeRequirements(request:PromptRequest):ProviderRequirements 
     if(output)outputFormats.push(format);else inputFormats.push(format)
   }
   const categories:WorkCategory[]=[]
-  const surveyDraft=/설문.*(?:문항|질문)|(?:문항|질문).*설문/.test(main)&&!/설문\s*(?:결과|데이터).*분석/.test(main)
+  const deliverables=resolveDeliverables(request)
+  const surveyDraft=deliverables.some(output=>output.kind==='survey_final'||output.kind==='survey_plan')
   const code=/코드|코딩|오류|버그|저장소|알고리즘|python|react|typescript|javascript/i.test(main)
   const creatingSheet=outputFormats.some(f=>f==='xlsx'||f==='xls')||/(?:새|새로운)\s*(?:스프레드시트|시트|표).*(?:작성|생성|만들)/.test(main)
-  const data=(inputFormats.some(f=>['pdf','xlsx','xls','csv','docx'].includes(f))||/논문.*(?:분석|요약)|데이터.*분석|자료.*(?:분석|요약)|설문\s*(?:결과|자료)|통계|상관|만족도.*차이/.test(main))&&!surveyDraft
+  const data=(inputFormats.some(f=>['pdf','xlsx','xls','csv','docx'].includes(f))||/논문.*(?:분석|요약)|데이터.*분석|자료.*(?:분석|요약)|설문\s*(?:결과|자료)|통계|상관|만족도.*차이/.test(main))&&!surveyDraft||deliverables.some(output=>output.kind==='analysis')
   if(data)categories.push('analysis')
   if(code)categories.push('coding')
   if(/발표자료|프레젠테이션|슬라이드|pptx|파워포인트/i.test(main))categories.push('slides')
   if(/(?:이미지|포스터|그림|일러스트|로고|사진).*(?:생성|만들|그려)|이미지\s*생성|포스터|일러스트/.test(main)&&!/이미지\s*(?:생성용\s*)?프롬프트|이미지\s*기획/.test(main))categories.push('image')
   if(/영상|동영상|비디오/.test(main)&&/생성|만들|제작/.test(main))categories.push('video')
-  if(surveyDraft||outputFormats.some(f=>['pdf','xlsx','xls'].includes(f))||creatingSheet||/대본|글|홍보|보고서|이메일|메일|문장|초안|시를|설문\s*폼/.test(main)||(!categories.length&&/작성|써\s*줘|요약|정리/.test(main)))categories.push('writing')
-  const chosen=unique(request.tasks??categories)
+  if(surveyDraft||outputFormats.some(f=>['pdf','xlsx','xls'].includes(f))||creatingSheet||/대본|글|홍보|보고서|이메일|메일|초안|시를|설문\s*폼/.test(main)||!data&&/문장/.test(main)||(!categories.length&&/작성|써\s*줘|요약|정리/.test(main)))categories.push('writing')
+  if(deliverables.some(output=>output.category==='writing'&&output.kind!=='general_writing')&&!categories.includes('writing'))categories.push('writing')
+  const chosen=unique(request.tasks??(deliverables.some(output=>output.origin==='explicit')?[...(data?['analysis' as const]:[]),...deliverables.map(output=>output.category)]:categories))
   const file=request.inputMode==='summary'?false:request.inputMode==='file'||data&&/파일|첨부|업로드|엑셀|xlsx|csv|pdf|docx/i.test(main)
   const works:WorkRequirement[]=chosen.map(category=>{
     const required:CapabilityId[]=[]

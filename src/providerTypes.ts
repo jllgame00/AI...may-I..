@@ -26,6 +26,5 @@ export interface ProviderRequirements {
 }
 export interface CapabilityCheck {id:CapabilityId;status:SupportStatus;declaredStatus:SupportStatus;note:string;evidence:Evidence[]}
 export interface PlanAssessment {id:string;provider:Provider;service:ProviderService;plan:ProviderPlan;status:'eligible'|'conditional'|'excluded';checks:CapabilityCheck[];preferredChecks:CapabilityCheck[];budgetStatus:'met'|'unknown'|'unmet';gaps:string[];strengths:string[];evidence:Evidence[]}
-export interface ScoreComponent {id:'fit'|'quality'|'cost'|'ease';label:string;weight:number;value:number|null;reason:string;evidence:Evidence[]}
-export interface ProviderRecommendation extends PlanAssessment {score:number|null;rank:number|null;tied:boolean;reason:string;components:ScoreComponent[];alternatives:PlanAssessment[]}
+export interface ProviderRecommendation extends PlanAssessment {reason:string;alternatives:PlanAssessment[]}
 export interface ProviderComparison {context:string;policyVersion:string;dataVersion:string;requirements:ProviderRequirements;recommendations:ProviderRecommendation[];remaining:ProviderRecommendation[];conditional:ProviderRecommendation[];excluded:ProviderRecommendation[];byWork:Record<string,ProviderRecommendation[]>;allOptions:PlanAssessment[]}

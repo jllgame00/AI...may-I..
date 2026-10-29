@@ -28,3 +28,23 @@ it('new policy has no imports of the archived score tables and active data has n
   const data=JSON.parse(readFileSync('src/data/provider-catalog.json','utf8'))
   assert.equal(data.evaluations,undefined)
 })
+it('production entry graph never imports the offline evidence register, grader, runs or fixtures',()=>{
+  const seen=new Set(),queue=[resolve('src/main.tsx')]
+  while(queue.length){
+    const file=queue.pop();if(seen.has(file))continue;seen.add(file)
+    assert.doesNotMatch(file,/providerEvaluation|providerEvidenceRegister|evaluations[\\/]/)
+    const source=readFileSync(file,'utf8')
+    for(const match of source.matchAll(/(?:from\s*|import\s*)["']([^"']+)["']/g)){
+      if(!match[1].startsWith('.'))continue
+      const base=resolve(dirname(file),match[1])
+      const target=['','.ts','.tsx','.json','.css'].map(ext=>base+ext).find(existsSync)
+      assert.ok(target);queue.push(target)
+    }
+  }
+})
+it('retired research and evaluation files and the retained Arena source preserve original bytes',()=>{
+  const manifest=JSON.parse(readFileSync('archive/production-cleanup-preservation.json','utf8'))
+  for(const row of [...manifest.movedFiles,...manifest.removedDuplicates.map(row=>({...row,path:row.retainedPath}))]){
+    assert.equal(createHash('sha256').update(readFileSync(row.path)).digest('hex'),row.sha256,row.path)
+  }
+})
