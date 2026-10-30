@@ -1,7 +1,7 @@
 import { resolveConditions } from './promptEngine.ts'
 import { categoryLabels } from '../data/providerPolicy.ts'
 import { resolveDeliverables } from './deliverables.ts'
-import type { Budget, CapabilityId, ProviderRequirements, WorkCategory, WorkRequirement } from '../providerTypes'
+import type { Budget, BudgetPreference, CapabilityId, ProviderRequirements, WorkCategory, WorkRequirement } from '../providerTypes'
 import type { PromptRequest } from '../types'
 const unique=<T,>(values:T[])=>[...new Set(values)]
 export function analyzeRequirements(request:PromptRequest):ProviderRequirements {
@@ -24,7 +24,7 @@ export function analyzeRequirements(request:PromptRequest):ProviderRequirements 
   const data=(inputFormats.some(f=>['pdf','xlsx','xls','csv','docx'].includes(f))||/논문.*(?:분석|요약)|데이터.*분석|자료.*(?:분석|요약)|설문\s*(?:결과|자료)|통계|상관|만족도.*차이/.test(main))&&!surveyDraft||deliverables.some(output=>output.kind==='analysis')
   if(data)categories.push('analysis')
   if(code)categories.push('coding')
-  if(/발표자료|프레젠테이션|슬라이드|pptx|파워포인트/i.test(main))categories.push('slides')
+  if(deliverables.some(d=>d.kind==='slides'))categories.push('slides')
   if(/(?:이미지|포스터|그림|일러스트|로고|사진).*(?:생성|만들|그려)|이미지\s*생성|포스터|일러스트/.test(main)&&!/이미지\s*(?:생성용\s*)?프롬프트|이미지\s*기획/.test(main))categories.push('image')
   if(/영상|동영상|비디오/.test(main)&&/생성|만들|제작/.test(main))categories.push('video')
   if(surveyDraft||outputFormats.some(f=>['pdf','xlsx','xls'].includes(f))||creatingSheet||/대본|글|홍보|보고서|이메일|메일|초안|시를|설문\s*폼/.test(main)||!data&&/문장/.test(main)||(!categories.length&&/작성|써\s*줘|요약|정리/.test(main)))categories.push('writing')
@@ -58,17 +58,22 @@ export function analyzeRequirements(request:PromptRequest):ProviderRequirements 
   }
   const required=unique(request.requiredFeatures??works.flatMap(w=>w.required))
   const money=main.match(/(?:월\s*(?:예산|최대)?\s*|예산\s*)(\d[\d,]*(?:\.\d+)?)\s*(만|천)?\s*(원|KRW|USD|달러|JPY|엔)/i)
-  const parsed:Budget={freeOnly:/무료|공짜/.test(main)&&!/가능하면\s*무료|무료.*선호|무료(?:가|는|만)?\s*(?:아니어도|아닌)|유료도|유료\s*가능/.test(main)?true:/유료\s*(?:가능|괜찮)|유료도/.test(main)?false:null,maxMonthly:money?Number(money[1].replaceAll(',',''))*(money[2]==='만'?10000:money[2]==='천'?1000:1):null,currency:money?/원|KRW/i.test(money[3])?'KRW':/엔|JPY/i.test(money[3])?'JPY':'USD':null,country:/한국|대한민국/.test(main)?'KR':/일본/.test(main)?'JP':/미국/.test(main)?'US':null}
-  const budget=request.budget??parsed,conditions=resolveConditions(request)
+  const preferFree=/가능하면\s*무료|무료(?:를|가)?\s*(?:선호|우선)|무료.*선호/.test(main)
+  const parsed:Budget={freeOnly:/무료|공짜/.test(main)&&!preferFree&&!/무료(?:가|는|만)?\s*(?:아니어도|아닌)|유료도|유료\s*가능/.test(main)?true:/유료\s*(?:가능|괜찮)|유료도/.test(main)?false:null,preferFree,maxMonthly:money?Number(money[1].replaceAll(',',''))*(money[2]==='만'?10000:money[2]==='천'?1000:1):null,currency:money?/원|KRW/i.test(money[3])?'KRW':/엔|JPY/i.test(money[3])?'JPY':'USD':null,country:/한국|대한민국/.test(main)?'KR':/일본/.test(main)?'JP':/미국/.test(main)?'US':null}
+  const budget:Budget={...parsed,...request.budget},conditions=resolveConditions(request)
   if(budget.maxMonthly!==null&&(!Number.isFinite(budget.maxMonthly)||budget.maxMonthly<0))throw new Error('월 예산은 0 이상의 유한한 숫자로 입력해 주세요.')
   const quantity=(pattern:RegExp)=>{const match=main.match(pattern);return match?Number((match[1]??match[2]).replaceAll(',','')):null}
   const size=main.match(/(\d+(?:\.\d+)?)\s*(MiB|GiB|MB|GB)/i)
   const bounds={fileSizeMB:size?Number(size[1])*({mb:1,gb:1000,mib:1.048576,gib:1073.741824}[size[2].toLowerCase()]!):null,fileCount:quantity(/(\d+)\s*개(?:의)?\s*파일|파일\s*(\d+)\s*개/),rowCount:quantity(/(\d[\d,]*)\s*행/),itemCount:quantity(/(\d+)\s*(?:장의\s*)?(?:이미지|개\s*이미지)/)}
   const questions:ProviderRequirements['questions']=[]
   if(!works.length)questions.push({id:'goal',label:'어떤 결과물을 만들고 싶은가요? 작업 종류를 선택해 주세요.'})
-  if(budget.freeOnly===null&&budget.maxMonthly===null)questions.push({id:'budget',label:'무료만 필요한가요? 월 예산이 있다면 함께 입력하세요.'})
+  if(budget.freeOnly===null&&!budget.preferFree&&budget.maxMonthly===null)questions.push({id:'budget',label:'무료 이용 선호가 있나요? 아래에서 선택하거나 미정으로 둘 수 있어요.'})
   if(data&&!file&&request.inputMode===undefined)questions.push({id:'input',label:'원본 파일을 올릴 예정인가요, 내용을 직접 붙여넣을 예정인가요?'})
   if(file&&bounds.fileSizeMB===null)questions.push({id:'volume',label:'파일 크기·개수·PDF 페이지 수 등 필요한 처리 범위는 얼마인가요?'})
   notes.push('입력하지 않은 예산·국가·분량은 미정입니다. 기능은 수정할 수 있으며 성능 품질 평가와 구분합니다.')
   return {goal:text,works,required,preferred:unique(request.preferredFeatures??preferred),budget,inputFormats:unique(inputFormats),outputFormat:conditions.format.value||outputFormats.join(', ')||null,volume:conditions.length.value||null,bounds,composite:works.length>1,questions:questions.slice(0,3),notes}
+}
+
+export function setBudgetPreference(request:PromptRequest,preference:BudgetPreference):PromptRequest {
+  return {...request,budget:{...request.budget,freeOnly:preference==='free'?true:preference==='paid-ok'?false:null,preferFree:preference==='prefer-free'}}
 }

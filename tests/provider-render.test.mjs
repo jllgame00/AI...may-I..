@@ -29,11 +29,31 @@ for(const text of ['설문 문항을 작성해줘','기존 XLSX 설문 결과를
   assert.ok(workspace.includes(option.provider.name));assert.ok(workspace.includes(option.service.name))
   assert.ok(bundle.steps.every(s=>s.text.includes(text)))
 })
-it('renders explicit budget controls and a neutral company flow',()=>{
+it('renders three budget intentions without a default choice or numeric/country controls',()=>{
   assert.match(render(App),/회사·서비스 선택/)
-  const html=render(Analysis,{request:{text:'무료로 글 작성',overrides:{}},onChange:noop})
-  assert.match(html,/budget-mode/);assert.match(html,/budget-amount/);assert.match(html,/budget-currency/)
-  assert.ok(html.includes('value="free" selected=""'))
+  const html=render(Analysis,{request:{text:'홍보 글 작성',overrides:{}},onChange:noop})
+  assert.equal([...html.matchAll(/type="radio"/g)].length,3)
+  assert.doesNotMatch(html,/type="radio"[^>]*checked=/)
+  assert.doesNotMatch(html,/id="budget-(?:amount|currency|country)"/)
+  assert.match(html,/아직 정하지 않았어요/)
+  for(const [text,id] of [['무료로 글 작성','budget-free'],['가능하면 무료로 글 작성','budget-prefer-free'],['가능하면 무료로, 유료도 괜찮아요. 글 작성','budget-prefer-free'],['유료도 괜찮아요. 글 작성','budget-paid-ok']]){
+    const selected=render(Analysis,{request:{text,overrides:{}},onChange:noop})
+    assert.ok(new RegExp(`id="${id}"[^>]*checked=""`).test(selected))
+  }
+  assert.match(render(Analysis,{request:{text:'월 2만원 이하로 홍보 글 작성',overrides:{}},onChange:noop}),/20,000원/)
+})
+it('renders automatic and manually changed multiple task choices with accessible native checkboxes',()=>{
+  const auto=render(Analysis,{request:{text:'홍보 글 작성',overrides:{}},onChange:noop})
+  assert.match(auto,/id="task-writing"[^>]*checked=""/)
+  const manual=render(Analysis,{request:{text:'홍보 글 작성',overrides:{},tasks:['coding','image']},onChange:noop})
+  assert.match(manual,/id="task-coding"[^>]*checked=""/);assert.match(manual,/id="task-image"[^>]*checked=""/)
+  assert.doesNotMatch(manual,/id="task-writing"[^>]*checked=""/)
+})
+it('uses service headings with provider attribution while retaining company identity',()=>{
+  const request={text:'홍보 글 작성',overrides:{}},comparison=compareCandidates(request)
+  const html=render(CandidateComparison,{comparison,request,selected:null,onSelect:noop,onEdit:noop})
+  assert.match(html,/<h2>Claude<\/h2>/);assert.match(html,/Anthropic 제공/)
+  assert.match(html,/data-provider-id="anthropic"/)
 })
 it('provider display changes with sourced plan facts rather than brand priority',()=>{
   const request={text:'글 작성',overrides:{}},data=structuredClone(providerCatalog)

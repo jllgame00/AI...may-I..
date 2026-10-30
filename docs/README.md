@@ -1,5 +1,9 @@
 # 현재 제품 문서
 
+- [PPT 파일·내용·기획 프롬프트 수정 및 검증](pptx-prompt-fix-report.md)
+
+- [사용자 피드백 UI/UX 개선 및 검증 결과](user-feedback-ui-report.md)
+
 현재 구현과 제출 범위는 [루트 README](../README.md), [Provider 추천 정책](provider-recommendation-policy.md), [최종 정리·검증 보고서](production-cleanup-report.md)를 기준으로 합니다.
 
 - [KEEP/CLEAN/REMOVE/ARCHIVE 파일별 목록](production-cleanup-manifest.json)

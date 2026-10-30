@@ -24,34 +24,40 @@ export function updateGuideRequest(session:Session,request:PromptRequest):Sessio
 }
 export function selectForStages(selection:StageSelection,stageId:string,id:string):StageSelection {return {...selection,byStage:{...selection.byStage,[stageId]:id}}}
 export function selectForWork(selection:StageSelection,steps:GuideStage[],workId:string,id:string):StageSelection {return {...selection,byStage:{...selection.byStage,...Object.fromEntries(steps.filter(s=>s.workId===workId).map(s=>[s.id,id]))}}}
-export function stageOptions(comparison:Comparison,stage:GuideStage):PlanAssessment[] {
+export function stageOptions(comparison:Comparison,stage:Pick<GuideStage,'workId'>):PlanAssessment[] {
  const work=comparison.requirements.works.find(w=>w.id===stage.workId)
  if(!work)return []
  return (comparison.byWork[work.id]??[]).flatMap(o=>[o,...o.alternatives]).filter(o=>o.status!=='excluded')
 }
-export function stageCandidate(selection:StageSelection,stage:GuideStage,comparison:Comparison):PlanAssessment|null {
+export function stageCandidate(selection:StageSelection,stage:Pick<GuideStage,'id'|'workId'>,comparison:Comparison):PlanAssessment|null {
  const id=selection.byStage[stage.id]??selection.default
  return stageOptions(comparison,stage).find(o=>o.id===id&&(selection.byStage[stage.id]!==undefined||o.status==='eligible'))??null
 }
 export function guideContext(template:PromptTemplate,bundleContext?:string):string {return JSON.stringify([template.id,template.text,bundleContext])}
 export function executionRoutes(candidate:PlanAssessment) {return [{kind:'official',label:`${candidate.service.name} 공식 웹 서비스`,url:candidate.plan.url}]}
-function stagesForRequest(request:PromptRequest):GuideStage[] {
+function stagesForRequest(request:PromptRequest,selection:StageSelection,order:TaskAnalysis['tasks']):GuideStage[] {
  const r=analyzeRequirements(request),base=buildPromptBundle(request),outputs=resolveDeliverables(request)
- return r.works.flatMap((work,index)=>{
-  const previousCategory=r.works[index-1]?.category
-  const previousIntent=previousCategory?(outputs.find(output=>output.category===previousCategory)??deliverableIntent(previousCategory==='coding'?'code_fix':previousCategory==='writing'?'general_writing':previousCategory)):undefined
+  const comparison=r.works.some(work=>work.category==='slides')?compareCandidates(request):null
+  const works=[...r.works].sort((a,b)=>order.indexOf(a.category)-order.indexOf(b.category))
+  return works.flatMap((work,index)=>{
+  const previousCategory=works[index-1]?.category
+  const previousOutputs=outputs.filter(output=>output.category===previousCategory)
+  const previousIntent=previousCategory?((work.category==='slides'?previousOutputs.at(-1):previousOutputs[0])??deliverableIntent(previousCategory==='coding'?'code_fix':previousCategory==='writing'?'general_writing':previousCategory)):undefined
   const previous=previousIntent?renderDeliverable(request,previousIntent,base.conditions).contract:undefined
   const make=(id:string,title:string,action:string):GuideStage=>{
     const intent=outputs.find(output=>output.category===work.category)??deliverableIntent(work.category==='coding'?'code_fix':work.category==='writing'?'general_writing':work.category)
-    const {text,contract}=renderDeliverable(request,intent,base.conditions,{instruction:action,previous})
-    return {id,title,workId:work.id,purpose:action,inputs:contract.inputs,output:intent.label,checks:base.checklist,handoff:['직접 검토한 결과·출처·미확인 항목'],text,deliverable:contract}
+    const candidate=work.category==='slides'&&comparison?stageCandidate(selection,{id:r.composite?`${work.id}-${id}`:id,workId:work.id},comparison):null
+    const fileCreationConfirmed=candidate?.checks.some(check=>check.id==='slidesCreation'&&check.status==='supported')??false
+    const {text,contract}=renderDeliverable(request,intent,base.conditions,{instruction:action,previous,fileCreationConfirmed})
+    const purpose=intent.kind==='slides'?(fileCreationConfirmed?'제공된 주제·자료로 다운로드할 PPTX 파일을 제작합니다.':'선택한 경로의 PPTX 파일 생성 지원을 먼저 확인합니다.'):action
+    return {id,title,workId:work.id,purpose,inputs:contract.inputs,output:contract.artifact?.label??intent.label,checks:base.checklist,handoff:['직접 검토한 결과·출처·미확인 항목'],text,deliverable:contract}
   }
   let stages:GuideStage[]
   if(work.category==='coding')stages=workStages(request,true)
   else if(work.category==='writing')stages=workStages(request,false,previous)
   else if(work.category==='analysis')stages=[make('analyze','자료 분석','자료를 읽고 요청한 질문에 답하며 수치·출처·분석 한계를 정리하세요.'),make('verify','결과 검토','원자료와 분석 결과를 대조해 오류·추론 한계·추가 확인 사항을 정리하세요.')]
   else if(work.category==='image')stages=[make('generate-image','이미지 생성','선택한 서비스의 이미지 생성 기능에서 실제 이미지를 생성하고 구도·문구·비율을 검토하세요.')]
-  else if(work.category==='slides')stages=[make('create-slides','발표자료 만들기','앞 단계의 확인한 자료로 발표자료를 만들고 요구한 파일 형식으로 제공하세요. 대본만 작성하는 작업과 구분하세요.')]
+  else if(work.category==='slides')stages=[make('create-slides','발표자료 만들기','요청한 발표자료 파일 형식과 이용 경로의 생성 지원을 확인하세요.')]
   else stages=[make('generate-video','영상 생성','선택한 서비스에서 영상의 길이·비율·크레딧을 확인한 뒤 생성하세요.')]
   return stages.map(s=>({...s,id:r.composite?`${work.id}-${s.id}`:s.id,workId:work.id}))
  })
@@ -71,10 +77,16 @@ function surveyStages(request: PromptRequest): GuideStage[] {
 export function buildGuideBundle(request: PromptRequest, selection: StageSelection): Omit<PromptBundle,'steps'> & { steps: GuideStage[] } {
   request = normalizeRequest(request)
   const base = buildPromptBundle(request), analysis = interpretTask(request)
+  const outputs=resolveDeliverables(request),order=[...analysis.tasks]
+  // Text preparation must precede its requested final presentation file.
+  if(outputs.some(o=>o.kind==='slides')&&outputs.some(o=>o.kind==='presentation_outline'||o.kind==='presentation_content')){
+    const writing=order.indexOf('writing'),slides=order.indexOf('slides')
+    if(writing>slides&&slides>=0){order.splice(writing,1);order.splice(slides,0,'writing')}
+  }
   const isSurvey = analysis.survey && analysis.tasks.includes('analysis')
   const surveyReport=isSurvey&&analysis.tasks.includes('writing')&&resolveDeliverables(request).some(output=>output.kind==='report_final')
-  let stages:GuideStage[]=isSurvey?[...surveyStages(request).filter(s=>surveyReport||!['report','review'].includes(s.id)).map(s=>({...s,workId:['report','review'].includes(s.id)?'writing':'analysis'})),...stagesForRequest(request).filter(s=>s.workId!=='analysis'&&(!surveyReport||s.workId!=='writing'))]:stagesForRequest(request)
-  if(isSurvey)stages.sort((a,b)=>analysis.tasks.indexOf(a.workId as typeof analysis.tasks[number])-analysis.tasks.indexOf(b.workId as typeof analysis.tasks[number]))
+  let stages:GuideStage[]=isSurvey?[...surveyStages(request).filter(s=>surveyReport||!['report','review'].includes(s.id)).map(s=>({...s,workId:['report','review'].includes(s.id)?'writing':'analysis'})),...stagesForRequest(request,selection,order).filter(s=>s.workId!=='analysis'&&(!surveyReport||s.deliverable?.kind!=='report_final'))]:stagesForRequest(request,selection,order)
+  if(isSurvey)stages.sort((a,b)=>order.indexOf(a.workId as typeof order[number])-order.indexOf(b.workId as typeof order[number]))
   if (isSurvey) {
     const task = structureSurveyTask(request,base.conditions)
     const audience = base.conditions.audience.value, tone = base.conditions.tone.value

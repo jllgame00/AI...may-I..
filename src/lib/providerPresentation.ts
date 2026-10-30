@@ -13,6 +13,8 @@ export function conditionNotes(o:PlanAssessment):string[] {
   return [...o.checks.filter(c=>c.status!=='supported').map(c=>`${capabilityLabels[c.id]}: ${supportStatus(c)}`),...(o.budgetStatus==='unknown'?['무료 제공 또는 입력한 예산 조건을 추가로 확인하세요.']:o.budgetStatus==='unmet'?['입력한 무료·예산 조건과 맞지 않습니다.']:[])]
 }
 export function usageSteps(o:PlanAssessment):string[] {
+  const unconfirmed=o.checks.filter(c=>['imageGeneration','slidesCreation','videoGeneration'].includes(c.id)&&c.status!=='supported')
+  if(unconfirmed.length)return [`${o.service.name}의 ${unconfirmed.map(c=>capabilityLabels[c.id]).join('·')} 지원 여부를 먼저 공식 서비스에서 확인하세요.`, '미확인 기능은 실제 생성 가능으로 안내하지 않습니다. 확인되지 않으면 해당 기능이 확인된 다른 경로를 선택하세요.', '기능과 이용 조건을 확인한 뒤 맞춤 프롬프트를 사용하고 실제 결과물을 검토하세요.']
   const files=o.checks.some(c=>['fileUpload','pdfUpload','pdfAnalysis','spreadsheetAnalysis'].includes(c.id))
   const image=o.checks.some(c=>c.id==='imageGeneration'),code=o.checks.some(c=>c.id==='codeExecution')
   return [`${o.service.name}을 열고 필요한 기능을 사용할 수 있는지 확인하세요.`,files?'파일 형식·크기·개수와 남은 사용량을 확인한 뒤 자료를 첨부하세요.':image?'이미지 생성 기능에서 원하는 구도·문구·비율과 남은 생성량을 확인하세요.':code?'계산 실행 기능의 활성화와 필요한 언어·환경을 확인하세요.':'작업에 필요한 자료와 원하는 결과물의 형식을 준비하세요.','맞춤 프롬프트를 편집·복사해 붙여넣고, 결과를 원자료·요구사항과 대조하세요.']

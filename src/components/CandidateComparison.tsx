@@ -8,7 +8,7 @@ export default function CandidateComparison({comparison,request,selected,onSelec
   const card=(row:ProviderRecommendation,workId?:string)=>{
     const access=accessSummary(row,row.alternatives),notes=conditionNotes(row)
     return <article className="candidate-card" data-provider-id={row.provider.id} data-status={row.status} key={row.provider.id}>
-      <h2>{row.provider.name}</h2><p><strong>{row.service.name}</strong></p><p className="candidate-judgment">{stateLabel(row.status)}{selected===row.id?' · 선택됨':''}</p>
+      <div className="service-heading"><h2>{row.service.name}</h2><p className="provider-attribution">{row.provider.name} 제공</p></div><p className="candidate-judgment">{stateLabel(row.status)}{selected===row.id?' · 선택됨':''}</p>
       <p>{featureStatus(row)} · {row.checks.filter(c=>c.status==='supported').length}/{row.checks.length}개</p>
       <p>{row.status==='eligible'?'이 작업에 필요한 기능과 이용 조건을 확인했습니다.':row.status==='conditional'?'필수 기능이나 이용 범위를 추가로 확인해야 합니다.':'요청한 기능 또는 무료·예산 조건과 맞지 않습니다.'}</p>
       <p className="access-summary">{access.selected}</p><p>{access.free}</p>
@@ -30,7 +30,7 @@ export default function CandidateComparison({comparison,request,selected,onSelec
     </article>
   }
   return <section className="comparison-page"><button id="back-to-conditions" className="text-button" onClick={onEdit}>← 작업·조건 수정</button><div className="page-heading"><h1 tabIndex={-1}>이 작업에 맞는 AI 회사</h1><p className="task-summary">{request.text}</p></div>
-    <div className="comparison-basis"><p>필수 기능과 무료·예산 조건을 확인했습니다. 공동 후보는 이름순으로 최대 {PROVIDER_POLICY.maxFeatured}개를 먼저 표시하며, 표시 순서는 품질 순위가 아닙니다.</p></div>
+    <div className="comparison-basis"><p>필수 기능과 무료·예산 조건을 확인했습니다. {comparison.requirements.budget.preferFree?'확인된 무료 경로를 먼저 고려하고 같은 조건에서는 회사 이름순으로':'공동 후보는 회사 이름순으로'} 최대 {PROVIDER_POLICY.maxFeatured}개를 먼저 표시하며, 표시 순서는 품질 순위가 아닙니다.</p></div>
     <div id="recommended-options"><h2>공동 우선 후보 ({comparison.recommendations.length})</h2>{!comparison.recommendations.length&&<p>모든 필수 조건이 확인된 회사가 없습니다. 조건부 후보나 단계별 선택을 확인하세요.</p>}<div className="candidate-grid">{comparison.recommendations.map(r=>card(r))}</div></div>
     {!!comparison.remaining.length&&<details className="remaining-models"><summary>나머지 공동 후보 ({comparison.remaining.length})</summary><div className="candidate-grid">{comparison.remaining.map(r=>card(r))}</div></details>}
     {comparison.requirements.composite&&<section className="candidate-section" id="work-provider-options"><h2>작업 단계별 회사·서비스</h2><p>이미 선택한 서비스가 해당 단계에도 맞으면 계속 사용할 수 있습니다. 추가 구독이나 결제를 자동으로 권하지 않습니다.</p>{comparison.requirements.works.map(work=>{
@@ -39,6 +39,6 @@ export default function CandidateComparison({comparison,request,selected,onSelec
     })}</section>}
     {!!comparison.conditional.length&&<details className="other-services" id="needs-check-candidates" open={needsCheckOpen} onToggle={e=>onNeedsCheckToggle?.(e.currentTarget.open)}><summary id="needs-check-summary" aria-expanded={needsCheckOpen} aria-controls="needs-check-options">추가 확인이 필요한 회사 ({comparison.conditional.length})</summary><div id="needs-check-options" className="candidate-grid">{comparison.conditional.map(r=>card(r))}</div></details>}
     {!!comparison.excluded.length&&<details><summary>필수 조건이 맞지 않는 회사 ({comparison.excluded.length})</summary><div className="candidate-grid">{comparison.excluded.map(r=>card(r))}</div></details>}
-    <details><summary>추천 기준·조사 범위</summary><p>공식 근거로 기능과 이용 조건을 확인합니다. 미확인은 낮은 품질을 뜻하지 않으며, 표시 순서는 회사명 기준입니다. 회사별 성능 점수나 순위를 산정하지 않습니다.</p></details>
+    <details><summary>추천 기준·조사 범위</summary><p>공식 근거로 기능과 이용 조건을 확인합니다. 미확인은 낮은 품질을 뜻하지 않습니다. 무료 선호를 선택하면 확인된 무료 경로를 먼저 고려하고, 같은 조건에서는 회사명 기준으로 표시합니다. 회사별 성능 점수나 순위를 산정하지 않습니다.</p></details>
   </section>
 }

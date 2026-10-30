@@ -1,5 +1,20 @@
 @import "tailwindcss";
 @theme{--font-sans:"Pretendard","Noto Sans KR","Malgun Gothic",system-ui,sans-serif}
+.example-start{margin-bottom:22px}
+#example-label{font-weight:650;margin-bottom:3px}
+.example-start .examples{margin:10px 0 0}
+.choice-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.choice-card{display:flex;align-items:center;gap:10px;min-width:0;min-height:64px;padding:14px 12px;border:1px solid var(--border);border-radius:9px;background:#fff;cursor:pointer}
+.choice-card>span{min-width:0;overflow-wrap:anywhere}
+.choice-card strong{font-size:15px;font-weight:650;display:block}
+.choice-card small{display:block;color:var(--muted);font-size:13px;font-weight:400;margin-top:4px}
+.choice-card:has(input:checked){border-color:var(--purple);background:#f0eafa;box-shadow:inset 0 0 0 1px var(--purple);color:#432c82}
+.choice-card:focus-within{outline:3px solid #7956cf;outline-offset:3px}
+.feature-options fieldset label{display:flex;align-items:center;gap:9px;min-height:44px;font-weight:400}
+.provider-attribution{font-size:14px;color:var(--muted);font-weight:400;margin-top:4px}
+.service-name{font-size:24px;font-weight:700;line-height:1.4}
+.selected-model .service-heading{flex-basis:100%;margin-bottom:8px}
+@media(max-width:700px){.task-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.budget-options{grid-template-columns:minmax(0,1fr)}.choice-card{min-height:64px;padding:12px}.service-name{font-size:22px}}
 .candidate-section{margin:28px 0}.candidate-section>p{margin:8px 0 16px}
 :root{font-family:var(--font-sans);font-size:16px;line-height:1.65;color:#17243e;background:#f8f9fc;--purple:#6042b7;--muted:#536178;--border:#d7dce6;font-synthesis:none;text-rendering:optimizeLegibility}
 *{box-sizing:border-box}body{margin:0;min-width:0}button,input,textarea,select{font:inherit;color:inherit}button,a,input,textarea,select,summary{touch-action:manipulation}button,summary{cursor:pointer}button:disabled{cursor:not-allowed;opacity:.55}button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible,summary:focus-visible{outline:3px solid #7956cf;outline-offset:3px}main:focus,h1:focus,h2:focus{outline:none}h1,h2,h3,p{margin:0}h1{font-size:32px;font-weight:730;line-height:1.4;letter-spacing:-1px}h2{font-size:21px;font-weight:700;line-height:1.5}h3{font-size:18px;font-weight:650}a{color:var(--purple);text-underline-offset:3px}p,li,summary,th,td{overflow-wrap:anywhere}label{display:block;font-weight:550}label span{font-weight:400}input,textarea,select{width:100%;min-width:0;background:#fff;border:1px solid #a6afbf;border-radius:7px;padding:11px 12px;line-height:1.65}textarea{resize:vertical}input[type=checkbox],input[type=radio]{width:18px;height:18px;flex-shrink:0;accent-color:var(--purple)}details{min-width:0}details>summary{font-weight:600;min-height:44px;padding:9px 0}details[open]>summary{margin-bottom:8px}details p+ p,details p+details{margin-top:10px}details details{padding-left:12px;border-left:2px solid var(--border);margin:12px 0}fieldset{border:0;padding:0;margin:14px 0}legend{font-weight:650;margin-bottom:8px}ul,ol{margin:10px 0;padding-left:22px}li+li{margin-top:6px}

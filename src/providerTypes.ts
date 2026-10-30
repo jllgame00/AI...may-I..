@@ -16,7 +16,8 @@ export interface ProviderPlan {
 }
 export interface ProviderModel {id:string;version:string;providerId:string;serviceId:string;planIds:string[];note:string;evidenceIds:string[]}
 export interface ProviderCatalog {version:string;providers:Provider[];services:ProviderService[];plans:ProviderPlan[];evidence:Evidence[];models:ProviderModel[]}
-export interface Budget {freeOnly:boolean|null;maxMonthly:number|null;currency:string|null;country:string|null}
+export type BudgetPreference='free'|'prefer-free'|'paid-ok'|'unknown'
+export interface Budget {freeOnly:boolean|null;preferFree?:boolean;maxMonthly:number|null;currency:string|null;country:string|null}
 export interface WorkRequirement {id:string;category:WorkCategory;label:string;required:CapabilityId[];preferred:CapabilityId[]}
 export interface ProviderRequirements {
   goal:string;works:WorkRequirement[];required:CapabilityId[];preferred:CapabilityId[];budget:Budget

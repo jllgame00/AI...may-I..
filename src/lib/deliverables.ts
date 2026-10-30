@@ -2,7 +2,7 @@ import type { DeliverableIntent, DeliverableKind, PromptRequest } from '../types
 
 const labels: Record<DeliverableKind,string> = {
   survey_final:'실제 설문지', survey_plan:'설문 설계안', report_final:'보고서 본문', report_outline:'보고서 목차',
-  presentation_script:'발표 대본', presentation_outline:'발표 개요', email_final:'이메일 본문', promotion_final:'홍보 문구',
+  presentation_script:'발표 대본', presentation_outline:'발표 개요', presentation_content:'슬라이드별 내용', email_final:'이메일 본문', promotion_final:'홍보 문구',
   code_fix:'수정 코드와 검증 방법', image_generation_prompt:'이미지 생성용 프롬프트', general_writing:'요청한 글',general_plan:'요청한 기획안',
   analysis:'자료 분석 결과', image:'실제 이미지', slides:'발표자료', video:'영상',
 }
@@ -35,13 +35,19 @@ function infer(text:string):DeliverableKind[] {
   if(/코드|코딩|버그|오류|저장소|알고리즘|python|react|typescript|javascript/i.test(t))kinds.push('code_fix')
   if(/보고서(?:의)?\s*(?:목차|개요)|보고서(?:를|을)?\s*(?:기획|설계)/.test(t))kinds.push('report_outline')
   else if(/보고서/.test(t)&&!/보고서(?:를|의|을)?\s*(?:요약|분석|내용)/.test(t))kinds.push('report_final')
-  if(/발표(?:의)?\s*(?:개요|구성안|기획안)/.test(t))kinds.push('presentation_outline')
+  const slideClauses=requestClauses(t)
+  const isSlideReference=(clause:string)=>/(?:개요|목차|구성안|기획안)(?:을|를)?\s*(?:바탕|토대|기반|참고)/.test(clause)
+  const slidePlans=slideClauses.filter(clause=>/(?:발표(?:자료)?|PPTX?(?:\s*자료)?|슬라이드|프레젠테이션|파워포인트)(?:의|를|을)?\s*(?:(?:내용|구성)(?:을|를)?\s*)?(?:개요|목차|구성안|기획안|기획|설계|구성(?=\s|해|하|을|만|$))/i.test(clause)&&!isSlideReference(clause))
+  const createsSlideFile=(clause:string)=>/(?:PPTX?|발표자료|프레젠테이션|슬라이드|파워포인트)(?:\s*(?:자료|파일))?(?:을|를|도|로|으로)?\s*(?:만들|생성|제작|작성|제공|변환|저장|내보내)/i.test(clause)
+  const slideContents=slideClauses.filter(clause=>/(?:슬라이드(?:별)?|PPTX?(?:\s*자료)?|발표자료|프레젠테이션|파워포인트)\s*(?:(?:의|에\s*넣을)\s*)?(?:내용|본문|문구|텍스트)/i.test(clause)&&!slidePlans.includes(clause)&&!isSlideReference(clause)&&!createsSlideFile(clause))
+  if(slidePlans.length)kinds.push('presentation_outline')
+  if(slideContents.length)kinds.push('presentation_content')
   if(/대본/.test(t))kinds.push('presentation_script')
   if(/이메일|메일|편지/.test(t)&&!/(?:이메일|메일)(?:의)?\s*내용.*(?:요약|정리)/.test(t))kinds.push('email_final')
   if(/홍보|모집\s*(?:글|문구)|광고\s*(?:글|문구)/.test(t))kinds.push('promotion_final')
   if(/이미지\s*(?:생성용\s*)?프롬프트/.test(t))kinds.push('image_generation_prompt')
   else if(/이미지|포스터|그림|일러스트|로고|사진/.test(t)&&/생성|만들|그려/.test(t))kinds.push('image')
-  if(/발표자료|프레젠테이션|슬라이드|pptx|파워포인트/i.test(t))kinds.push('slides')
+  if(slideClauses.some(clause=>/발표자료|프레젠테이션|슬라이드|pptx|\bppt\b|파워포인트/i.test(clause)&&(createsSlideFile(clause)||!slidePlans.includes(clause)&&!slideContents.includes(clause)&&!isSlideReference(clause))))kinds.push('slides')
   if(/영상|동영상|비디오/.test(t)&&/생성|만들|제작/.test(t))kinds.push('video')
   const genericPlan=/(?:기획안|설계안|구성안|개요|목차)(?:만|을|를)?\s*(?:작성|만들|짜|제안)|(?:이메일|홍보\s*글)(?:을|를)?\s*기획/.test(t)
   if(genericPlan&&!kinds.some(kind=>['survey_plan','report_outline','presentation_outline'].includes(kind)))return [...kinds.filter(kind=>deliverableIntent(kind).category!=='writing'),'general_plan']
